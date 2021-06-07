@@ -8,29 +8,32 @@ import 'package:stacked/stacked.dart';
 class VisualizerView extends StatelessWidget {
   final String algorithmTitle;
 
-  const VisualizerView({Key key, this.algorithmTitle}) : super(key: key);
+  const VisualizerView({this.algorithmTitle, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Bubble Sort",
-            style: theme.textTheme.subtitle1.copyWith(color: Colors.white)),
-        leading: IconButton(
-            tooltip: "Back",
-            onPressed: () => Navigator.pop(context),
-            icon: Icon(Icons.arrow_back_ios)),
-        actions: [
-          TextButton(
-            onPressed: () => print('Change Algorithm'),
-            child: Text("Change",
-                style: theme.textTheme.caption.copyWith(color: Colors.white)),
-          )
-        ],
+    return ViewModelBuilder<VisualizerViewModel>.reactive(
+      builder: (context, model, child) => Scaffold(
+        appBar: AppBar(
+          title: Text(algorithmTitle,
+              style: theme.textTheme.subtitle1.copyWith(color: Colors.white)),
+          leading: IconButton(
+              tooltip: "Back",
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.arrow_back_ios)),
+          actions: [
+            TextButton(
+              onPressed: () => print('Change Algorithm'),
+              child: Text("Change",
+                  style: theme.textTheme.caption.copyWith(color: Colors.white)),
+            )
+          ],
+        ),
+        backgroundColor: Colors.white,
+        body: _VisualizerView(),
       ),
-      backgroundColor: Colors.white,
-      body: _VisualizerView(),
+      viewModelBuilder: () => VisualizerViewModel(),
     );
   }
 }

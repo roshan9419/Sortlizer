@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/views/home_viewmodel.dart';
-import 'package:sorting_visualization/ui/views/visualizer_view.dart';
 import 'package:stacked/stacked.dart';
 
 Color blueThemeColor1 = Color(0xff2E4EEE);
 
 class HomeView extends StatelessWidget {
+  const HomeView({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return ViewModelBuilder.reactive(
+    return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
         backgroundColor: theme.primaryColor,
         body: Column(

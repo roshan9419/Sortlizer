@@ -9,8 +9,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../views/home_view.dart';
-import '../views/visualizer_view.dart';
+import '../ui/views/home_view.dart';
+import '../ui/views/visualizer_view.dart';
 
 class Routes {
   static const String homeView = '/home-view';
@@ -33,7 +33,7 @@ class Router extends RouterBase {
   final _pagesMap = <Type, AutoRouteFactory>{
     HomeView: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => HomeView(),
+        builder: (context) => const HomeView(),
         settings: data,
       );
     },
@@ -43,8 +43,8 @@ class Router extends RouterBase {
       );
       return MaterialPageRoute<dynamic>(
         builder: (context) => VisualizerView(
-          key: args.key,
           algorithmTitle: args.algorithmTitle,
+          key: args.key,
         ),
         settings: data,
       );
@@ -58,7 +58,7 @@ class Router extends RouterBase {
 
 /// VisualizerView arguments holder class
 class VisualizerViewArguments {
-  final Key key;
   final String algorithmTitle;
-  VisualizerViewArguments({this.key, this.algorithmTitle});
+  final Key key;
+  VisualizerViewArguments({this.algorithmTitle, this.key});
 }

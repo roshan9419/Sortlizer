@@ -1,5 +1,5 @@
-import 'package:sorting_visualization/ui/app/locator.dart';
-import 'package:sorting_visualization/ui/app/router.gr.dart';
+import 'package:sorting_visualization/app/locator.dart';
+import 'package:sorting_visualization/app/router.gr.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
