@@ -2,8 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
+import 'package:stacked/stacked.dart';
 
 class VisualizerView extends StatelessWidget {
+  final String algorithmTitle;
+
+  const VisualizerView({Key key, this.algorithmTitle}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -29,9 +35,11 @@ class VisualizerView extends StatelessWidget {
   }
 }
 
-class _VisualizerView extends StatelessWidget {
+class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
+  _VisualizerView({Key key}) : super(key: key, reactive: true);
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, model) {
     var theme = Theme.of(context);
     return SingleChildScrollView(
       child: Container(
@@ -79,8 +87,8 @@ class _VisualizerView extends StatelessWidget {
             SizedBox(height: 10),
             Text(
               "Bubble Sort is the simplest sorting algorithm that works by repeated swapping the adjacent elements if they are in wrong order.",
-              style: theme.textTheme.bodyText2
-                  .copyWith(fontStyle: FontStyle.italic, color: theme.accentColor),
+              style: theme.textTheme.bodyText2.copyWith(
+                  fontStyle: FontStyle.italic, color: theme.accentColor),
             )
           ],
         ),
@@ -124,6 +132,26 @@ class _VisualizerContainerState extends State<VisualizerContainer> {
     super.dispose();
   }
 
+  Duration _getDuration() {
+    return Duration(microseconds: 1500);
+  }
+
+  _bubbleSort() async {
+    for (int i = 0; i < _numbers.length; ++i) {
+      for (int j = 0; j < _numbers.length - i - 1; ++j) {
+        if (_numbers[j] > _numbers[j + 1]) {
+          int temp = _numbers[j];
+          _numbers[j] = _numbers[j + 1];
+          _numbers[j + 1] = temp;
+        }
+
+        await Future.delayed(_getDuration(), () {});
+
+        _streamController.add(_numbers);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -141,7 +169,11 @@ class _VisualizerContainerState extends State<VisualizerContainer> {
                   counter++;
                   return Container(
                     child: CustomPaint(
-                      painter: BarPainter(index: counter, value: num, width: MediaQuery.of(context).size.width / _sampleSize),
+                      painter: BarPainter(
+                          index: counter,
+                          value: num,
+                          width:
+                              MediaQuery.of(context).size.width / _sampleSize),
                     ),
                   );
                 }).toList(),
@@ -187,7 +219,8 @@ class BarPainter extends CustomPainter {
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;
 
-    canvas.drawLine(Offset(index * this.width, 0), Offset(index * this.width, this.value.ceilToDouble()), paint);
+    canvas.drawLine(Offset(index * this.width, 0),
+        Offset(index * this.width, this.value.ceilToDouble()), paint);
   }
 
   @override
