@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         accentColor: Color(0xff525252),
         primaryColor: blueThemeColor1,
+        canvasColor: blueThemeColor1,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       onGenerateRoute: auto_router.Router().onGenerateRoute,

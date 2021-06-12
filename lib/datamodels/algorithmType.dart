@@ -1,0 +1,7 @@
+enum AlgorithmType {
+  BUBBLE_SORT,
+  INSERTION_SORT,
+  SELECTION_SORT,
+  MERGE_SORT,
+  QUICK_SORT
+}

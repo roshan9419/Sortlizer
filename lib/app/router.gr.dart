@@ -7,8 +7,10 @@
 // ignore_for_file: public_member_api_docs
 
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../datamodels/algorithmType.dart';
 import '../ui/views/home_view.dart';
 import '../ui/views/visualizer_view.dart';
 
@@ -43,7 +45,7 @@ class Router extends RouterBase {
       );
       return MaterialPageRoute<dynamic>(
         builder: (context) => VisualizerView(
-          algorithmTitle: args.algorithmTitle,
+          algorithmType: args.algorithmType,
           key: args.key,
         ),
         settings: data,
@@ -58,7 +60,7 @@ class Router extends RouterBase {
 
 /// VisualizerView arguments holder class
 class VisualizerViewArguments {
-  final String algorithmTitle;
+  final AlgorithmType algorithmType;
   final Key key;
-  VisualizerViewArguments({this.algorithmTitle, this.key});
+  VisualizerViewArguments({this.algorithmType, this.key});
 }

@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
 class VisualizerView extends StatelessWidget {
-  final String algorithmTitle;
+  final AlgorithmType algorithmType;
 
-  const VisualizerView({this.algorithmTitle, Key key}) : super(key: key);
+  const VisualizerView({this.algorithmType, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class VisualizerView extends StatelessWidget {
     return ViewModelBuilder<VisualizerViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          title: Text(algorithmTitle,
+          title: Text(model.getTitle(),
               style: theme.textTheme.subtitle1.copyWith(color: Colors.white)),
           leading: IconButton(
               tooltip: "Back",
@@ -33,7 +34,7 @@ class VisualizerView extends StatelessWidget {
         backgroundColor: Colors.white,
         body: _VisualizerView(),
       ),
-      viewModelBuilder: () => VisualizerViewModel(),
+      viewModelBuilder: () => VisualizerViewModel(algorithmType),
     );
   }
 }
@@ -59,6 +60,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                     false, context),
                 FloatingActionButton.extended(
                     onPressed: () => print('Speed'),
+                    heroTag: null,
                     backgroundColor: Color(0xffEBEBEB),
                     label: Row(
                       children: [
@@ -77,9 +79,10 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                               fontWeight: FontWeight.bold),
                         )
                       ],
-                    )),
+                    )
+                ),
                 getRoundButton(
-                    "Start", theme.primaryColor, Colors.white, true, context),
+                    "Start", theme.primaryColor, Colors.white, true, context, heroTag: "play"),
               ],
             ),
             SizedBox(height: 30.0),
@@ -99,10 +102,11 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
     );
   }
 
-  Widget getRoundButton(String title, Color backgroundColor, Color textColor,
-      bool showIcon, BuildContext context) {
+  getRoundButton(String title, Color backgroundColor, Color textColor,
+      bool showIcon, BuildContext context, {String heroTag} ) {
     return FloatingActionButton.extended(
         onPressed: () => print(title),
+        heroTag: heroTag,
         backgroundColor: backgroundColor,
         label: Row(
           children: [

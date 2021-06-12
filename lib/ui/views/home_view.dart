@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/views/home_viewmodel.dart';
+import 'package:sorting_visualization/ui/widgets/dropDownWidget.dart';
 import 'package:stacked/stacked.dart';
 
 Color blueThemeColor1 = Color(0xff2E4EEE);
@@ -46,6 +47,7 @@ class HomeView extends StatelessWidget {
                   onPressed: () {
                     model.moveToVisualizerView();
                   },
+                  heroTag: "play",
                   backgroundColor: Colors.white,
                   child: Icon(
                     Icons.play_arrow_rounded,
@@ -67,14 +69,14 @@ class HomeView extends StatelessWidget {
             ),
             OutlineButton(
               onPressed: () => print("Button CLICKED"),
-              child: Text(
-                'Bubble Sort',
-                style: theme.textTheme.subtitle1.copyWith(
-                    color: Colors.white, letterSpacing: 1, fontSize: 20.0),
+              child: DropDownWidget(
+                selectedType: model.getSelectedAlgorithm(),
+                onTap: model.updateSelection,
+                menuItemsList: model.getAlgorithmsList(),
               ),
               padding: EdgeInsets.symmetric(horizontal: 60.0, vertical: 10.0),
               borderSide: BorderSide(color: Colors.white, width: 1),
-            )
+            ),
           ],
         ),
       ),
