@@ -47,17 +47,17 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
     var theme = Theme.of(context);
     return SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            VisualizerContainer(),
+            !model.isLoading ? VisualizerContainer() : SizedBox.shrink(),
             SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getRoundButton("Reset", Color(0xffEBEBEB), theme.accentColor,
-                    false, context),
+                    false, context, model.reset),
                 FloatingActionButton.extended(
                     onPressed: () => print('Speed'),
                     heroTag: null,
@@ -79,23 +79,68 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                               fontWeight: FontWeight.bold),
                         )
                       ],
-                    )
-                ),
-                getRoundButton(
-                    "Start", theme.primaryColor, Colors.white, true, context, heroTag: "play"),
+                    )),
+                getRoundButton("Start", theme.primaryColor, Colors.white, true,
+                    context, model.play,
+                    heroTag: "play"),
               ],
             ),
             SizedBox(height: 30.0),
             Text(
-              "Bubble Sort",
+              model.getTitle(),
               style: theme.textTheme.subtitle1,
             ),
             SizedBox(height: 10),
             Text(
-              "Bubble Sort is the simplest sorting algorithm that works by repeated swapping the adjacent elements if they are in wrong order.",
+              model.getAlgorithmDesc(),
               style: theme.textTheme.bodyText2.copyWith(
                   fontStyle: FontStyle.italic, color: theme.accentColor),
-            )
+            ),
+            SizedBox(height: 20),
+            Text(
+              "Time Complexity:",
+              style: theme.textTheme.caption,
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Text(
+                  "Worst Case:\t",
+                  style: theme.textTheme.subtitle2.copyWith(
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.normal),
+                ),
+                Text(model.getTC(0),
+                    style: theme.textTheme.subtitle2
+                        .copyWith(fontWeight: FontWeight.bold)),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "Average Case:\t",
+                  style: theme.textTheme.subtitle2.copyWith(
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.normal),
+                ),
+                Text(model.getTC(1),
+                    style: theme.textTheme.subtitle2
+                        .copyWith(fontWeight: FontWeight.bold)),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  "Best Case:\t",
+                  style: theme.textTheme.subtitle2.copyWith(
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.normal),
+                ),
+                Text(model.getTC(2),
+                    style: theme.textTheme.subtitle2
+                        .copyWith(fontWeight: FontWeight.bold)),
+              ],
+            ),
           ],
         ),
       ),
@@ -103,9 +148,12 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
   }
 
   getRoundButton(String title, Color backgroundColor, Color textColor,
-      bool showIcon, BuildContext context, {String heroTag} ) {
+      bool showIcon, BuildContext context, Function onTap,
+      {String heroTag}) {
     return FloatingActionButton.extended(
-        onPressed: () => print(title),
+        onPressed: () {
+          onTap();
+        },
         heroTag: heroTag,
         backgroundColor: backgroundColor,
         label: Row(
@@ -123,50 +171,15 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
   }
 }
 
-class VisualizerContainer extends StatefulWidget {
+class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
   @override
-  _VisualizerContainerState createState() => _VisualizerContainerState();
-}
-
-class _VisualizerContainerState extends State<VisualizerContainer> {
-  List<int> _numbers = [];
-  StreamController<List<int>> _streamController = new StreamController();
-  double _sampleSize = 320;
-
-  @override
-  void dispose() {
-    _streamController.close();
-    super.dispose();
-  }
-
-  Duration _getDuration() {
-    return Duration(microseconds: 1500);
-  }
-
-  _bubbleSort() async {
-    for (int i = 0; i < _numbers.length; ++i) {
-      for (int j = 0; j < _numbers.length - i - 1; ++j) {
-        if (_numbers[j] > _numbers[j + 1]) {
-          int temp = _numbers[j];
-          _numbers[j] = _numbers[j + 1];
-          _numbers[j + 1] = temp;
-        }
-
-        await Future.delayed(_getDuration(), () {});
-
-        _streamController.add(_numbers);
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, VisualizerViewModel model) {
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.only(top: 0.0),
+        margin: EdgeInsets.only(right: 10),
         child: StreamBuilder<Object>(
-            initialData: _numbers,
-            stream: _streamController.stream,
+            initialData: model.getNumbers(),
+            stream: model.getStreamController().stream,
             builder: (context, snapshot) {
               List<int> numbers = snapshot.data;
               int counter = 0;
@@ -175,12 +188,14 @@ class _VisualizerContainerState extends State<VisualizerContainer> {
                 children: numbers.map((int num) {
                   counter++;
                   return Container(
+                    color: Colors.red,
+                    height: model.maxNumber,
                     child: CustomPaint(
                       painter: BarPainter(
                           index: counter,
                           value: num,
-                          width:
-                              MediaQuery.of(context).size.width / _sampleSize),
+                          width: MediaQuery.of(context).size.width /
+                              model.getSampleSize()),
                     ),
                   );
                 }).toList(),

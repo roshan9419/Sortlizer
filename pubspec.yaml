@@ -43,6 +43,8 @@ dependencies:
   get_it:
   injectable:
 
+  animated_text_kit: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

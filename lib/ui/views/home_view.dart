@@ -1,10 +1,9 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/views/home_viewmodel.dart';
 import 'package:sorting_visualization/ui/widgets/dropDownWidget.dart';
 import 'package:stacked/stacked.dart';
-
-Color blueThemeColor1 = Color(0xff2E4EEE);
 
 class HomeView extends StatelessWidget {
   const HomeView({Key key}) : super(key: key);
@@ -58,7 +57,7 @@ class HomeView extends StatelessWidget {
               ),
             ),
             Text(
-              "Which algorithm you want to visualize?",
+              "Visualize different Sorting Algorithms",
               style: theme.textTheme.subtitle1.copyWith(
                   color: Colors.white,
                   fontStyle: FontStyle.italic,
@@ -67,15 +66,20 @@ class HomeView extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            OutlineButton(
-              onPressed: () => print("Button CLICKED"),
-              child: DropDownWidget(
-                selectedType: model.getSelectedAlgorithm(),
-                onTap: model.updateSelection,
-                menuItemsList: model.getAlgorithmsList(),
+            Container(
+              width: 200,
+              child: OutlineButton(
+                onPressed: () => print("Button CLICKED"),
+                child: TyperAnimatedTextKit(
+                  text: model.getAlgorithmsList(),
+                  repeatForever: true,
+                  isRepeatingAnimation: true,
+                  textStyle: theme.textTheme.subtitle1
+                      .copyWith(color: Colors.white, letterSpacing: 1),
+                  speed: Duration(milliseconds: 50),
+                ),
+                borderSide: BorderSide(color: Colors.white, width: 1),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 60.0, vertical: 10.0),
-              borderSide: BorderSide(color: Colors.white, width: 1),
             ),
           ],
         ),
