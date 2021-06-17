@@ -1,6 +1,6 @@
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/app/router.gr.dart';
-import 'package:sorting_visualization/data/contents.dart';
+import 'file:///F:/Flutter_Projects/sorting_visualization/lib/utils/contents.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';

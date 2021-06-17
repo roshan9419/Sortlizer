@@ -46,20 +46,20 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
   Widget build(BuildContext context, model) {
     var theme = Theme.of(context);
     return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            !model.isLoading ? VisualizerContainer() : SizedBox.shrink(),
-            SizedBox(height: 10.0),
-            Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          !model.isLoading ? VisualizerContainer() : SizedBox.shrink(),
+          SizedBox(height: 10.0),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getRoundButton("Reset", Color(0xffEBEBEB), theme.accentColor,
                     false, context, model.reset),
                 FloatingActionButton.extended(
-                    onPressed: () => print('Speed'),
+                    onPressed: () => model.updateSpeed,
                     heroTag: null,
                     backgroundColor: Color(0xffEBEBEB),
                     label: Row(
@@ -85,64 +85,11 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                     heroTag: "play"),
               ],
             ),
-            SizedBox(height: 30.0),
-            Text(
-              model.getTitle(),
-              style: theme.textTheme.subtitle1,
-            ),
-            SizedBox(height: 10),
-            Text(
-              model.getAlgorithmDesc(),
-              style: theme.textTheme.bodyText2.copyWith(
-                  fontStyle: FontStyle.italic, color: theme.accentColor),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Time Complexity:",
-              style: theme.textTheme.caption,
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Text(
-                  "Worst Case:\t",
-                  style: theme.textTheme.subtitle2.copyWith(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.normal),
-                ),
-                Text(model.getTC(0),
-                    style: theme.textTheme.subtitle2
-                        .copyWith(fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  "Average Case:\t",
-                  style: theme.textTheme.subtitle2.copyWith(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.normal),
-                ),
-                Text(model.getTC(1),
-                    style: theme.textTheme.subtitle2
-                        .copyWith(fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  "Best Case:\t",
-                  style: theme.textTheme.subtitle2.copyWith(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.normal),
-                ),
-                Text(model.getTC(2),
-                    style: theme.textTheme.subtitle2
-                        .copyWith(fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ],
-        ),
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: getAlgorithmContent(context, model)),
+        ],
       ),
     );
   }
@@ -169,6 +116,67 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
           ],
         ));
   }
+
+  getAlgorithmContent(BuildContext context, VisualizerViewModel model) {
+    var theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          model.getTitle(),
+          style: theme.textTheme.subtitle1,
+        ),
+        SizedBox(height: 10),
+        Text(
+          model.getAlgorithmDesc(),
+          style: theme.textTheme.bodyText2
+              .copyWith(fontStyle: FontStyle.italic, color: theme.accentColor),
+        ),
+        SizedBox(height: 20),
+        Text(
+          "Time Complexity:",
+          style: theme.textTheme.caption,
+        ),
+        SizedBox(height: 10),
+        Row(
+          children: [
+            Text(
+              "Worst Case:\t",
+              style: theme.textTheme.subtitle2.copyWith(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.normal),
+            ),
+            Text(model.getTC(0),
+                style: theme.textTheme.subtitle2
+                    .copyWith(fontWeight: FontWeight.bold)),
+          ],
+        ),
+        Row(
+          children: [
+            Text(
+              "Average Case:\t",
+              style: theme.textTheme.subtitle2.copyWith(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.normal),
+            ),
+            Text(model.getTC(1),
+                style: theme.textTheme.subtitle2
+                    .copyWith(fontWeight: FontWeight.bold)),
+          ],
+        ),
+        Row(
+          children: [
+            Text(
+              "Best Case:\t",
+              style: theme.textTheme.subtitle2.copyWith(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.normal),
+            ),
+            Text(model.getTC(2),
+                style: theme.textTheme.subtitle2
+                    .copyWith(fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ],
+    );
+  }
 }
 
 class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
@@ -194,6 +202,7 @@ class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
                       painter: BarPainter(
                           index: counter,
                           value: num,
+                          colorScheme: model.colorScheme,
                           width: MediaQuery.of(context).size.width /
                               model.getSampleSize()),
                     ),
@@ -210,32 +219,33 @@ class BarPainter extends CustomPainter {
   final double width;
   final int value;
   final int index;
+  final List<Color> colorScheme;
 
-  BarPainter({this.width, this.value, this.index});
+  BarPainter({this.width, this.value, this.index, this.colorScheme});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
     if (this.value < 500 * .10) {
-      paint.color = Color(0xFFDEEDCF);
+      paint.color = colorScheme[0];
     } else if (this.value < 500 * .20) {
-      paint.color = Color(0xFFBFE1B0);
+      paint.color = colorScheme[1];
     } else if (this.value < 500 * .30) {
-      paint.color = Color(0xFF99D492);
+      paint.color = colorScheme[2];
     } else if (this.value < 500 * .40) {
-      paint.color = Color(0xFF74C67A);
+      paint.color = colorScheme[3];
     } else if (this.value < 500 * .50) {
-      paint.color = Color(0xFF56B870);
+      paint.color = colorScheme[4];
     } else if (this.value < 500 * .60) {
-      paint.color = Color(0xFF39A96B);
+      paint.color = colorScheme[5];
     } else if (this.value < 500 * .70) {
-      paint.color = Color(0xFF1D9A6C);
+      paint.color = colorScheme[6];
     } else if (this.value < 500 * .80) {
-      paint.color = Color(0xFF188977);
+      paint.color = colorScheme[7];
     } else if (this.value < 500 * .90) {
-      paint.color = Color(0xFF137177);
+      paint.color = colorScheme[8];
     } else {
-      paint.color = Color(0xFF0E4D64);
+      paint.color = colorScheme[9];
     }
 
     paint.strokeWidth = width;
