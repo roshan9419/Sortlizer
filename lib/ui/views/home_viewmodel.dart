@@ -16,6 +16,6 @@ class HomeViewModel extends BaseViewModel {
 
   moveToVisualizerView() async {
     await _navigationService.navigateTo(Routes.visualizerView,
-        arguments: VisualizerViewArguments(algorithmType: AlgorithmType.BUBBLE_SORT));
+        arguments: VisualizerViewArguments(algorithmType: AlgorithmType.MERGE_SORT));
   }
 }

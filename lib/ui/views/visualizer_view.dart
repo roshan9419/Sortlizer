@@ -25,7 +25,9 @@ class VisualizerView extends StatelessWidget {
               icon: Icon(Icons.arrow_back_ios)),
           actions: [
             TextButton(
-              onPressed: () => print('Change Algorithm'),
+              onPressed: () {
+                model.changeSortingTheme();
+              },
               child: Text("Change",
                   style: theme.textTheme.caption.copyWith(color: Colors.white)),
             )
@@ -59,7 +61,9 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                 getRoundButton("Reset", Color(0xffEBEBEB), theme.accentColor,
                     false, context, model.reset),
                 FloatingActionButton.extended(
-                    onPressed: () => model.updateSpeed,
+                    onPressed: () {
+                      model.updateSpeed();
+                    },
                     heroTag: null,
                     backgroundColor: Color(0xffEBEBEB),
                     label: Row(
@@ -73,7 +77,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                         ),
                         SizedBox(width: 5),
                         Text(
-                          '2x',
+                          '${model.currentDrnIdx + 1}x',
                           style: theme.textTheme.subtitle1.copyWith(
                               color: theme.primaryColor,
                               fontWeight: FontWeight.bold),
@@ -89,6 +93,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: getAlgorithmContent(context, model)),
+          SizedBox(height: 50,),
         ],
       ),
     );
@@ -122,9 +127,11 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: 20),
         Text(
           model.getTitle(),
-          style: theme.textTheme.subtitle1,
+          style: theme.textTheme.subtitle1
+              .copyWith(color: theme.primaryColor, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 10),
         Text(

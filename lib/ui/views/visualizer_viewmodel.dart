@@ -18,11 +18,21 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   double _sampleSize = 200;
   double maxNumber = 400;
 
-  int _duration = 100;
-
   bool isLoading = true;
 
+  var currentColorScheme = 0;
   List<Color> colorScheme = [];
+
+  var currentDrnIdx = 0;
+  List<Duration> speeds = [
+    Duration(microseconds: 2500),
+    Duration(microseconds: 2000),
+    Duration(microseconds: 1500),
+    Duration(microseconds: 1000),
+    Duration(microseconds: 500),
+    Duration(microseconds: 200),
+    Duration(microseconds: 50)
+  ];
 
   @override
   Future<StreamController<List<int>>> futureToRun() async {
@@ -40,22 +50,35 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     notifyListeners();
   }
 
+  StreamController getStreamController() {
+    return _streamController;
+  }
+
   reset() {
     _numbers = [];
     for (int i = 0; i < _sampleSize; ++i) {
       _numbers.add(Random().nextInt(maxNumber.toInt()));
     }
     _streamController.add(_numbers);
-    notifyListeners();
-  }
-
-  play() {
-    _bubbleSort();
   }
 
   updateSpeed() {
-    colorScheme = SortingColorScheme().getRandomColorScheme();
+    currentDrnIdx == speeds.length - 1 ? currentDrnIdx = 0 : currentDrnIdx++;
     notifyListeners();
+  }
+
+  play() async {
+    if (_algorithmType == AlgorithmType.BUBBLE_SORT) await _bubbleSort();
+    else if (_algorithmType == AlgorithmType.MERGE_SORT) await _mergeSort(0, _sampleSize.toInt() - 1);
+  }
+
+  Duration _getDuration() {
+    return speeds[currentDrnIdx];
+  }
+
+  changeSortingTheme() {
+    colorScheme = SortingColorScheme().getRandomColorScheme();
+    _streamController.add(_numbers);
   }
 
   List<int> getNumbers() {
@@ -64,14 +87,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   double getSampleSize() {
     return _sampleSize;
-  }
-
-  StreamController getStreamController() {
-    return _streamController;
-  }
-
-  Duration _getDuration() {
-    return Duration(microseconds: _duration);
   }
 
   @override
@@ -93,6 +108,68 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
         _streamController.add(_numbers);
       }
+    }
+  }
+
+  _mergeSort(int leftIndex, int rightIndex) async {
+    Future<void> merge(int leftIndex, int middleIndex, int rightIndex) async {
+      int leftSize = middleIndex - leftIndex + 1;
+      int rightSize = rightIndex - middleIndex;
+
+      List leftList = new List(leftSize);
+      List rightList = new List(rightSize);
+
+      for (int i = 0; i < leftSize; i++) leftList[i] = _numbers[leftIndex + i];
+      for (int j = 0; j < rightSize; j++) rightList[j] = _numbers[middleIndex + j + 1];
+
+      int i = 0, j = 0;
+      int k = leftIndex;
+
+      while (i < leftSize && j < rightSize) {
+        if (leftList[i] <= rightList[j]) {
+          _numbers[k] = leftList[i];
+          i++;
+        } else {
+          _numbers[k] = rightList[j];
+          j++;
+        }
+
+        await Future.delayed(_getDuration(), () {});
+        _streamController.add(_numbers);
+
+        k++;
+      }
+
+      while (i < leftSize) {
+        _numbers[k] = leftList[i];
+        i++;
+        k++;
+
+        await Future.delayed(_getDuration(), () {});
+        _streamController.add(_numbers);
+      }
+
+      while (j < rightSize) {
+        _numbers[k] = rightList[j];
+        j++;
+        k++;
+
+        await Future.delayed(_getDuration(), () {});
+        _streamController.add(_numbers);
+      }
+    }
+
+    if (leftIndex < rightIndex) {
+      int middleIndex = (rightIndex + leftIndex) ~/ 2;
+
+      await _mergeSort(leftIndex, middleIndex);
+      await _mergeSort(middleIndex + 1, rightIndex);
+
+      await Future.delayed(_getDuration(), () {});
+
+      _streamController.add(_numbers);
+
+      await merge(leftIndex, middleIndex, rightIndex);
     }
   }
 
