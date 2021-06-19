@@ -14,6 +14,7 @@ class VisualizerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+
     return ViewModelBuilder<VisualizerViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(

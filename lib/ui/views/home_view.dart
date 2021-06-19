@@ -1,8 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sorting_visualization/ui/views/home_viewmodel.dart';
-import 'package:sorting_visualization/ui/widgets/dropDownWidget.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeView extends StatelessWidget {
@@ -11,37 +12,44 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+
+    var style =
+        SystemUiOverlayStyle(systemNavigationBarColor: theme.primaryColor);
+    SystemChrome.setSystemUIOverlayStyle(style);
+
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (context, model, child) => Scaffold(
         backgroundColor: theme.primaryColor,
         body: Column(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 30,
-                  height: 150,
-                  color: Colors.white,
-                  margin: EdgeInsets.only(left: 30, right: 30),
-                ),
-                Container(
-                  width: 30,
-                  height: 100,
-                  color: Colors.white,
-                )
-              ],
-            ),
-            Text(
-              "Sorting\nVisualizer",
-              style: theme.textTheme.headline4
-                  .copyWith(color: Colors.white, fontSize: 48.0),
+            Container(
+                width: double.infinity,
+                color: Colors.white,
+                padding: EdgeInsets.only(top: 40, left: 20, bottom: 0),
+                child: Text(
+                  "Sorting\nVisualizer",
+                  style: theme.textTheme.headline4.copyWith(
+                      color: theme.primaryColor,
+                      fontWeight: FontWeight.bold,
+                      shadows: [Shadow(
+                        color: Color(0xdadbdada),
+                        offset: Offset(2, 2),
+                        blurRadius: 10
+                      )],
+                      fontSize: 48.0),
+                )),
+            Transform.translate(
+              offset: Offset(0, -10),
+              child: SvgPicture.asset(
+                'assets/images/buildings.svg',
+                fit: BoxFit.cover,
+              ),
             ),
             Center(
               child: Container(
                 width: 80,
                 height: 80,
-                margin: EdgeInsets.symmetric(vertical: 50.0),
+                margin: EdgeInsets.only(top: 10.0, bottom: 50),
                 child: FloatingActionButton(
                   onPressed: () {
                     model.moveToVisualizerView();

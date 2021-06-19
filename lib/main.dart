@@ -8,6 +8,7 @@ import 'app/locator.dart';
 Color themeColor1 = Color(0xff5612b4);
 Color themeColor2 = Color(0xff038e56);
 Color themeColor3 = Color(0xff2E4EEE);
+Color themeColor4 = Color(0xff33C4B3);
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         accentColor: Color(0xff525252),
-        primaryColor: themeColor1,
+        primaryColor: themeColor4,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       onGenerateRoute: auto_router.Router().onGenerateRoute,

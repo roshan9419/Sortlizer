@@ -2,13 +2,18 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/utils/contents.dart';
 import 'package:sorting_visualization/utils/sorting_color_schemes.dart';
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 
 class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   VisualizerViewModel(this._algorithmType);
+
+  final _snackBarService = locator<SnackbarService>();
+
 
   AlgorithmType _algorithmType;
 
@@ -19,6 +24,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   double maxNumber = 400;
 
   bool isLoading = true;
+  bool isSorting = false;
 
   var currentColorScheme = 0;
   List<Color> colorScheme = [];
@@ -55,6 +61,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   reset() {
+    if (isSorting) {
+      _snackBarService.showSnackbar(message: "Sorting in Progress...");
+      return;
+    }
     _numbers = [];
     for (int i = 0; i < _sampleSize; ++i) {
       _numbers.add(Random().nextInt(maxNumber.toInt()));
@@ -68,8 +78,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   play() async {
+    isSorting = true;
     if (_algorithmType == AlgorithmType.BUBBLE_SORT) await _bubbleSort();
     else if (_algorithmType == AlgorithmType.MERGE_SORT) await _mergeSort(0, _sampleSize.toInt() - 1);
+    _snackBarService.showSnackbar(message: "Completed");
   }
 
   Duration _getDuration() {
@@ -109,6 +121,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _streamController.add(_numbers);
       }
     }
+    isSorting = false;
   }
 
   _mergeSort(int leftIndex, int rightIndex) async {
@@ -157,6 +170,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await Future.delayed(_getDuration(), () {});
         _streamController.add(_numbers);
       }
+      isSorting = false;
     }
 
     if (leftIndex < rightIndex) {
