@@ -14,7 +14,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   final _snackBarService = locator<SnackbarService>();
 
-
   AlgorithmType _algorithmType;
 
   List<int> _numbers = [];
@@ -77,11 +76,21 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     notifyListeners();
   }
 
-  play() async {
-    isSorting = true;
-    if (_algorithmType == AlgorithmType.BUBBLE_SORT) await _bubbleSort();
-    else if (_algorithmType == AlgorithmType.MERGE_SORT) await _mergeSort(0, _sampleSize.toInt() - 1);
-    _snackBarService.showSnackbar(message: "Completed");
+  onActionBtn() async {
+    if (isSorting) {
+      isSorting = false;
+    } else {
+      isSorting = true;
+      notifyListeners();
+      if (_algorithmType == AlgorithmType.BUBBLE_SORT)
+        await _bubbleSort();
+      else if (_algorithmType == AlgorithmType.MERGE_SORT)
+        await _mergeSort(0, _sampleSize.toInt() - 1);
+
+      isSorting = false;
+      _snackBarService.showSnackbar(message: "Completed");
+      notifyListeners();
+    }
   }
 
   Duration _getDuration() {
@@ -119,9 +128,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await Future.delayed(_getDuration(), () {});
 
         _streamController.add(_numbers);
+        if (!isSorting) break;
       }
     }
-    isSorting = false;
   }
 
   _mergeSort(int leftIndex, int rightIndex) async {
@@ -133,7 +142,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       List rightList = new List(rightSize);
 
       for (int i = 0; i < leftSize; i++) leftList[i] = _numbers[leftIndex + i];
-      for (int j = 0; j < rightSize; j++) rightList[j] = _numbers[middleIndex + j + 1];
+      for (int j = 0; j < rightSize; j++)
+        rightList[j] = _numbers[middleIndex + j + 1];
 
       int i = 0, j = 0;
       int k = leftIndex;
@@ -170,7 +180,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await Future.delayed(_getDuration(), () {});
         _streamController.add(_numbers);
       }
-      isSorting = false;
     }
 
     if (leftIndex < rightIndex) {
@@ -198,4 +207,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   String getTC(int idx) {
     return DataContent().getTimeComplexities(_algorithmType)[idx];
   }
+
+  String getAlgorithmCode() {
+    return DataContent().getAlgorithmCode(_algorithmType);
+  }
+
+  String _exampleCode =
+      "class MyHomePage extends StatefulWidget { MyHomePage({Key key, this.title}) : super(key: key); final String title; @override _MyHomePageState createState() => _MyHomePageState();}";
 }

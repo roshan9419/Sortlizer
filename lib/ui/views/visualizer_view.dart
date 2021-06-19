@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
+import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
 import 'package:stacked/stacked.dart';
 
 class VisualizerView extends StatelessWidget {
@@ -23,15 +24,23 @@ class VisualizerView extends StatelessWidget {
           leading: IconButton(
               tooltip: "Back",
               onPressed: () => Navigator.pop(context),
-              icon: Icon(Icons.arrow_back_ios)),
+              icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
           actions: [
+            IconButton(
+              onPressed: () => print('hll'),
+              icon: Icon(
+                Icons.code,
+                color: Colors.white,
+              ),
+              tooltip: "View Code",
+            ),
             TextButton(
               onPressed: () {
                 model.changeSortingTheme();
               },
               child: Text("Change",
                   style: theme.textTheme.caption.copyWith(color: Colors.white)),
-            )
+            ),
           ],
         ),
         backgroundColor: Colors.white,
@@ -59,8 +68,22 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                getRoundButton("Reset", Color(0xffEBEBEB), theme.accentColor,
-                    false, context, model.reset),
+                FloatingActionButton.extended(
+                    onPressed: () {
+                      model.reset();
+                    },
+                    backgroundColor: Color(0xffEBEBEB),
+                    label: Row(
+                      children: [
+                        Text(
+                          "Reset",
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                              letterSpacing: 1,
+                              color: theme.accentColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    )),
                 FloatingActionButton.extended(
                     onPressed: () {
                       model.updateSpeed();
@@ -81,46 +104,50 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                           '${model.currentDrnIdx + 1}x',
                           style: theme.textTheme.subtitle1.copyWith(
                               color: theme.primaryColor,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold),
                         )
                       ],
                     )),
-                getRoundButton("Start", theme.primaryColor, Colors.white, true,
-                    context, model.play,
-                    heroTag: "play"),
+                FloatingActionButton.extended(
+                    onPressed: () {
+                      model.onActionBtn();
+                    },
+                    heroTag: "play",
+                    backgroundColor: theme.primaryColor,
+                    label: Row(
+                      children: [
+                        Text(
+                          model.isSorting ? "Stop" : "Start",
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                              letterSpacing: 1,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        model.isSorting
+                            ? Icon(Icons.stop)
+                            : Icon(Icons.play_arrow)
+                      ],
+                    )),
               ],
             ),
           ),
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: getAlgorithmContent(context, model)),
-          SizedBox(height: 50,),
+          SizedBox(
+            height: 50,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CodeViewer(codeContent: model.getAlgorithmCode()),
+          ),
+          SizedBox(
+            height: 50,
+          ),
         ],
       ),
     );
-  }
-
-  getRoundButton(String title, Color backgroundColor, Color textColor,
-      bool showIcon, BuildContext context, Function onTap,
-      {String heroTag}) {
-    return FloatingActionButton.extended(
-        onPressed: () {
-          onTap();
-        },
-        heroTag: heroTag,
-        backgroundColor: backgroundColor,
-        label: Row(
-          children: [
-            Text(
-              title,
-              style: Theme.of(context).textTheme.subtitle1.copyWith(
-                  letterSpacing: 1,
-                  color: textColor,
-                  fontWeight: FontWeight.bold),
-            ),
-            showIcon ? Icon(Icons.play_arrow) : SizedBox.shrink()
-          ],
-        ));
   }
 
   getAlgorithmContent(BuildContext context, VisualizerViewModel model) {
