@@ -17,6 +17,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
     {String environment, _i2.EnvironmentFilter environmentFilter}) {
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
   final thirdPartyServicesModule = _$ThirdPartyServicesModule();
+  gh.lazySingleton<_i3.BottomSheetService>(
+      () => thirdPartyServicesModule.bottomSheetService);
   gh.lazySingleton<_i3.NavigationService>(
       () => thirdPartyServicesModule.navigationService);
   gh.lazySingleton<_i3.SnackbarService>(
@@ -25,6 +27,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
 }
 
 class _$ThirdPartyServicesModule extends _i4.ThirdPartyServicesModule {
+  @override
+  _i3.BottomSheetService get bottomSheetService => _i3.BottomSheetService();
   @override
   _i3.NavigationService get navigationService => _i3.NavigationService();
   @override

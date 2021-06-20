@@ -49,6 +49,7 @@ class _CodeViewerState extends State<CodeViewer> {
                     changeTheme();
                   },
                   mini: true,
+                  heroTag: 'themeSwitcher',
                   backgroundColor:
                       isDark ? Colors.white : Theme.of(context).primaryColor,
                   child: Icon(
@@ -70,6 +71,7 @@ class _CodeViewerState extends State<CodeViewer> {
                                 )));
                       },
                       mini: true,
+                      heroTag: 'copy',
                       backgroundColor: Theme.of(context).primaryColor,
                       child: Icon(
                         Icons.copy,

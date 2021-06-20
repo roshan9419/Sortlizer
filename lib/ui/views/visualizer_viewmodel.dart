@@ -13,6 +13,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   VisualizerViewModel(this._algorithmType);
 
   final _snackBarService = locator<SnackbarService>();
+  final _bottomSheetService = locator<BottomSheetService>();
 
   AlgorithmType _algorithmType;
 
@@ -222,6 +223,17 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   String getAlgorithmCode() {
     return DataContent().getAlgorithmCode(_algorithmType);
+  }
+
+  onCustomBtnClick() async {
+    var sheetResponse = await _bottomSheetService.showBottomSheet(
+      title: 'Enter the elements of array:',
+      description: 'Example: 23, 45, 98, 67'
+    );
+
+    if (sheetResponse!=null && sheetResponse.confirmed) {
+      print('CONFIRMED');
+    }
   }
 
   String _exampleCode =

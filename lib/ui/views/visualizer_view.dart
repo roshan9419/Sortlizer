@@ -33,17 +33,29 @@ class VisualizerView extends StatelessWidget {
             IconButton(
               onPressed: () => print('hll'),
               icon: Icon(
-                Icons.code,
+                Icons.unfold_more,
                 color: Colors.white,
               ),
-              tooltip: "View Code",
+              tooltip: "Change Algorithm",
             ),
             TextButton(
               onPressed: () {
-                model.changeSortingTheme();
+                model.onCustomBtnClick();
               },
-              child: Text("Change",
-                  style: theme.textTheme.caption.copyWith(color: Colors.white)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Icon(
+                    Icons.edit_road_sharp,
+                    size: 15,
+                    color: Colors.white,
+                  ),
+                  Text("Custom",
+                      style: theme.textTheme.caption
+                          .copyWith(color: Colors.white)),
+                ],
+              ),
             ),
           ],
         ),
@@ -76,7 +88,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                     onPressed: () {
                       model.reset();
                     },
-                    heroTag: null,
+                    heroTag: "reset",
                     backgroundColor: Color(0xffEBEBEB),
                     label: Row(
                       children: [
@@ -93,7 +105,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                     onPressed: () {
                       model.updateSpeed();
                     },
-                    heroTag: null,
+                    heroTag: "speed",
                     backgroundColor: Color(0xffEBEBEB),
                     label: Row(
                       children: [

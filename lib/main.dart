@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sorting_visualization/setup_bottom_sheet.dart';
 import 'package:sorting_visualization/ui/views/home_view.dart';
 import 'package:sorting_visualization/app/router.gr.dart' as auto_router;
 import 'package:stacked_services/stacked_services.dart';
@@ -13,6 +14,7 @@ Color themeColor4 = Color(0xff33C4B3);
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
+  setupBottomSheetUI();
   runApp(MyApp());
 }
 
