@@ -19,7 +19,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   List<int> _numbers = [];
   StreamController<List<int>> _streamController;
 
-  double _sampleSize = 200;
+  double _sampleSize = 50;
   double maxNumber = 400;
 
   bool isLoading = true;
@@ -68,6 +68,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     for (int i = 0; i < _sampleSize; ++i) {
       _numbers.add(Random().nextInt(maxNumber.toInt()));
     }
+
     _streamController.add(_numbers);
   }
 
@@ -77,6 +78,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   onActionBtn() async {
+    if (isArraySorted()) {
+      _snackBarService.showSnackbar(message: "Array already sorted!");
+      return;
+    }
     if (isSorting) {
       isSorting = false;
     } else {
@@ -194,6 +199,13 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       await merge(leftIndex, middleIndex, rightIndex);
     }
+  }
+
+  bool isArraySorted() {
+    for (int i=1; i<_numbers.length; i++) {
+      if (_numbers[i-1] > _numbers[i]) return false;
+    }
+    return true;
   }
 
   String getTitle() {

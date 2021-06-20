@@ -20,7 +20,11 @@ class VisualizerView extends StatelessWidget {
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text(model.getTitle(),
-              style: theme.textTheme.subtitle1.copyWith(color: Colors.white)),
+              style: theme.textTheme.subtitle1.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1)),
+          centerTitle: true,
           leading: IconButton(
               tooltip: "Back",
               onPressed: () => Navigator.pop(context),
@@ -72,6 +76,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                     onPressed: () {
                       model.reset();
                     },
+                    heroTag: null,
                     backgroundColor: Color(0xffEBEBEB),
                     label: Row(
                       children: [
@@ -231,7 +236,6 @@ class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
                 children: numbers.map((int num) {
                   counter++;
                   return Container(
-                    color: Colors.red,
                     height: model.maxNumber,
                     child: CustomPaint(
                       painter: BarPainter(
@@ -284,7 +288,7 @@ class BarPainter extends CustomPainter {
     }
 
     paint.strokeWidth = width;
-    paint.strokeCap = StrokeCap.round;
+    paint.strokeCap = StrokeCap.square;
 
     canvas.drawLine(Offset(index * this.width, 0),
         Offset(index * this.width, this.value.ceilToDouble()), paint);

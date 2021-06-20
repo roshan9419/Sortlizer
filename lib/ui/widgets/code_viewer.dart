@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:widget_with_codeview/source_code_view.dart';
-import 'package:widget_with_codeview/widget_with_codeview.dart';
+import 'package:flutter/services.dart';
 
 class CodeViewer extends StatefulWidget {
   final String codeContent;
+  final bool showCopyBtn;
 
-  const CodeViewer({Key key, this.codeContent}) : super(key: key);
+  const CodeViewer({Key key, this.codeContent, this.showCopyBtn = true})
+      : super(key: key);
 
   @override
   _CodeViewerState createState() => _CodeViewerState();
@@ -48,12 +49,34 @@ class _CodeViewerState extends State<CodeViewer> {
                     changeTheme();
                   },
                   mini: true,
-                  backgroundColor: isDark ? Colors.white : Theme.of(context).primaryColor,
+                  backgroundColor:
+                      isDark ? Colors.white : Theme.of(context).primaryColor,
                   child: Icon(
                     isDark ? Icons.wb_sunny_outlined : Icons.nightlight_round,
                     color: isDark ? Colors.black87 : Colors.white,
                     size: 20,
-                  )))
+                  ))),
+          widget.showCopyBtn
+              ? Positioned(
+                  top: 50,
+                  right: 0,
+                  child: FloatingActionButton(
+                      onPressed: () {
+                        Clipboard.setData(
+                                ClipboardData(text: widget.codeContent))
+                            .then((value) =>
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text('Code Copied'),
+                                )));
+                      },
+                      mini: true,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: Icon(
+                        Icons.copy,
+                        color: Colors.white,
+                        size: 20,
+                      )))
+              : SizedBox.shrink()
         ],
       ),
     );
