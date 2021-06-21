@@ -21,7 +21,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   List<int> _numbers = [];
   StreamController<List<int>> _streamController;
 
-  double _sampleSize = 50;
+  double _sampleSize = 80;
   double maxNumber = 400;
 
   bool isLoading = true;
@@ -32,12 +32,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   var currentDrnIdx = 0;
   List<Duration> speeds = [
-    Duration(microseconds: 2500),
-    Duration(microseconds: 2000),
-    Duration(microseconds: 1500),
+    Duration(microseconds: 1600),
+    Duration(microseconds: 1300),
     Duration(microseconds: 1000),
-    Duration(microseconds: 500),
-    Duration(microseconds: 200),
+    Duration(microseconds: 700),
+    Duration(microseconds: 400),
+    Duration(microseconds: 100),
     Duration(microseconds: 50)
   ];
 
@@ -255,6 +255,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       !flag
           ? _snackBarService.showSnackbar(message: "Invalid numbers")
           : _snackBarService.showSnackbar(message: "Your Array: $inputArray");
+
+      if (flag) {
+        _numbers = inputArray;
+        _sampleSize = inputArray.length.toDouble();
+      }
     }
   }
 
