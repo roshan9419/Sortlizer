@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class CustomArrayBottomSheet extends StatefulWidget {
@@ -20,34 +21,60 @@ class _CustomArrayBottomSheetState extends State<CustomArrayBottomSheet> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
+      padding: EdgeInsets.all(15),
+      height: 200,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text(
-            widget.sheetRequest.title,
-            style:
-                theme.textTheme.subtitle1.copyWith(color: theme.primaryColor),
+          FloatingActionButton(
+            onPressed: () {
+              widget.onDialogTap(SheetResponse(
+                  confirmed: true, responseData: _controller.text));
+            },
+            heroTag: 'submit',
+            child: Icon(
+              Icons.check,
+              size: 35,
+            ),
+            backgroundColor: theme.primaryColor,
           ),
-          Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  border: Border.all(color: Color(0xffF1F1F1))),
-              child: TextField(
-                maxLines: 1,
-                controller: _controller,
-                style: theme.textTheme.caption.copyWith(
-                    color: Color(0xff00031D)),
-                decoration: InputDecoration(
-                  hintText: widget.sheetRequest.description,
-                  hintStyle: theme.textTheme.caption.copyWith(
-                    color: Color(0xff9B9B9B)),
-                  focusedBorder: InputBorder.none,
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                ),
-              )
+          SizedBox(height: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.sheetRequest.title,
+                style: theme.textTheme.subtitle1.copyWith(
+                    color: theme.primaryColor, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 15),
+              Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      border: Border.all(color: Color(0xffafafaf))),
+                  child: TextField(
+                    maxLines: 1,
+                    keyboardType: TextInputType.number,
+                    controller: _controller,
+                    style: theme.textTheme.subtitle2
+                        .copyWith(color: Color(0xff00031D)),
+                    decoration: InputDecoration(
+                      hintText: widget.sheetRequest.description,
+                      hintStyle: theme.textTheme.caption
+                          .copyWith(color: Color(0xff9B9B9B)),
+                      focusedBorder: InputBorder.none,
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                    ),
+                  )),
+            ],
           ),
         ],
       ),

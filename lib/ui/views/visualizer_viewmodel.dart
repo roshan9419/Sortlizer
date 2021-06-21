@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
+import 'package:sorting_visualization/datamodels/bottomSheetType.dart';
 import 'package:sorting_visualization/utils/contents.dart';
 import 'package:sorting_visualization/utils/sorting_color_schemes.dart';
 import 'package:stacked/stacked.dart';
@@ -203,8 +204,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   bool isArraySorted() {
-    for (int i=1; i<_numbers.length; i++) {
-      if (_numbers[i-1] > _numbers[i]) return false;
+    for (int i = 1; i < _numbers.length; i++) {
+      if (_numbers[i - 1] > _numbers[i]) return false;
     }
     return true;
   }
@@ -226,13 +227,34 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   onCustomBtnClick() async {
-    var sheetResponse = await _bottomSheetService.showBottomSheet(
-      title: 'Enter the elements of array:',
-      description: 'Example: 23, 45, 98, 67'
-    );
+    var sheetResponse = await _bottomSheetService.showCustomSheet(
+        variant: BottomSheetType.CUSTOM_ARRAY,
+        title: 'Enter the elements of array:',
+        description: 'Example: 23, 45, 98, 67',
+        barrierDismissible: true);
 
-    if (sheetResponse!=null && sheetResponse.confirmed) {
-      print('CONFIRMED');
+    if (sheetResponse != null &&
+        sheetResponse.confirmed &&
+        sheetResponse.responseData.toString().isNotEmpty) {
+      print('CONFIRMED' + sheetResponse.responseData);
+
+      List<String> responseArray =
+          sheetResponse.responseData.toString().split(",");
+      List<int> inputArray = [];
+      bool flag = true;
+
+      responseArray.forEach((element) {
+        try {
+          var num = int.parse(element.trim());
+          inputArray.add(num);
+        } catch (e) {
+          flag = false;
+        }
+      });
+
+      !flag
+          ? _snackBarService.showSnackbar(message: "Invalid numbers")
+          : _snackBarService.showSnackbar(message: "Your Array: $inputArray");
     }
   }
 

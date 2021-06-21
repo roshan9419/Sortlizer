@@ -39,7 +39,7 @@ class _CodeViewerState extends State<CodeViewer> {
             style: Theme.of(context)
                 .textTheme
                 .subtitle2
-                .copyWith(color: isDark ? Colors.white : Colors.black),
+                .copyWith(color: isDark ? Colors.white : Colors.black87),
           ),
           Positioned(
               top: 0,
