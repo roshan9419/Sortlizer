@@ -23,7 +23,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   StreamController<List<int>> _streamController;
 
   double _sampleSize = 100;
-  double maxNumber = 500;
+  double maxNumber = 400;
 
   bool isLoading = true;
   bool isSorting = false;
@@ -75,8 +75,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _streamController.add(_numbers);
   }
 
-  updateSpeed() {
+  double sortingSpeed = 0.0;
+
+  updateSpeed(double value) {
     currentDrnIdx == speeds.length - 1 ? currentDrnIdx = 0 : currentDrnIdx++;
+    sortingSpeed = value;
     notifyListeners();
   }
 

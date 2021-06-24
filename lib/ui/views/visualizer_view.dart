@@ -108,187 +108,61 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
           ],
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
         children: [
-          NeumorphicButton(
-              icon: Icon(
-                Icons.edit_road_rounded,
-                color: lightGrayColor,
-              ),
-              btnSize: 46,
-              labelText: "Custom",
-              onTap: model.onCustomBtnClick),
-          NeumorphicButton(
-            icon: Icon(
-              Icons.info_outline,
-              color: lightGrayColor,
-            ),
-            btnSize: 46,
-            labelText: "Info",
-          ),
-          NeumorphicButton(
-            icon: Icon(
-              Icons.refresh,
-              color: lightGrayColor,
-            ),
-            btnSize: 46,
-            labelText: "Reset",
-            onTap: model.reset,
-          ),
-          NeumorphicButton(
-            icon: model.isSorting
-                ? Icon(
-                    Icons.stop,
-                    color: lightGrayColor,
-                  )
-                : Icon(
-                    Icons.play_arrow_rounded,
+          Slider(
+              value: model.sortingSpeed,
+              label: "Speed",
+              divisions: 5,
+              onChanged: (val) {
+                print('Value Changed: $val');
+                model.updateSpeed(val);
+              }),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              NeumorphicButton(
+                  icon: Icon(
+                    Icons.edit_road_rounded,
                     color: lightGrayColor,
                   ),
-            btnSize: 46,
-            labelText: model.isSorting ? "Stop" : "Start",
-            btnColor: model.isSorting ? Colors.red : blueThemeColor,
-            onTap: model.onActionBtn,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
-  @override
-  Widget build(BuildContext context, VisualizerViewModel model) {
-    return SafeArea(
-      child: Container(
-        margin: EdgeInsets.only(right: 10),
-        child: StreamBuilder<Object>(
-            initialData: model.getNumbers(),
-            stream: model.getStreamController().stream,
-            builder: (context, snapshot) {
-              List<int> numbers = snapshot.data;
-              int counter = 0;
-
-              return Row(
-                children: numbers.map((int num) {
-                  counter++;
-                  return Container(
-                    height: model.maxNumber,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 2),
-                      child: CustomPaint(
-                        painter: BarPainter(
-                            index: counter,
-                            value: num,
-                            colorScheme: model.colorScheme,
-                            width: MediaQuery.of(context).size.width /
-                                model.getSampleSize()),
+                  btnSize: 46,
+                  labelText: "Custom",
+                  onTap: model.onCustomBtnClick),
+              NeumorphicButton(
+                icon: Icon(
+                  Icons.info_outline,
+                  color: lightGrayColor,
+                ),
+                btnSize: 46,
+                labelText: "Info",
+              ),
+              NeumorphicButton(
+                icon: Icon(
+                  Icons.refresh,
+                  color: lightGrayColor,
+                ),
+                btnSize: 46,
+                labelText: "Reset",
+                onTap: model.reset,
+              ),
+              NeumorphicButton(
+                icon: model.isSorting
+                    ? Icon(
+                        Icons.stop,
+                        color: lightGrayColor,
+                      )
+                    : Icon(
+                        Icons.play_arrow_rounded,
+                        color: lightGrayColor,
                       ),
-                    ),
-                  );
-                }).toList(),
-              );
-            }),
-      ),
-    );
-  }
-}
-
-class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
-  _VisualizerView({Key key}) : super(key: key, reactive: true);
-
-  @override
-  Widget build(BuildContext context, model) {
-    var theme = Theme.of(context);
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          !model.isLoading ? VisualizerContainer() : SizedBox.shrink(),
-          SizedBox(height: 10.0),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FloatingActionButton.extended(
-                    onPressed: () {
-                      model.reset();
-                    },
-                    heroTag: "reset",
-                    backgroundColor: Color(0xffEBEBEB),
-                    label: Row(
-                      children: [
-                        Text(
-                          "Reset",
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              letterSpacing: 1,
-                              color: theme.accentColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    )),
-                FloatingActionButton.extended(
-                    onPressed: () {
-                      model.updateSpeed();
-                    },
-                    heroTag: "speed",
-                    backgroundColor: Color(0xffEBEBEB),
-                    label: Row(
-                      children: [
-                        Text(
-                          'Speed',
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              letterSpacing: 1,
-                              color: theme.accentColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          '${model.currentDrnIdx + 1}x',
-                          style: theme.textTheme.subtitle1.copyWith(
-                              color: theme.primaryColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    )),
-                FloatingActionButton.extended(
-                    onPressed: () {
-                      model.onActionBtn();
-                    },
-                    heroTag: "play",
-                    backgroundColor: theme.primaryColor,
-                    label: Row(
-                      children: [
-                        Text(
-                          model.isSorting ? "Stop" : "Start",
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              letterSpacing: 1,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        model.isSorting
-                            ? Icon(Icons.stop)
-                            : Icon(Icons.play_arrow)
-                      ],
-                    )),
-              ],
-            ),
-          ),
-          Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: getAlgorithmContent(context, model)),
-          SizedBox(
-            height: 50,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CodeViewer(codeContent: model.getAlgorithmCode()),
-          ),
-          SizedBox(
-            height: 50,
+                btnSize: 46,
+                labelText: model.isSorting ? "Stop" : "Start",
+                btnColor: model.isSorting ? Colors.red : blueThemeColor,
+                onTap: model.onActionBtn,
+              )
+            ],
           ),
         ],
       ),
@@ -359,7 +233,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
   }
 }
 
-class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
+class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
   @override
   Widget build(BuildContext context, VisualizerViewModel model) {
     return SafeArea(
@@ -377,14 +251,16 @@ class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
                   counter++;
                   return Container(
                     height: model.maxNumber,
-                    child: CustomPaint(
-                      painter: BarPainter(
-                          index: counter,
-                          value: num,
-                          maxValue: 200,
-                          colorScheme: model.colorScheme,
-                          width: MediaQuery.of(context).size.width /
-                              model.getSampleSize()),
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 2),
+                      child: CustomPaint(
+                        painter: BarPainter(
+                            index: counter,
+                            value: num,
+                            colorScheme: model.colorScheme,
+                            width: MediaQuery.of(context).size.width /
+                                model.getSampleSize()),
+                      ),
                     ),
                   );
                 }).toList(),
@@ -409,35 +285,12 @@ class BarPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
     paint.color = blueThemeColor;
-
-    /*if (this.value < 500 * .10) {
-      paint.color = colorScheme[0];
-    } else if (this.value < 500 * .20) {
-      paint.color = colorScheme[1];
-    } else if (this.value < 500 * .30) {
-      paint.color = colorScheme[2];
-    } else if (this.value < 500 * .40) {
-      paint.color = colorScheme[3];
-    } else if (this.value < 500 * .50) {
-      paint.color = colorScheme[4];
-    } else if (this.value < 500 * .60) {
-      paint.color = colorScheme[5];
-    } else if (this.value < 500 * .70) {
-      paint.color = colorScheme[6];
-    } else if (this.value < 500 * .80) {
-      paint.color = colorScheme[7];
-    } else if (this.value < 500 * .90) {
-      paint.color = colorScheme[8];
-    } else {
-      paint.color = colorScheme[9];
-    }*/
-
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;
 
-    var pt1 = Offset(index * this.width, 500 - this.value.ceilToDouble());
+    var pt1 = Offset(index * this.width, 400 - this.value.ceilToDouble());
     // var pt2 = Offset(index * this.width, this.value.ceilToDouble());
-    var pt2 = Offset(index * this.width, 500);
+    var pt2 = Offset(index * this.width, 400);
 
     canvas.drawLine(pt1, pt2, paint); // TODO - NEED TO WORK
   }
