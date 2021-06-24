@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
+import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
 import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
+import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:stacked/stacked.dart';
 
 class VisualizerView extends StatelessWidget {
@@ -17,52 +19,105 @@ class VisualizerView extends StatelessWidget {
     var theme = Theme.of(context);
 
     return ViewModelBuilder<VisualizerViewModel>.reactive(
-      builder: (context, model, child) => Scaffold(
-        appBar: AppBar(
-          title: Text(model.getTitle(),
-              style: theme.textTheme.subtitle1.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1)),
-          centerTitle: true,
-          leading: IconButton(
-              tooltip: "Back",
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
-          actions: [
-            IconButton(
-              onPressed: () => print('hll'),
-              icon: Icon(
-                Icons.unfold_more,
-                color: Colors.white,
-              ),
-              tooltip: "Change Algorithm",
-            ),
-            TextButton(
-              onPressed: () {
-                model.onCustomBtnClick();
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Icon(
-                    Icons.edit_road_sharp,
-                    size: 15,
+      builder: (context, model, child) =>
+          SafeArea(
+            child: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      tileMode: TileMode.clamp,
+                      colors: [darkBackgroundStart, darkBackgroundFinish])),
+              child: Scaffold(
+                /*appBar: AppBar(
+              title: Text(model.getTitle(),
+                  style: theme.textTheme.subtitle1.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1)),
+              centerTitle: true,
+              leading: IconButton(
+                  tooltip: "Back",
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
+              actions: [
+                IconButton(
+                  onPressed: () => print('hll'),
+                  icon: Icon(
+                    Icons.unfold_more,
                     color: Colors.white,
                   ),
-                  Text("Custom",
-                      style: theme.textTheme.caption
-                          .copyWith(color: Colors.white)),
-                ],
+                  tooltip: "Change Algorithm",
+                ),
+                TextButton(
+                  onPressed: () {
+                    model.onCustomBtnClick();
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.edit_road_sharp,
+                        size: 15,
+                        color: Colors.white,
+                      ),
+                      Text("Custom",
+                          style: theme.textTheme.caption
+                              .copyWith(color: Colors.white)),
+                    ],
+                  ),
+                ),
+              ],
+            ),*/
+                backgroundColor: Colors.transparent,
+                body: _VisualizerScreen(),
               ),
             ),
-          ],
-        ),
-        backgroundColor: Colors.white,
-        body: _VisualizerView(),
-      ),
+          ),
       viewModelBuilder: () => VisualizerViewModel(algorithmType),
+    );
+  }
+}
+
+class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
+  _VisualizerScreen({Key key}) : super(key: key, reactive: true);
+
+  @override
+  Widget build(BuildContext context, VisualizerViewModel model) {
+    var theme = Theme.of(context);
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              NeumorphicButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: textColor1,
+                  size: 18,
+                ),
+                btnColor: darkBtnColor2,
+              ),
+              Text(
+                model.getTitle(),
+                style: theme.textTheme.subtitle2.copyWith(
+                    color: Colors.white, fontSize: 15, fontFamily: 'Montserrat'),
+              ),
+              NeumorphicButton(
+                icon: Icon(
+                  Icons.menu,
+                  color: textColor1,
+                  size: 18,
+                ),
+                btnColor: darkBtnColor2,
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }
@@ -94,7 +149,11 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                       children: [
                         Text(
                           "Reset",
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(
                               letterSpacing: 1,
                               color: theme.accentColor,
                               fontWeight: FontWeight.bold),
@@ -111,7 +170,11 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                       children: [
                         Text(
                           'Speed',
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(
                               letterSpacing: 1,
                               color: theme.accentColor,
                               fontWeight: FontWeight.bold),
@@ -136,7 +199,11 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                       children: [
                         Text(
                           model.isSorting ? "Stop" : "Start",
-                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(
                               letterSpacing: 1,
                               color: Colors.white,
                               fontWeight: FontWeight.bold),
@@ -239,7 +306,9 @@ class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
         margin: EdgeInsets.only(right: 10),
         child: StreamBuilder<Object>(
             initialData: model.getNumbers(),
-            stream: model.getStreamController().stream,
+            stream: model
+                .getStreamController()
+                .stream,
             builder: (context, snapshot) {
               List<int> numbers = snapshot.data;
               int counter = 0;
@@ -254,7 +323,10 @@ class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
                           index: counter,
                           value: num,
                           colorScheme: model.colorScheme,
-                          width: MediaQuery.of(context).size.width /
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width /
                               model.getSampleSize()),
                     ),
                   );
