@@ -22,8 +22,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   List<int> _numbers = [];
   StreamController<List<int>> _streamController;
 
-  double _sampleSize = 80;
-  double maxNumber = 400;
+  double _sampleSize = 100;
+  double maxNumber = 500;
 
   bool isLoading = true;
   bool isSorting = false;

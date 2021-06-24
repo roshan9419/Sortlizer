@@ -28,47 +28,6 @@ class VisualizerView extends StatelessWidget {
                   tileMode: TileMode.clamp,
                   colors: [darkBackgroundStart, darkBackgroundFinish])),
           child: Scaffold(
-            /*appBar: AppBar(
-              title: Text(model.getTitle(),
-                  style: theme.textTheme.subtitle1.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1)),
-              centerTitle: true,
-              leading: IconButton(
-                  tooltip: "Back",
-                  onPressed: () => Navigator.pop(context),
-                  icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
-              actions: [
-                IconButton(
-                  onPressed: () => print('hll'),
-                  icon: Icon(
-                    Icons.unfold_more,
-                    color: Colors.white,
-                  ),
-                  tooltip: "Change Algorithm",
-                ),
-                TextButton(
-                  onPressed: () {
-                    model.onCustomBtnClick();
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.edit_road_sharp,
-                        size: 15,
-                        color: Colors.white,
-                      ),
-                      Text("Custom",
-                          style: theme.textTheme.caption
-                              .copyWith(color: Colors.white)),
-                    ],
-                  ),
-                ),
-              ],
-            ),*/
             backgroundColor: Colors.transparent,
             body: _VisualizerScreen(),
           ),
@@ -112,8 +71,7 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                     color: lightGrayColor,
                     size: 18,
                   ),
-                  btnColor: darkBtnColor2,
-                  onTap: model.onCustomBtnClick)
+                  btnColor: darkBtnColor2)
             ],
           ),
         ),
@@ -132,12 +90,14 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
           ],
         ),
         Spacer(),
-        _buildBottomCommandCenter(context)
+        !model.isLoading ? _VisualizerContainerWidget() : SizedBox.shrink(),
+        _buildBottomCommandCenter(context, model),
       ],
     );
   }
 
-  Widget _buildBottomCommandCenter(BuildContext context) {
+  Widget _buildBottomCommandCenter(
+      BuildContext context, VisualizerViewModel model) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       decoration: BoxDecoration(
@@ -152,13 +112,13 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           NeumorphicButton(
-            icon: Icon(
-              Icons.edit_road_rounded,
-              color: lightGrayColor,
-            ),
-            btnSize: 46,
-            labelText: "Custom",
-          ),
+              icon: Icon(
+                Icons.edit_road_rounded,
+                color: lightGrayColor,
+              ),
+              btnSize: 46,
+              labelText: "Custom",
+              onTap: model.onCustomBtnClick),
           NeumorphicButton(
             icon: Icon(
               Icons.info_outline,
@@ -174,17 +134,62 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
             ),
             btnSize: 46,
             labelText: "Reset",
+            onTap: model.reset,
           ),
           NeumorphicButton(
-            icon: Icon(
-              Icons.play_arrow_rounded,
-              color: lightGrayColor,
-            ),
+            icon: model.isSorting
+                ? Icon(
+                    Icons.stop,
+                    color: lightGrayColor,
+                  )
+                : Icon(
+                    Icons.play_arrow_rounded,
+                    color: lightGrayColor,
+                  ),
             btnSize: 46,
-            labelText: "Start",
-            btnColor: blueThemeColor,
+            labelText: model.isSorting ? "Stop" : "Start",
+            btnColor: model.isSorting ? Colors.red : blueThemeColor,
+            onTap: model.onActionBtn,
           )
         ],
+      ),
+    );
+  }
+}
+
+class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
+  @override
+  Widget build(BuildContext context, VisualizerViewModel model) {
+    return SafeArea(
+      child: Container(
+        margin: EdgeInsets.only(right: 10),
+        child: StreamBuilder<Object>(
+            initialData: model.getNumbers(),
+            stream: model.getStreamController().stream,
+            builder: (context, snapshot) {
+              List<int> numbers = snapshot.data;
+              int counter = 0;
+
+              return Row(
+                children: numbers.map((int num) {
+                  counter++;
+                  return Container(
+                    height: model.maxNumber,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 2),
+                      child: CustomPaint(
+                        painter: BarPainter(
+                            index: counter,
+                            value: num,
+                            colorScheme: model.colorScheme,
+                            width: MediaQuery.of(context).size.width /
+                                model.getSampleSize()),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              );
+            }),
       ),
     );
   }
@@ -376,6 +381,7 @@ class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
                       painter: BarPainter(
                           index: counter,
                           value: num,
+                          maxValue: 200,
                           colorScheme: model.colorScheme,
                           width: MediaQuery.of(context).size.width /
                               model.getSampleSize()),
@@ -392,15 +398,19 @@ class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
 class BarPainter extends CustomPainter {
   final double width;
   final int value;
+  final double maxValue;
   final int index;
   final List<Color> colorScheme;
 
-  BarPainter({this.width, this.value, this.index, this.colorScheme});
+  BarPainter(
+      {this.width, this.value, this.maxValue, this.index, this.colorScheme});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
-    if (this.value < 500 * .10) {
+    paint.color = blueThemeColor;
+
+    /*if (this.value < 500 * .10) {
       paint.color = colorScheme[0];
     } else if (this.value < 500 * .20) {
       paint.color = colorScheme[1];
@@ -420,13 +430,16 @@ class BarPainter extends CustomPainter {
       paint.color = colorScheme[8];
     } else {
       paint.color = colorScheme[9];
-    }
+    }*/
 
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;
 
-    canvas.drawLine(Offset(index * this.width, 0),
-        Offset(index * this.width, this.value.ceilToDouble()), paint);
+    var pt1 = Offset(index * this.width, 500 - this.value.ceilToDouble());
+    // var pt2 = Offset(index * this.width, this.value.ceilToDouble());
+    var pt2 = Offset(index * this.width, 500);
+
+    canvas.drawLine(pt1, pt2, paint); // TODO - NEED TO WORK
   }
 
   @override
