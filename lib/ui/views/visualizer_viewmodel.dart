@@ -15,6 +15,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   final _snackBarService = locator<SnackbarService>();
   final _bottomSheetService = locator<BottomSheetService>();
+  final _navigationService = locator<NavigationService>();
 
   AlgorithmType _algorithmType;
 
@@ -263,6 +264,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
-  String _exampleCode =
-      "class MyHomePage extends StatefulWidget { MyHomePage({Key key, this.title}) : super(key: key); final String title; @override _MyHomePageState createState() => _MyHomePageState();}";
+  onBackBtnPressed() {
+    _navigationService.back();
+  }
 }

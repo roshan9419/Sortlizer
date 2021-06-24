@@ -10,4 +10,5 @@ const shadowColor1 = Color(0xff535252);
 
 const blueThemeColor = Color(0xff0A89D6);
 
-const textColor1 = Color(0xffB3B3B3);
+const mediumGrayColor = Color(0xff868686);
+const lightGrayColor = Color(0xffB3B3B3);

@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         accentColor: Color(0xffB3B3B3),
         primaryColor: blueThemeColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: 'Montserrat'
       ),
       onGenerateRoute: auto_router.Router().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,

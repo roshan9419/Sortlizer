@@ -52,7 +52,7 @@ class HomeView extends StatelessWidget {
                 child: NeumorphicButton(
                   onTap: model.moveToVisualizerView,
                   icon: Icon(Icons.play_arrow_rounded, color: Colors.white, size: 40,),
-                  btnSize: 30,
+                  btnSize: 60,
                 ),
               ),
               SizedBox(height: 20,),

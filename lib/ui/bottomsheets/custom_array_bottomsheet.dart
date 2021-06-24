@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sorting_visualization/ui/ui_theme.dart';
+import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class CustomArrayBottomSheet extends StatefulWidget {
@@ -17,12 +19,17 @@ class CustomArrayBottomSheet extends StatefulWidget {
 class _CustomArrayBottomSheetState extends State<CustomArrayBottomSheet> {
   var _controller = new TextEditingController();
 
+  onBtnPressed() {
+    widget.onDialogTap(SheetResponse(
+        confirmed: true, responseData: _controller.text));
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: darkBackgroundFinish,
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       ),
@@ -31,18 +38,8 @@ class _CustomArrayBottomSheetState extends State<CustomArrayBottomSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          FloatingActionButton(
-            onPressed: () {
-              widget.onDialogTap(SheetResponse(
-                  confirmed: true, responseData: _controller.text));
-            },
-            heroTag: 'submit',
-            child: Icon(
-              Icons.check,
-              size: 35,
-            ),
-            backgroundColor: theme.primaryColor,
-          ),
+          NeumorphicButton(icon: Icon(Icons.check, size: 35, color: Colors.white,),
+            onTap: onBtnPressed, btnSize: 25,),
           SizedBox(height: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

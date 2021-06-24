@@ -19,17 +19,16 @@ class VisualizerView extends StatelessWidget {
     var theme = Theme.of(context);
 
     return ViewModelBuilder<VisualizerViewModel>.reactive(
-      builder: (context, model, child) =>
-          SafeArea(
-            child: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      tileMode: TileMode.clamp,
-                      colors: [darkBackgroundStart, darkBackgroundFinish])),
-              child: Scaffold(
-                /*appBar: AppBar(
+      builder: (context, model, child) => SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  tileMode: TileMode.clamp,
+                  colors: [darkBackgroundStart, darkBackgroundFinish])),
+          child: Scaffold(
+            /*appBar: AppBar(
               title: Text(model.getTitle(),
                   style: theme.textTheme.subtitle1.copyWith(
                       color: Colors.white,
@@ -70,11 +69,11 @@ class VisualizerView extends StatelessWidget {
                 ),
               ],
             ),*/
-                backgroundColor: Colors.transparent,
-                body: _VisualizerScreen(),
-              ),
-            ),
+            backgroundColor: Colors.transparent,
+            body: _VisualizerScreen(),
           ),
+        ),
+      ),
       viewModelBuilder: () => VisualizerViewModel(algorithmType),
     );
   }
@@ -96,28 +95,97 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
               NeumorphicButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: textColor1,
+                  color: lightGrayColor,
                   size: 18,
                 ),
                 btnColor: darkBtnColor2,
+                onTap: model.onBackBtnPressed,
               ),
               Text(
                 model.getTitle(),
-                style: theme.textTheme.subtitle2.copyWith(
-                    color: Colors.white, fontSize: 15, fontFamily: 'Montserrat'),
+                style: theme.textTheme.subtitle2
+                    .copyWith(color: Colors.white, fontSize: 15),
               ),
               NeumorphicButton(
-                icon: Icon(
-                  Icons.menu,
-                  color: textColor1,
-                  size: 18,
-                ),
-                btnColor: darkBtnColor2,
-              )
+                  icon: Icon(
+                    Icons.menu,
+                    color: lightGrayColor,
+                    size: 18,
+                  ),
+                  btnColor: darkBtnColor2,
+                  onTap: model.onCustomBtnClick)
             ],
           ),
-        )
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Time',
+                style: theme.textTheme.overline
+                    .copyWith(color: mediumGrayColor, letterSpacing: 0.5)),
+            Text(
+              '2560ms',
+              style: theme.textTheme.caption
+                  .copyWith(color: lightGrayColor, letterSpacing: 0.5),
+            )
+          ],
+        ),
+        Spacer(),
+        _buildBottomCommandCenter(context)
       ],
+    );
+  }
+
+  Widget _buildBottomCommandCenter(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      decoration: BoxDecoration(
+          color: darkBackgroundFinish,
+          boxShadow: [
+            BoxShadow(
+                color: Color(0xf727272), blurRadius: 15, offset: Offset(0, -5))
+          ],
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          NeumorphicButton(
+            icon: Icon(
+              Icons.edit_road_rounded,
+              color: lightGrayColor,
+            ),
+            btnSize: 46,
+            labelText: "Custom",
+          ),
+          NeumorphicButton(
+            icon: Icon(
+              Icons.info_outline,
+              color: lightGrayColor,
+            ),
+            btnSize: 46,
+            labelText: "Info",
+          ),
+          NeumorphicButton(
+            icon: Icon(
+              Icons.refresh,
+              color: lightGrayColor,
+            ),
+            btnSize: 46,
+            labelText: "Reset",
+          ),
+          NeumorphicButton(
+            icon: Icon(
+              Icons.play_arrow_rounded,
+              color: lightGrayColor,
+            ),
+            btnSize: 46,
+            labelText: "Start",
+            btnColor: blueThemeColor,
+          )
+        ],
+      ),
     );
   }
 }
@@ -149,11 +217,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                       children: [
                         Text(
                           "Reset",
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .subtitle1
-                              .copyWith(
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
                               letterSpacing: 1,
                               color: theme.accentColor,
                               fontWeight: FontWeight.bold),
@@ -170,11 +234,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                       children: [
                         Text(
                           'Speed',
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .subtitle1
-                              .copyWith(
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
                               letterSpacing: 1,
                               color: theme.accentColor,
                               fontWeight: FontWeight.bold),
@@ -199,11 +259,7 @@ class _VisualizerView extends ViewModelWidget<VisualizerViewModel> {
                       children: [
                         Text(
                           model.isSorting ? "Stop" : "Start",
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .subtitle1
-                              .copyWith(
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
                               letterSpacing: 1,
                               color: Colors.white,
                               fontWeight: FontWeight.bold),
@@ -306,9 +362,7 @@ class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
         margin: EdgeInsets.only(right: 10),
         child: StreamBuilder<Object>(
             initialData: model.getNumbers(),
-            stream: model
-                .getStreamController()
-                .stream,
+            stream: model.getStreamController().stream,
             builder: (context, snapshot) {
               List<int> numbers = snapshot.data;
               int counter = 0;
@@ -323,10 +377,7 @@ class VisualizerContainer extends ViewModelWidget<VisualizerViewModel> {
                           index: counter,
                           value: num,
                           colorScheme: model.colorScheme,
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width /
+                          width: MediaQuery.of(context).size.width /
                               model.getSampleSize()),
                     ),
                   );
@@ -372,7 +423,7 @@ class BarPainter extends CustomPainter {
     }
 
     paint.strokeWidth = width;
-    paint.strokeCap = StrokeCap.square;
+    paint.strokeCap = StrokeCap.round;
 
     canvas.drawLine(Offset(index * this.width, 0),
         Offset(index * this.width, this.value.ceilToDouble()), paint);
