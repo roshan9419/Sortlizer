@@ -8,6 +8,7 @@ class NeumorphicButton extends StatefulWidget {
   final Function onTap;
   final double btnSize;
   final String labelText;
+  final bool isPressed;
 
   const NeumorphicButton(
       {Key key,
@@ -15,7 +16,8 @@ class NeumorphicButton extends StatefulWidget {
       this.btnColor,
       this.onTap,
       this.btnSize,
-      this.labelText})
+      this.labelText,
+      this.isPressed = false})
       : super(key: key);
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sorting_visualization/setup_bottom_sheet.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/home_view.dart';
@@ -12,6 +13,7 @@ Future main() async {
   setupLocator();
   setupBottomSheetUI();
   runApp(MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
 
 class MyApp extends StatelessWidget {

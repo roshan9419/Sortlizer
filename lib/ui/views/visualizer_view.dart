@@ -159,7 +159,7 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                       ),
                 btnSize: 46,
                 labelText: model.isSorting ? "Stop" : "Start",
-                btnColor: model.isSorting ? Colors.red : blueThemeColor,
+                btnColor: model.isSorting ? Colors.red : Theme.of(context).primaryColor,
                 onTap: model.onActionBtn,
               )
             ],

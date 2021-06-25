@@ -15,77 +15,125 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    var style =
-        SystemUiOverlayStyle(systemNavigationBarColor: darkBackgroundFinish);
-    SystemChrome.setSystemUIOverlayStyle(style);
+    // var style =
+    //     SystemUiOverlayStyle(systemNavigationBarColor: darkBackgroundFinish);
+    // SystemChrome.setSystemUIOverlayStyle(style);
 
     return ViewModelBuilder<HomeViewModel>.reactive(
-      builder: (context, model, child) => Scaffold(
-        backgroundColor: theme.primaryColor,
-        body: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  padding: EdgeInsets.only(top: 40, left: 20, bottom: 0),
-                  child: Text(
-                    "Sorting\nVisualizer",
-                    style: theme.textTheme.headline4.copyWith(
-                        color: theme.primaryColor,
-                        fontWeight: FontWeight.bold,
-                        shadows: [Shadow(
-                          color: Color(0xdadbdada),
-                          offset: Offset(2, 2),
-                          blurRadius: 10
-                        )],
-                        fontSize: 48.0),
-                  )),
-              Transform.translate(
-                offset: Offset(0, -10),
-                child: SvgPicture.asset(
-                  'assets/images/buildings.svg',
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Center(
-                child: NeumorphicButton(
-                  onTap: model.moveToVisualizerView,
-                  icon: Icon(Icons.play_arrow_rounded, color: Colors.white, size: 40,),
-                  btnSize: 60,
-                ),
-              ),
-              SizedBox(height: 20,),
-              Text(
-                "Visualize different Sorting Algorithms",
-                style: theme.textTheme.subtitle1.copyWith(
-                    color: Colors.white,
-                    fontStyle: FontStyle.italic,
-                    letterSpacing: 0.5),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: 200,
-                child: OutlineButton(
-                  onPressed: () => print("Button CLICKED"),
-                  child: TyperAnimatedTextKit(
-                    text: model.getAlgorithmsList(),
-                    repeatForever: true,
-                    isRepeatingAnimation: true,
-                    textStyle: theme.textTheme.subtitle1
-                        .copyWith(color: Colors.white, letterSpacing: 1),
-                    speed: Duration(milliseconds: 50),
+      builder: (context, model, child) => Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                tileMode: TileMode.clamp,
+                colors: [darkBackgroundStart, darkBackgroundFinish])),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            child: Column(
+              children: [
+                SizedBox(height: 10),
+                RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        text: 'Sorting\n',
+                        style: theme.textTheme.headline5
+                            .copyWith(color: lightGrayColor, letterSpacing: 1),
+                        children: [
+                          TextSpan(
+                            text: 'Visualizer',
+                            style: theme.textTheme.headline4.copyWith(
+                                color: Colors.white, letterSpacing: 2),
+                          )
+                        ])),
+                Spacer(),
+                GetProgrammingQuote(),
+                Spacer(),
+                Center(
+                  child: NeumorphicButton(
+                    onTap: model.moveToVisualizerView,
+                    icon: Icon(
+                      Icons.play_arrow_rounded,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    btnSize: 70,
+                    btnColor: theme.primaryColor,
+                    isPressed: true,
                   ),
-                  borderSide: BorderSide(color: Colors.white, width: 1),
                 ),
-              ),
-            ],
+                SizedBox(height: 10),
+                Text(
+                  'Tap to Start',
+                  style:
+                      theme.textTheme.subtitle2.copyWith(color: Colors.white),
+                ),
+                Spacer(),
+                Text(
+                  "Visualize different Sorting Algorithms",
+                  style: theme.textTheme.subtitle1.copyWith(
+                      color: Colors.white,
+                      fontStyle: FontStyle.italic,
+                      letterSpacing: 0.5),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: 200,
+                  child: OutlineButton(
+                    onPressed: () => print("Button CLICKED"),
+                    child: TyperAnimatedTextKit(
+                      text: model.getAlgorithmsList(),
+                      repeatForever: true,
+                      isRepeatingAnimation: true,
+                      textStyle: theme.textTheme.subtitle1
+                          .copyWith(color: Colors.white, letterSpacing: 1),
+                      speed: Duration(milliseconds: 50),
+                    ),
+                    borderSide: BorderSide(color: Colors.white, width: 1),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),
       viewModelBuilder: () => HomeViewModel(),
     );
+  }
+}
+
+class GetProgrammingQuote extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return RichText(
+        textAlign: TextAlign.start,
+        text: TextSpan(
+            text: "// life motto\n",
+            style: theme.textTheme.headline6.copyWith(color: mediumGrayColor),
+            children: [
+              _getTextSpan(context, 'if', theme.primaryColor),
+              _getTextSpan(context, ' (', Colors.white),
+              _getTextSpan(context, 'sad()', theme.primaryColor),
+              _getTextSpan(context, ' == ', Colors.deepOrange),
+              _getTextSpan(context, 'true', Colors.white),
+              _getTextSpan(context, ') {\n', Colors.white),
+              _getTextSpan(context, '\t\t\t\tsad', theme.primaryColor),
+              _getTextSpan(context, '.stop();\n', Colors.white),
+              _getTextSpan(context, '\t\t\t\tbeAwesome();\n', Colors.white),
+              _getTextSpan(context, '}', Colors.white),
+            ]));
+  }
+
+  TextSpan _getTextSpan(BuildContext context, String text, Color color) {
+    return TextSpan(
+        text: text,
+        style: Theme.of(context)
+            .textTheme
+            .headline6
+            .copyWith(color: color));
   }
 }

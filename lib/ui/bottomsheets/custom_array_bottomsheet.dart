@@ -39,7 +39,7 @@ class _CustomArrayBottomSheetState extends State<CustomArrayBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           NeumorphicButton(icon: Icon(Icons.check, size: 35, color: Colors.white,),
-            onTap: onBtnPressed, btnSize: 50, btnColor: blueThemeColor,),
+            onTap: onBtnPressed, btnSize: 50, btnColor: theme.primaryColor,),
           SizedBox(height: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
