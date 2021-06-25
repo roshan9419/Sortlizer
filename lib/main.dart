@@ -13,6 +13,8 @@ Future main() async {
   setupLocator();
   setupBottomSheetUI();
   runApp(MyApp());
+  var style = SystemUiOverlayStyle(systemNavigationBarColor: darkBackgroundFinish);
+  SystemChrome.setSystemUIOverlayStyle(style);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
 

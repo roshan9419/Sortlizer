@@ -34,13 +34,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   var currentDrnIdx = 0;
   List<Duration> speeds = [
-    Duration(microseconds: 5500),
-    Duration(microseconds: 2000),
-    Duration(microseconds: 1500),
-    Duration(microseconds: 1000),
-    Duration(microseconds: 500),
-    Duration(microseconds: 100),
-    Duration(microseconds: 50)
+    Duration(milliseconds: 100),
+    Duration(milliseconds: 70),
+    Duration(milliseconds: 50),
+    Duration(milliseconds: 30),
+    Duration(milliseconds: 10)
   ];
 
   @override
@@ -57,6 +55,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     reset();
     isLoading = false;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _streamController.close();
+    super.dispose();
   }
 
   StreamController getStreamController() {
@@ -79,7 +83,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   double sortingSpeed = 0.0;
 
   updateSpeed(double value) {
-    currentDrnIdx == speeds.length - 1 ? currentDrnIdx = 0 : currentDrnIdx++;
+    //sortingSpeed-> 0.0, 0.25, 0.5, 0.75, 1.0
+    if (sortingSpeed == 0.0) currentDrnIdx = 0;
+    if (sortingSpeed == 0.25) currentDrnIdx = 1;
+    if (sortingSpeed == 0.5) currentDrnIdx = 2;
+    if (sortingSpeed == 0.75) currentDrnIdx = 3;
+    if (sortingSpeed == 1.0) currentDrnIdx = 4;
     sortingSpeed = value;
     notifyListeners();
   }
@@ -91,18 +100,21 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
     if (isSorting) {
       isSorting = false;
+      notifyListeners();
     } else {
       isSorting = true;
       notifyListeners();
-      if (_algorithmType == AlgorithmType.BUBBLE_SORT)
+      if (_algorithmType == AlgorithmType.BUBBLE_SORT) {
         await _bubbleSort();
+        print('Algo DONE');
+      }
       else if (_algorithmType == AlgorithmType.MERGE_SORT)
         await _mergeSort(0, _sampleSize.toInt() - 1);
 
       isSorting = false;
       checkingValue = -1;
-      _snackBarService.showSnackbar(message: "Completed");
       notifyListeners();
+      _snackBarService.showSnackbar(message: "Completed in ms");
     }
   }
 
@@ -123,14 +135,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     return _sampleSize;
   }
 
-  @override
-  void dispose() {
-    _streamController.close();
-    super.dispose();
-  }
-
   _bubbleSort() async {
-    for (int i = 0; i < _numbers.length; ++i) {
+    mainFlow: for (int i = 0; i < _numbers.length; ++i) {
       for (int j = 0; j < _numbers.length - i - 1; ++j) {
         if (_numbers[j] > _numbers[j + 1]) {
           int temp = _numbers[j];
@@ -138,11 +144,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           _numbers[j + 1] = temp;
         }
 
+        if (!isSorting) break mainFlow;
         await Future.delayed(_getDuration(), () {});
 
         checkingValue = _numbers[j];
         _streamController.add(_numbers);
-        if (!isSorting) break;
       }
     }
   }

@@ -15,11 +15,6 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-
-    // var style =
-    //     SystemUiOverlayStyle(systemNavigationBarColor: darkBackgroundFinish);
-    // SystemChrome.setSystemUIOverlayStyle(style);
-
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (context, model, child) => Container(
         decoration: BoxDecoration(

@@ -47,25 +47,65 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
                     .copyWith(color: mediumGrayColor)),
           if (widget.labelText != null && widget.labelText.isNotEmpty)
             SizedBox(height: 15),
-          Container(
-            width: btnSize,
-            height: btnSize,
-            padding: EdgeInsets.only(bottom: 2),
-            decoration: BoxDecoration(
-                color: widget.btnColor ?? darkBtnColor1,
-                borderRadius: BorderRadius.circular(btnSize / 2),
-                boxShadow: [
-                  BoxShadow(
-                      color: shadowColor1,
-                      offset: Offset(4, 4),
-                      blurRadius: 12),
-                  BoxShadow(
-                      color: Color(0xff4d4e57),
-                      offset: Offset(-4, -4),
-                      blurRadius: 12),
-                ]),
-            child: widget.icon,
-          ),
+          !widget.isPressed
+              ? Container(
+                  width: btnSize,
+                  height: btnSize,
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                      color: widget.btnColor ?? darkBtnColor1,
+                      borderRadius: BorderRadius.circular(btnSize / 2),
+                      boxShadow: [
+                        BoxShadow(
+                            color: shadowColor1,
+                            offset: Offset(4, 4),
+                            blurRadius: 12),
+                        BoxShadow(
+                            color: Color(0xff4d4e57),
+                            offset: Offset(-4, -4),
+                            blurRadius: 12),
+                      ]),
+                  child: widget.icon,
+                )
+              : Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: btnSize,
+                      height: btnSize,
+                      decoration: BoxDecoration(
+                          color: widget.btnColor ?? darkBtnColor1,
+                          borderRadius: BorderRadius.circular(btnSize / 2),
+                          boxShadow: [
+                            BoxShadow(
+                                color: shadowColor1,
+                                offset: Offset(4, 4),
+                                blurRadius: 12),
+                            BoxShadow(
+                                color: Color(0xff4d4e57),
+                                offset: Offset(-4, -4),
+                                blurRadius: 12),
+                          ]),
+                    ),
+                    Container(
+                      width: btnSize - (15 * btnSize / 100),
+                      height: btnSize - (15 * btnSize / 100),
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              tileMode: TileMode.clamp,
+                              colors: [
+                                darkGrayColor.withOpacity(0.4),
+                                widget.btnColor.withOpacity(0) ??
+                                    darkBtnColor1.withOpacity(0)
+                              ]),
+                          borderRadius: BorderRadius.circular(btnSize / 2)),
+                      child: widget.icon,
+                    ),
+                  ],
+                ),
         ],
       ),
     );

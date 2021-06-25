@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
-import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:stacked/stacked.dart';
 
@@ -83,7 +82,7 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                   style: theme.textTheme.overline
                       .copyWith(color: mediumGrayColor, letterSpacing: 0.5)),
               Text(
-                '2560ms',
+                '0ms',
                 style: theme.textTheme.caption
                     .copyWith(color: lightGrayColor, letterSpacing: 0.5),
               )
@@ -164,11 +163,11 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                 icon: model.isSorting
                     ? Icon(
                         Icons.stop,
-                        color: lightGrayColor,
+                        color: Colors.white,
                       )
                     : Icon(
                         Icons.play_arrow_rounded,
-                        color: lightGrayColor,
+                        color: Colors.white,
                       ),
                 btnSize: 46,
                 labelText: model.isSorting ? "Stop" : "Start",
@@ -176,6 +175,7 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                     ? Colors.red
                     : Theme.of(context).primaryColor,
                 onTap: model.onActionBtn,
+                isPressed: true,
               )
             ],
           ),
@@ -251,38 +251,36 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
 class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
   @override
   Widget build(BuildContext context, VisualizerViewModel model) {
-    return SafeArea(
-      child: Container(
-        margin: EdgeInsets.only(right: 10),
-        child: StreamBuilder<Object>(
-            initialData: model.getNumbers(),
-            stream: model.getStreamController().stream,
-            builder: (context, snapshot) {
-              List<int> numbers = snapshot.data;
-              int counter = 0;
+    return Container(
+      margin: EdgeInsets.only(right: 10),
+      child: StreamBuilder<Object>(
+          initialData: model.getNumbers(),
+          stream: model.getStreamController().stream,
+          builder: (context, snapshot) {
+            List<int> numbers = snapshot.data;
+            int counter = 0;
 
-              return Row(
-                children: numbers.map((int num) {
-                  counter++;
-                  return Container(
-                    height: model.maxNumber,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 2),
-                      child: CustomPaint(
-                        painter: BarPainter(
-                            index: counter,
-                            value: num,
-                            checkingValue: model.checkingValue,
-                            colorScheme: model.colorScheme,
-                            width: MediaQuery.of(context).size.width /
-                                model.getSampleSize()),
-                      ),
+            return Row(
+              children: numbers.map((int num) {
+                counter++;
+                return Container(
+                  height: model.maxNumber,
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 2),
+                    child: CustomPaint(
+                      painter: BarPainter(
+                          index: counter,
+                          value: num,
+                          checkingValue: model.checkingValue,
+                          colorScheme: model.colorScheme,
+                          width: MediaQuery.of(context).size.width /
+                              model.getSampleSize()),
                     ),
-                  );
-                }).toList(),
-              );
-            }),
-      ),
+                  ),
+                );
+              }).toList(),
+            );
+          }),
     );
   }
 }
