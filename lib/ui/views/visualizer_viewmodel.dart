@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/bottomSheetType.dart';
@@ -28,6 +29,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   bool isLoading = true;
   bool isSorting = false;
+  bool isContentExpanded = false;
 
   var currentColorScheme = 0;
   List<Color> colorScheme = [];
@@ -124,6 +126,16 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   changeSortingTheme() {
     colorScheme = SortingColorScheme().getRandomColorScheme();
     _streamController.add(_numbers);
+  }
+
+  changeSortingAlgorithm() {
+    _snackBarService.showSnackbar(message: 'Need to be done');
+  }
+
+  expandContentSheet() {
+    isContentExpanded = !isContentExpanded;
+    _snackBarService.showSnackbar(message: 'Need to be done: $isContentExpanded');
+    notifyListeners();
   }
 
   List<int> getNumbers() {

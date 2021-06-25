@@ -71,7 +71,9 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                       color: lightGrayColor,
                       size: 18,
                     ),
-                    btnColor: darkBtnColor2)
+                    btnColor: darkBtnColor2,
+                  onTap: model.changeSortingAlgorithm,
+                )
               ],
             ),
           ),
@@ -92,7 +94,7 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
           Spacer(),
           !model.isLoading ? _VisualizerContainerWidget() : SizedBox.shrink(),
           SizedBox(
-            height: 100,
+            height: 150,
           )
         ],
       ),
@@ -109,7 +111,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
   Widget _buildBottomCommandCenter(
       BuildContext context, VisualizerViewModel model) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.25,
+      initialChildSize: model.isContentExpanded ? 0.25 : 0.9,
       minChildSize: 0.25,
       expand: true,
       builder: (BuildContext context, ScrollController scrollController) {
@@ -201,6 +203,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                       ),
                       btnSize: 46,
                       labelText: "Info",
+                      onTap: model.expandContentSheet,
                     ),
                     NeumorphicButton(
                       icon: Icon(
