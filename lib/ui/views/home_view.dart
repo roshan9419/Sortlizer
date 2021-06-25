@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/home_viewmodel.dart';
+import 'package:sorting_visualization/ui/widgets/neumorphic_rect_btn.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:stacked/stacked.dart';
 
@@ -48,7 +49,7 @@ class HomeView extends StatelessWidget {
                         ])),
                 Spacer(),
                 GetProgrammingQuote(),
-                Spacer(),
+                SizedBox(height: 30),
                 Center(
                   child: NeumorphicButton(
                     onTap: model.moveToVisualizerView,
@@ -71,27 +72,22 @@ class HomeView extends StatelessWidget {
                 Spacer(),
                 Text(
                   "Visualize different Sorting Algorithms",
-                  style: theme.textTheme.subtitle1.copyWith(
-                      color: Colors.white,
-                      fontStyle: FontStyle.italic,
-                      letterSpacing: 0.5),
+                  style: theme.textTheme.subtitle2
+                      .copyWith(color: darkGrayColor, letterSpacing: 0.5),
                 ),
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  width: 200,
-                  child: OutlineButton(
-                    onPressed: () => print("Button CLICKED"),
-                    child: TyperAnimatedTextKit(
-                      text: model.getAlgorithmsList(),
-                      repeatForever: true,
-                      isRepeatingAnimation: true,
-                      textStyle: theme.textTheme.subtitle1
-                          .copyWith(color: Colors.white, letterSpacing: 1),
-                      speed: Duration(milliseconds: 50),
-                    ),
-                    borderSide: BorderSide(color: Colors.white, width: 1),
+                NeumorphicRectButton(
+                  btnWidth: 300,
+                  child: TyperAnimatedTextKit(
+                    text: model.getAlgorithmsList(),
+                    textAlign: TextAlign.center,
+                    repeatForever: true,
+                    isRepeatingAnimation: true,
+                    textStyle: theme.textTheme.subtitle1
+                        .copyWith(color: Colors.white, letterSpacing: 1),
+                    speed: Duration(milliseconds: 50),
                   ),
                 ),
                 SizedBox(height: 20),
@@ -113,7 +109,7 @@ class GetProgrammingQuote extends StatelessWidget {
         textAlign: TextAlign.start,
         text: TextSpan(
             text: "// life motto\n",
-            style: theme.textTheme.headline6.copyWith(color: mediumGrayColor),
+            style: theme.textTheme.headline6.copyWith(color: darkGrayColor),
             children: [
               _getTextSpan(context, 'if', theme.primaryColor),
               _getTextSpan(context, ' (', Colors.white),
@@ -131,9 +127,6 @@ class GetProgrammingQuote extends StatelessWidget {
   TextSpan _getTextSpan(BuildContext context, String text, Color color) {
     return TextSpan(
         text: text,
-        style: Theme.of(context)
-            .textTheme
-            .headline6
-            .copyWith(color: color));
+        style: Theme.of(context).textTheme.headline6.copyWith(color: color, fontSize: 25));
   }
 }
