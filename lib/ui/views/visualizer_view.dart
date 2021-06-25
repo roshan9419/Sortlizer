@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
+import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:stacked/stacked.dart';
 
@@ -15,8 +16,6 @@ class VisualizerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-
     return ViewModelBuilder<VisualizerViewModel>.reactive(
       builder: (context, model, child) => Container(
         decoration: BoxDecoration(
@@ -27,7 +26,9 @@ class VisualizerView extends StatelessWidget {
                 colors: [darkBackgroundStart, darkBackgroundFinish])),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: _VisualizerScreen(),
+          body: Stack(
+            children: [_VisualizerScreen(), BuildBottomDraggableSheet()],
+          ),
         ),
       ),
       viewModelBuilder: () => VisualizerViewModel(algorithmType),
@@ -90,160 +91,221 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
           ),
           Spacer(),
           !model.isLoading ? _VisualizerContainerWidget() : SizedBox.shrink(),
-          _buildBottomCommandCenter(context, model),
+          SizedBox(
+            height: 100,
+          )
         ],
       ),
     );
+  }
+}
+
+class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
+  @override
+  Widget build(BuildContext context, VisualizerViewModel model) {
+    return _buildBottomCommandCenter(context, model);
   }
 
   Widget _buildBottomCommandCenter(
       BuildContext context, VisualizerViewModel model) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      decoration: BoxDecoration(
-          color: darkBackgroundFinish,
-          boxShadow: [
-            BoxShadow(
-                color: Color(0xf727272), blurRadius: 15, offset: Offset(0, -5))
-          ],
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text('1x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),),
-              Text('2x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),),
-              Text('3x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),),
-              Text('4x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),),
-              Text('5x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),)
-            ]),
-          ),
-          Container(
-            height: 30,
-            child: Slider(
-                value: model.sortingSpeed,
-                divisions: 4,
-                onChanged: (val) {
-                  print('Value Changed: $val');
-                  model.updateSpeed(val);
-                }),
-          ),
-          SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              NeumorphicButton(
-                  icon: Icon(
-                    Icons.edit_road_rounded,
-                    color: lightGrayColor,
-                  ),
-                  btnSize: 46,
-                  labelText: "Custom",
-                  onTap: model.onCustomBtnClick),
-              NeumorphicButton(
-                icon: Icon(
-                  Icons.info_outline,
-                  color: lightGrayColor,
+    return DraggableScrollableSheet(
+      initialChildSize: 0.25,
+      minChildSize: 0.25,
+      expand: true,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Container(
+          decoration: BoxDecoration(
+              color: darkBackgroundFinish,
+              boxShadow: [
+                BoxShadow(
+                    color: Color(0xf727272),
+                    blurRadius: 15,
+                    offset: Offset(0, -5))
+              ],
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            physics: BouncingScrollPhysics(),
+            controller: scrollController,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '1x',
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline
+                              .copyWith(color: lightGrayColor),
+                        ),
+                        Text(
+                          '2x',
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline
+                              .copyWith(color: lightGrayColor),
+                        ),
+                        Text(
+                          '3x',
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline
+                              .copyWith(color: lightGrayColor),
+                        ),
+                        Text(
+                          '4x',
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline
+                              .copyWith(color: lightGrayColor),
+                        ),
+                        Text(
+                          '5x',
+                          style: Theme.of(context)
+                              .textTheme
+                              .overline
+                              .copyWith(color: lightGrayColor),
+                        )
+                      ]),
                 ),
-                btnSize: 46,
-                labelText: "Info",
-              ),
-              NeumorphicButton(
-                icon: Icon(
-                  Icons.refresh,
-                  color: lightGrayColor,
+                Container(
+                  height: 30,
+                  child: Slider(
+                      value: model.sortingSpeed,
+                      divisions: 4,
+                      onChanged: (val) {
+                        print('Value Changed: $val');
+                        model.updateSpeed(val);
+                      }),
                 ),
-                btnSize: 46,
-                labelText: "Reset",
-                onTap: model.reset,
-              ),
-              NeumorphicButton(
-                icon: model.isSorting
-                    ? Icon(
-                        Icons.stop,
-                        color: Colors.white,
-                      )
-                    : Icon(
-                        Icons.play_arrow_rounded,
-                        color: Colors.white,
+                SizedBox(height: 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    NeumorphicButton(
+                        icon: Icon(
+                          Icons.edit_road_rounded,
+                          color: lightGrayColor,
+                        ),
+                        btnSize: 46,
+                        labelText: "Custom",
+                        onTap: model.onCustomBtnClick),
+                    NeumorphicButton(
+                      icon: Icon(
+                        Icons.info_outline,
+                        color: lightGrayColor,
                       ),
-                btnSize: 46,
-                labelText: model.isSorting ? "Stop" : "Start",
-                btnColor: model.isSorting
-                    ? Colors.red
-                    : Theme.of(context).primaryColor,
-                onTap: model.onActionBtn,
-                isPressed: true,
-              )
-            ],
+                      btnSize: 46,
+                      labelText: "Info",
+                    ),
+                    NeumorphicButton(
+                      icon: Icon(
+                        Icons.refresh,
+                        color: lightGrayColor,
+                      ),
+                      btnSize: 46,
+                      labelText: "Reset",
+                      onTap: model.reset,
+                    ),
+                    NeumorphicButton(
+                      icon: model.isSorting
+                          ? Icon(
+                              Icons.stop,
+                              color: Colors.white,
+                            )
+                          : Icon(
+                              Icons.play_arrow_rounded,
+                              color: Colors.white,
+                            ),
+                      btnSize: 46,
+                      labelText: model.isSorting ? "Stop" : "Start",
+                      btnColor: model.isSorting
+                          ? Colors.red
+                          : Theme.of(context).primaryColor,
+                      onTap: model.onActionBtn,
+                      isPressed: true,
+                    )
+                  ],
+                ),
+                SizedBox(height: 30),
+                _buildAlgorithmContent(context, model),
+              ],
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  getAlgorithmContent(BuildContext context, VisualizerViewModel model) {
+  _buildAlgorithmContent(BuildContext context, VisualizerViewModel model) {
     var theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 20),
-        Text(
-          model.getTitle(),
-          style: theme.textTheme.subtitle1
-              .copyWith(color: theme.primaryColor, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 10),
-        Text(
-          model.getAlgorithmDesc(),
-          style: theme.textTheme.bodyText2
-              .copyWith(fontStyle: FontStyle.italic, color: theme.accentColor),
-        ),
-        SizedBox(height: 20),
-        Text(
-          "Time Complexity:",
-          style: theme.textTheme.caption,
-        ),
-        SizedBox(height: 10),
-        Row(
-          children: [
-            Text(
-              "Worst Case:\t",
-              style: theme.textTheme.subtitle2.copyWith(
-                  fontStyle: FontStyle.italic, fontWeight: FontWeight.normal),
-            ),
-            Text(model.getTC(0),
-                style: theme.textTheme.subtitle2
-                    .copyWith(fontWeight: FontWeight.bold)),
-          ],
-        ),
-        Row(
-          children: [
-            Text(
-              "Average Case:\t",
-              style: theme.textTheme.subtitle2.copyWith(
-                  fontStyle: FontStyle.italic, fontWeight: FontWeight.normal),
-            ),
-            Text(model.getTC(1),
-                style: theme.textTheme.subtitle2
-                    .copyWith(fontWeight: FontWeight.bold)),
-          ],
-        ),
-        Row(
-          children: [
-            Text(
-              "Best Case:\t",
-              style: theme.textTheme.subtitle2.copyWith(
-                  fontStyle: FontStyle.italic, fontWeight: FontWeight.normal),
-            ),
-            Text(model.getTC(2),
-                style: theme.textTheme.subtitle2
-                    .copyWith(fontWeight: FontWeight.bold)),
-          ],
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.all(15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 20),
+          Text(
+            model.getTitle(),
+            style: theme.textTheme.subtitle1.copyWith(
+                color: theme.primaryColor, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 10),
+          Text(
+            model.getAlgorithmDesc(),
+            style: theme.textTheme.subtitle2
+                .copyWith(color: lightGrayColor, fontFamily: 'Arial'),
+          ),
+          SizedBox(height: 25),
+          Text(
+            "Time Complexity:",
+            style: theme.textTheme.caption.copyWith(color: mediumGrayColor),
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Text(
+                "Worst Case:\t",
+                style: theme.textTheme.subtitle2.copyWith(
+                    fontFamily: 'Arial', fontWeight: FontWeight.normal, color: Colors.white70),
+              ),
+              Text(model.getTC(0),
+                  style: theme.textTheme.subtitle2
+                      .copyWith(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Average Case:\t",
+                style: theme.textTheme.subtitle2.copyWith(
+                    fontFamily: 'Arial', fontWeight: FontWeight.normal, color: Colors.white70),
+              ),
+              Text(model.getTC(1),
+                  style: theme.textTheme.subtitle2
+                      .copyWith(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                "Best Case:\t",
+                style: theme.textTheme.subtitle2.copyWith(
+                    fontFamily: 'Arial', fontWeight: FontWeight.normal, color: Colors.white70),
+              ),
+              Text(model.getTC(2),
+                  style: theme.textTheme.subtitle2
+                      .copyWith(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
+            ],
+          ),
+          SizedBox(height: 20),
+          CodeViewer(codeContent: model.getAlgorithmCode(), titleLabel: "C++", sourceLabel: "GeeksForGeeks",)
+        ],
+      ),
     );
   }
 }
@@ -294,12 +356,19 @@ class BarPainter extends CustomPainter {
   final List<Color> colorScheme;
 
   BarPainter(
-      {this.width, this.value, this.checkingValue, this.maxValue, this.index, this.colorScheme});
+      {this.width,
+      this.value,
+      this.checkingValue,
+      this.maxValue,
+      this.index,
+      this.colorScheme});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
-    paint.color = (checkingValue != -1 && value == checkingValue) ? Colors.red : blueThemeColor;
+    paint.color = (checkingValue != -1 && value == checkingValue)
+        ? Colors.red
+        : blueThemeColor;
 
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;

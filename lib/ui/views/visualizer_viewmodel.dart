@@ -84,11 +84,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   updateSpeed(double value) {
     //sortingSpeed-> 0.0, 0.25, 0.5, 0.75, 1.0
-    if (sortingSpeed == 0.0) currentDrnIdx = 0;
-    if (sortingSpeed == 0.25) currentDrnIdx = 1;
-    if (sortingSpeed == 0.5) currentDrnIdx = 2;
-    if (sortingSpeed == 0.75) currentDrnIdx = 3;
-    if (sortingSpeed == 1.0) currentDrnIdx = 4;
+    if (value == 0.0) currentDrnIdx = 0;
+    if (value == 0.25) currentDrnIdx = 1;
+    if (value == 0.5) currentDrnIdx = 2;
+    if (value == 0.75) currentDrnIdx = 3;
+    if (value == 1.0) currentDrnIdx = 4;
     sortingSpeed = value;
     notifyListeners();
   }
@@ -106,7 +106,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       notifyListeners();
       if (_algorithmType == AlgorithmType.BUBBLE_SORT) {
         await _bubbleSort();
-        print('Algo DONE');
       }
       else if (_algorithmType == AlgorithmType.MERGE_SORT)
         await _mergeSort(0, _sampleSize.toInt() - 1);
@@ -114,7 +113,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       isSorting = false;
       checkingValue = -1;
       notifyListeners();
-      _snackBarService.showSnackbar(message: "Completed in ms");
+      _snackBarService.showSnackbar(message: "Completed");
     }
   }
 

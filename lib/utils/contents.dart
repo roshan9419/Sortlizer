@@ -1,4 +1,6 @@
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
+import 'package:charcode/ascii.dart';
+import 'package:charcode/html_entity.dart';
 
 class DataContent {
 
@@ -74,7 +76,7 @@ class DataContent {
 
   List<String> bubbleSortTimeComplexities() {
     // worst, avg, best
-    return ["O(n^2)", "O(n^2)", "O(n)"];
+    return ["O(n²)", "O(n²)", "O(n)"];
   }
 
   String bubbleSortCode() {
@@ -116,7 +118,7 @@ class DataContent {
         int arr[] = {64, 34, 25, 12, 22, 11, 90};
         int n = sizeof(arr)/sizeof(arr[0]);
         bubbleSort(arr, n);
-        cout<<"Sorted array: \n";
+        cout<<"Sorted array: \\n";
         printArray(arr, n);
         return 0;
       }
