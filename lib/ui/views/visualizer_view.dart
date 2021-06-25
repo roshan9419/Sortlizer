@@ -19,18 +19,16 @@ class VisualizerView extends StatelessWidget {
     var theme = Theme.of(context);
 
     return ViewModelBuilder<VisualizerViewModel>.reactive(
-      builder: (context, model, child) => SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  tileMode: TileMode.clamp,
-                  colors: [darkBackgroundStart, darkBackgroundFinish])),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: _VisualizerScreen(),
-          ),
+      builder: (context, model, child) => Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                tileMode: TileMode.clamp,
+                colors: [darkBackgroundStart, darkBackgroundFinish])),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: _VisualizerScreen(),
         ),
       ),
       viewModelBuilder: () => VisualizerViewModel(algorithmType),
@@ -44,62 +42,65 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
   @override
   Widget build(BuildContext context, VisualizerViewModel model) {
     var theme = Theme.of(context);
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              NeumorphicButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: lightGrayColor,
-                  size: 18,
-                ),
-                btnColor: darkBtnColor2,
-                onTap: model.onBackBtnPressed,
-              ),
-              Text(
-                model.getTitle(),
-                style: theme.textTheme.subtitle2
-                    .copyWith(color: Colors.white, fontSize: 15),
-              ),
-              NeumorphicButton(
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 15, bottom: 2),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                NeumorphicButton(
                   icon: Icon(
-                    Icons.menu,
+                    Icons.arrow_back,
                     color: lightGrayColor,
                     size: 18,
                   ),
-                  btnColor: darkBtnColor2)
+                  btnColor: darkBtnColor2,
+                  onTap: model.onBackBtnPressed,
+                ),
+                Text(
+                  model.getTitle(),
+                  style: theme.textTheme.subtitle2
+                      .copyWith(color: Colors.white, fontSize: 15),
+                ),
+                NeumorphicButton(
+                    icon: Icon(
+                      Icons.menu,
+                      color: lightGrayColor,
+                      size: 18,
+                    ),
+                    btnColor: darkBtnColor2)
+              ],
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text('Time',
+                  style: theme.textTheme.overline
+                      .copyWith(color: mediumGrayColor, letterSpacing: 0.5)),
+              Text(
+                '2560ms',
+                style: theme.textTheme.caption
+                    .copyWith(color: lightGrayColor, letterSpacing: 0.5),
+              )
             ],
           ),
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('Time',
-                style: theme.textTheme.overline
-                    .copyWith(color: mediumGrayColor, letterSpacing: 0.5)),
-            Text(
-              '2560ms',
-              style: theme.textTheme.caption
-                  .copyWith(color: lightGrayColor, letterSpacing: 0.5),
-            )
-          ],
-        ),
-        Spacer(),
-        !model.isLoading ? _VisualizerContainerWidget() : SizedBox.shrink(),
-        _buildBottomCommandCenter(context, model),
-      ],
+          Spacer(),
+          !model.isLoading ? _VisualizerContainerWidget() : SizedBox.shrink(),
+          _buildBottomCommandCenter(context, model),
+        ],
+      ),
     );
   }
 
   Widget _buildBottomCommandCenter(
       BuildContext context, VisualizerViewModel model) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
           color: darkBackgroundFinish,
           boxShadow: [
@@ -110,15 +111,27 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Column(
         children: [
-          Slider(
-              value: model.sortingSpeed,
-              label: "Speed",
-              divisions: 5,
-              onChanged: (val) {
-                print('Value Changed: $val');
-                model.updateSpeed(val);
-              }),
-          SizedBox(height: 10),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text('1x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),),
+              Text('2x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),),
+              Text('3x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),),
+              Text('4x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),),
+              Text('5x', style: Theme.of(context).textTheme.overline.copyWith(color: lightGrayColor),)
+            ]),
+          ),
+          Container(
+            height: 30,
+            child: Slider(
+                value: model.sortingSpeed,
+                divisions: 4,
+                onChanged: (val) {
+                  print('Value Changed: $val');
+                  model.updateSpeed(val);
+                }),
+          ),
+          SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -159,7 +172,9 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                       ),
                 btnSize: 46,
                 labelText: model.isSorting ? "Stop" : "Start",
-                btnColor: model.isSorting ? Colors.red : Theme.of(context).primaryColor,
+                btnColor: model.isSorting
+                    ? Colors.red
+                    : Theme.of(context).primaryColor,
                 onTap: model.onActionBtn,
               )
             ],
@@ -257,6 +272,7 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                         painter: BarPainter(
                             index: counter,
                             value: num,
+                            checkingValue: model.checkingValue,
                             colorScheme: model.colorScheme,
                             width: MediaQuery.of(context).size.width /
                                 model.getSampleSize()),
@@ -274,17 +290,19 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
 class BarPainter extends CustomPainter {
   final double width;
   final int value;
+  final int checkingValue;
   final double maxValue;
   final int index;
   final List<Color> colorScheme;
 
   BarPainter(
-      {this.width, this.value, this.maxValue, this.index, this.colorScheme});
+      {this.width, this.value, this.checkingValue, this.maxValue, this.index, this.colorScheme});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
-    paint.color = blueThemeColor;
+    paint.color = (checkingValue != -1 && value == checkingValue) ? Colors.red : blueThemeColor;
+
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;
 

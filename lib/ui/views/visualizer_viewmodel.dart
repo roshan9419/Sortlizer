@@ -19,6 +19,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   AlgorithmType _algorithmType;
 
+  int checkingValue = -1;
   List<int> _numbers = [];
   StreamController<List<int>> _streamController;
 
@@ -33,11 +34,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   var currentDrnIdx = 0;
   List<Duration> speeds = [
-    Duration(microseconds: 1600),
-    Duration(microseconds: 1300),
+    Duration(microseconds: 5500),
+    Duration(microseconds: 2000),
+    Duration(microseconds: 1500),
     Duration(microseconds: 1000),
-    Duration(microseconds: 700),
-    Duration(microseconds: 400),
+    Duration(microseconds: 500),
     Duration(microseconds: 100),
     Duration(microseconds: 50)
   ];
@@ -99,6 +100,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await _mergeSort(0, _sampleSize.toInt() - 1);
 
       isSorting = false;
+      checkingValue = -1;
       _snackBarService.showSnackbar(message: "Completed");
       notifyListeners();
     }
@@ -138,6 +140,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
         await Future.delayed(_getDuration(), () {});
 
+        checkingValue = _numbers[j];
         _streamController.add(_numbers);
         if (!isSorting) break;
       }
