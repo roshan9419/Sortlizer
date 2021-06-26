@@ -10,7 +10,11 @@ class CodeViewer extends StatefulWidget {
   final bool showCopyBtn;
 
   const CodeViewer(
-      {Key key, this.codeContent, this.titleLabel, this.sourceLabel, this.showCopyBtn = true})
+      {Key key,
+      this.codeContent,
+      this.titleLabel,
+      this.sourceLabel,
+      this.showCopyBtn = true})
       : super(key: key);
 
   @override
@@ -47,6 +51,18 @@ class _CodeViewerState extends State<CodeViewer> {
           decoration: BoxDecoration(
               color: isDark ? Color(0xff2B2B2B) : Colors.white,
               border: Border.all(color: Colors.grey),
+              boxShadow: [
+                BoxShadow(
+                    color: darkGrayColor,
+                    offset: Offset(5, 5),
+                    spreadRadius: -10,
+                    blurRadius: 10),
+                BoxShadow(
+                    color: darkGrayColor,
+                    offset: Offset(-5, -5),
+                    spreadRadius: -10,
+                    blurRadius: 10)
+              ],
               borderRadius: BorderRadius.all(Radius.circular(5))),
           padding: EdgeInsets.all(10),
           child: Stack(
@@ -111,10 +127,8 @@ class _CodeViewerState extends State<CodeViewer> {
                 child: Text(
                   widget.sourceLabel,
                   textAlign: TextAlign.end,
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption
-                      .copyWith(fontStyle: FontStyle.italic, color: lightGrayColor),
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                      fontStyle: FontStyle.italic, color: lightGrayColor),
                 ),
               ),
             ],

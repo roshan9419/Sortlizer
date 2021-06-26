@@ -6,6 +6,7 @@ import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
 import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
+import 'package:sorting_visualization/ui/widgets/menu_drawer.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:stacked/stacked.dart';
 
@@ -25,6 +26,12 @@ class VisualizerView extends StatelessWidget {
                 tileMode: TileMode.clamp,
                 colors: [darkBackgroundStart, darkBackgroundFinish])),
         child: Scaffold(
+          key: model.getGlobalKey(),
+          endDrawer: MenuDrawer(
+            menuItemsList: model.getAlgorithmsList(),
+            selectedValue: model.getTitle(),
+            onTap: model.onMenuItemClick,
+          ),
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [_VisualizerScreen(), BuildBottomDraggableSheet()],
@@ -66,13 +73,13 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                       .copyWith(color: Colors.white, fontSize: 15),
                 ),
                 NeumorphicButton(
-                    icon: Icon(
-                      Icons.menu,
-                      color: lightGrayColor,
-                      size: 18,
-                    ),
-                    btnColor: darkBtnColor2,
-                  onTap: model.changeSortingAlgorithm,
+                  icon: Icon(
+                    Icons.menu,
+                    color: lightGrayColor,
+                    size: 18,
+                  ),
+                  btnColor: darkBtnColor2,
+                  onTap: model.openMenuDrawer,
                 )
               ],
             ),
@@ -247,11 +254,15 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
               Text(
                 "Worst Case:\t",
                 style: theme.textTheme.subtitle2.copyWith(
-                    fontFamily: 'Arial', fontWeight: FontWeight.normal, color: Colors.white70),
+                    fontFamily: 'Arial',
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white70),
               ),
               Text(model.getTC(0),
-                  style: theme.textTheme.subtitle2
-                      .copyWith(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
+                  style: theme.textTheme.subtitle2.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1)),
             ],
           ),
           Row(
@@ -259,11 +270,15 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
               Text(
                 "Average Case:\t",
                 style: theme.textTheme.subtitle2.copyWith(
-                    fontFamily: 'Arial', fontWeight: FontWeight.normal, color: Colors.white70),
+                    fontFamily: 'Arial',
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white70),
               ),
               Text(model.getTC(1),
-                  style: theme.textTheme.subtitle2
-                      .copyWith(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
+                  style: theme.textTheme.subtitle2.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1)),
             ],
           ),
           Row(
@@ -271,15 +286,23 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
               Text(
                 "Best Case:\t",
                 style: theme.textTheme.subtitle2.copyWith(
-                    fontFamily: 'Arial', fontWeight: FontWeight.normal, color: Colors.white70),
+                    fontFamily: 'Arial',
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white70),
               ),
               Text(model.getTC(2),
-                  style: theme.textTheme.subtitle2
-                      .copyWith(fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: 1)),
+                  style: theme.textTheme.subtitle2.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1)),
             ],
           ),
           SizedBox(height: 20),
-          CodeViewer(codeContent: model.getAlgorithmCode(), titleLabel: "C++", sourceLabel: "GeeksForGeeks",)
+          CodeViewer(
+            codeContent: model.getAlgorithmCode(),
+            titleLabel: "C++",
+            sourceLabel: "GeeksForGeeks",
+          )
         ],
       ),
     );
@@ -310,7 +333,6 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                           index: counter,
                           value: num,
                           checkingValue: model.checkingValue,
-                          colorScheme: model.colorScheme,
                           width: MediaQuery.of(context).size.width /
                               model.getSampleSize()),
                     ),
@@ -329,15 +351,13 @@ class BarPainter extends CustomPainter {
   final int checkingValue;
   final double maxValue;
   final int index;
-  final List<Color> colorScheme;
 
   BarPainter(
       {this.width,
       this.value,
       this.checkingValue,
       this.maxValue,
-      this.index,
-      this.colorScheme});
+      this.index});
 
   @override
   void paint(Canvas canvas, Size size) {

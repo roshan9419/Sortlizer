@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/bottomSheetType.dart';
@@ -12,27 +13,25 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
-  VisualizerViewModel(this._algorithmType);
 
   final _snackBarService = locator<SnackbarService>();
   final _bottomSheetService = locator<BottomSheetService>();
   final _navigationService = locator<NavigationService>();
+  final dataContent = DataContent();
 
   AlgorithmType _algorithmType;
+  VisualizerViewModel(this._algorithmType);
 
   int checkingValue = -1;
   List<int> _numbers = [];
-  StreamController<List<int>> _streamController;
 
   double _sampleSize = 100;
   double maxNumber = 400;
+  double sortingSpeed = 0.0;
 
   bool isLoading = true;
   bool isSorting = false;
   bool isContentExpanded = false;
-
-  var currentColorScheme = 0;
-  List<Color> colorScheme = [];
 
   var currentDrnIdx = 0;
   List<Duration> speeds = [
@@ -42,6 +41,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     Duration(milliseconds: 30),
     Duration(milliseconds: 10)
   ];
+
+  StreamController<List<int>> _streamController;
 
   @override
   Future<StreamController<List<int>>> futureToRun() async {
@@ -53,7 +54,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   void onData(StreamController data) {
     super.onData(data);
     _streamController = data;
-    colorScheme = SortingColorScheme().getRandomColorScheme();
     reset();
     isLoading = false;
     notifyListeners();
@@ -82,19 +82,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _streamController.add(_numbers);
   }
 
-  double sortingSpeed = 0.0;
-
-  updateSpeed(double value) {
-    //sortingSpeed-> 0.0, 0.25, 0.5, 0.75, 1.0
-    if (value == 0.0) currentDrnIdx = 0;
-    if (value == 0.25) currentDrnIdx = 1;
-    if (value == 0.5) currentDrnIdx = 2;
-    if (value == 0.75) currentDrnIdx = 3;
-    if (value == 1.0) currentDrnIdx = 4;
-    sortingSpeed = value;
-    notifyListeners();
-  }
-
   onActionBtn() async {
     if (isArraySorted()) {
       _snackBarService.showSnackbar(message: "Array already sorted!");
@@ -119,17 +106,27 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
+  updateSpeed(double value) {
+    //sortingSpeed-> 0.0, 0.25, 0.5, 0.75, 1.0
+    if (value == 0.0) currentDrnIdx = 0;
+    if (value == 0.25) currentDrnIdx = 1;
+    if (value == 0.5) currentDrnIdx = 2;
+    if (value == 0.75) currentDrnIdx = 3;
+    if (value == 1.0) currentDrnIdx = 4;
+    sortingSpeed = value;
+    notifyListeners();
+  }
+
   Duration _getDuration() {
     return speeds[currentDrnIdx];
   }
 
-  changeSortingTheme() {
-    colorScheme = SortingColorScheme().getRandomColorScheme();
-    _streamController.add(_numbers);
+  GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
+  getGlobalKey() {
+    return _globalDrawerKey;
   }
-
-  changeSortingAlgorithm() {
-    _snackBarService.showSnackbar(message: 'Need to be done');
+  openMenuDrawer() {
+    _globalDrawerKey.currentState.openEndDrawer();
   }
 
   expandContentSheet() {
@@ -235,19 +232,19 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   String getTitle() {
-    return DataContent().getAlgorithmTitle(_algorithmType);
+    return dataContent.getAlgorithmTitle(_algorithmType);
   }
 
   String getAlgorithmDesc() {
-    return DataContent().getDescription(_algorithmType);
+    return dataContent.getDescription(_algorithmType);
   }
 
   String getTC(int idx) {
-    return DataContent().getTimeComplexities(_algorithmType)[idx];
+    return dataContent.getTimeComplexities(_algorithmType)[idx];
   }
 
   String getAlgorithmCode() {
-    return DataContent().getAlgorithmCode(_algorithmType);
+    return dataContent.getAlgorithmCode(_algorithmType);
   }
 
   onCustomBtnClick() async {
@@ -289,5 +286,14 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   onBackBtnPressed() {
     _navigationService.back();
+  }
+
+  List<String> getAlgorithmsList() {
+    return dataContent.getAlgorithms();
+  }
+
+  onMenuItemClick(String value) {
+    _algorithmType = dataContent.getAlgorithmType(value);
+    notifyListeners();
   }
 }

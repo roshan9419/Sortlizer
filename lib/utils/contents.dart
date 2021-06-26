@@ -3,7 +3,6 @@ import 'package:charcode/ascii.dart';
 import 'package:charcode/html_entity.dart';
 
 class DataContent {
-
   Map<AlgorithmType, String> algorithmsMap = {
     AlgorithmType.BUBBLE_SORT: "Bubble Sort",
     AlgorithmType.INSERTION_SORT: "Insertion Sort",
@@ -16,14 +15,14 @@ class DataContent {
     return algorithmsMap[type];
   }
 
+  AlgorithmType getAlgorithmType(String algo) {
+    var idx = getAlgorithms().indexOf(algo);
+    var entryList = algorithmsMap.entries.toList();
+    return entryList[idx].key;
+  }
+
   List<String> getAlgorithms() {
-    return [
-      "Bubble Sort",
-      "Insertion Sort",
-      "Selection Sort",
-      "Merge Sort",
-      "Quick Sort"
-    ];
+    return algorithmsMap.values.toList();
   }
 
   String getDescription(AlgorithmType type) {
@@ -70,18 +69,38 @@ class DataContent {
     }
   }
 
+  String getAlgorithmCode(AlgorithmType type) {
+    switch (type) {
+      case AlgorithmType.BUBBLE_SORT:
+        return bubbleSortCode();
+        break;
+      case AlgorithmType.INSERTION_SORT:
+        return bubbleSortCode();
+        break;
+      case AlgorithmType.SELECTION_SORT:
+        return bubbleSortCode();
+        break;
+      case AlgorithmType.MERGE_SORT:
+        return bubbleSortCode();
+        break;
+      case AlgorithmType.QUICK_SORT:
+        return bubbleSortCode();
+        break;
+      default:
+        return "N.A";
+    }
+  }
+
   String bubbleSortDescription() {
     return "Bubble Sort is the simplest sorting algorithm that works by repeated swapping the adjacent elements if they are in wrong order.";
   }
 
   List<String> bubbleSortTimeComplexities() {
-    // worst, avg, best
-    return ["O(n²)", "O(n²)", "O(n)"];
+    return ["O(n²)", "O(n²)", "O(n)"]; // worst, avg, best
   }
 
   String bubbleSortCode() {
-    return
-      """
+    return """
       #include <bits/stdc++.h>
       using namespace std;
       
@@ -123,27 +142,5 @@ class DataContent {
         return 0;
       }
       """;
-  }
-
-  String getAlgorithmCode(AlgorithmType type) {
-    switch (type) {
-      case AlgorithmType.BUBBLE_SORT:
-        return bubbleSortCode();
-        break;
-      case AlgorithmType.INSERTION_SORT:
-        return bubbleSortCode();
-        break;
-      case AlgorithmType.SELECTION_SORT:
-        return bubbleSortCode();
-        break;
-      case AlgorithmType.MERGE_SORT:
-        return bubbleSortCode();
-        break;
-      case AlgorithmType.QUICK_SORT:
-        return bubbleSortCode();
-        break;
-      default:
-        return "N.A";
-    }
   }
 }
