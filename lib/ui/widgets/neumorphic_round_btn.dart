@@ -44,7 +44,7 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
                 style: Theme.of(context)
                     .textTheme
                     .overline
-                    .copyWith(color: mediumGrayColor)),
+                    .copyWith(color: mediumGrayColor, fontFamily: 'Arial')),
           if (widget.labelText != null && widget.labelText.isNotEmpty)
             SizedBox(height: 15),
           !widget.isPressed
@@ -58,11 +58,11 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
                       boxShadow: [
                         BoxShadow(
                             color: shadowColor1,
-                            offset: Offset(4, 4),
+                            offset: Offset(3, 3),
                             blurRadius: 12),
                         BoxShadow(
-                            color: Color(0xff4d4e57),
-                            offset: Offset(-4, -4),
+                            color: Color(0xff3b3a3a),
+                            offset: Offset(-3, -3),
                             blurRadius: 12),
                       ]),
                   child: widget.icon,

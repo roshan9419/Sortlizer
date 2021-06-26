@@ -111,8 +111,8 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
   Widget _buildBottomCommandCenter(
       BuildContext context, VisualizerViewModel model) {
     return DraggableScrollableSheet(
-      initialChildSize: model.isContentExpanded ? 0.25 : 0.9,
-      minChildSize: 0.25,
+      initialChildSize: !model.isContentExpanded ? 0.23 : 0.9,
+      minChildSize: 0.23,
       expand: true,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
@@ -137,41 +137,14 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '1x',
-                          style: Theme.of(context)
-                              .textTheme
-                              .overline
-                              .copyWith(color: lightGrayColor),
-                        ),
-                        Text(
-                          '2x',
-                          style: Theme.of(context)
-                              .textTheme
-                              .overline
-                              .copyWith(color: lightGrayColor),
-                        ),
-                        Text(
-                          '3x',
-                          style: Theme.of(context)
-                              .textTheme
-                              .overline
-                              .copyWith(color: lightGrayColor),
-                        ),
-                        Text(
-                          '4x',
-                          style: Theme.of(context)
-                              .textTheme
-                              .overline
-                              .copyWith(color: lightGrayColor),
-                        ),
-                        Text(
-                          '5x',
-                          style: Theme.of(context)
-                              .textTheme
-                              .overline
-                              .copyWith(color: lightGrayColor),
-                        )
+                        for (int i = 1; i <= 5; i++)
+                          Text(
+                            '${i}x',
+                            style: Theme.of(context)
+                                .textTheme
+                                .overline
+                                .copyWith(color: lightGrayColor),
+                          ),
                       ]),
                 ),
                 Container(

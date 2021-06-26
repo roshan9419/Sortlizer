@@ -6,7 +6,7 @@ const darkBackgroundFinish = Color(0xff16171B);
 const darkBtnColor1 = Color(0xff25292C);
 const darkBtnColor2 = Color(0xff26282f);
 
-const shadowColor1 = Color(0xff494949);
+const shadowColor1 = Color(0xff4e4c4c);
 
 const blueThemeColor = Color(0xff0A89D6);
 
