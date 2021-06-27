@@ -313,13 +313,14 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
   @override
   Widget build(BuildContext context, VisualizerViewModel model) {
     return Container(
-      margin: EdgeInsets.only(right: 10),
       child: StreamBuilder<Object>(
           initialData: model.getNumbers(),
           stream: model.getStreamController().stream,
           builder: (context, snapshot) {
             List<int> numbers = snapshot.data;
             int counter = 0;
+
+            var division = (MediaQuery.of(context).size.width.toInt() / model.sampleSize);
 
             return Row(
               children: numbers.map((int num) {
@@ -334,8 +335,7 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                             value: num,
                             maxValue: model.maxNumber,
                             checkingValueIdx: model.checkingValueIdx,
-                            width: MediaQuery.of(context).size.width /
-                                model.sampleSize)),
+                            width: division * 0.5)),
                   ),
                 );
               }).toList(),
@@ -369,8 +369,8 @@ class BarPainter extends CustomPainter {
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;
 
-    var pt1 = Offset(index * this.width, maxValue - this.value.ceilToDouble());
-    var pt2 = Offset(index * this.width, maxValue);
+    var pt1 = Offset(index * this.width, maxValue);
+    var pt2 = Offset(index * this.width, maxValue - this.value.ceilToDouble());
     var pt3 = Offset(index * this.width, this.value.ceilToDouble());
 
     canvas.drawLine(pt1, pt2, paint); // TODO - NEED TO WORK

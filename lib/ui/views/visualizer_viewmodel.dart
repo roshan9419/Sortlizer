@@ -42,11 +42,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   var _currentDrnIdx = 0;
   List<Duration> speeds = [
-    Duration(milliseconds: 100),
-    Duration(milliseconds: 70),
     Duration(milliseconds: 50),
     Duration(milliseconds: 30),
-    Duration(milliseconds: 10)
+    Duration(milliseconds: 20),
+    Duration(milliseconds: 10),
+    Duration(milliseconds: 5)
   ];
 
   StreamController<List<int>> _streamController;
@@ -132,6 +132,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     return _globalDrawerKey;
   }
   openMenuDrawer() {
+    if (isSorting) {
+      _snackBarService.showSnackbar(message: "To change Algorithm Stop Sorting");
+      return;
+    }
     _globalDrawerKey.currentState.openEndDrawer();
   }
 
