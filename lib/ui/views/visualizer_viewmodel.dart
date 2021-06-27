@@ -22,18 +22,25 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   AlgorithmType _algorithmType;
   VisualizerViewModel(this._algorithmType);
 
-  int checkingValue = -1;
   List<int> _numbers = [];
 
+  int _chkValueIdx = -1;
+  int get checkingValueIdx => _chkValueIdx;
+
   double _sampleSize = 100;
-  double maxNumber = 400;
-  double sortingSpeed = 0.0;
+  double get sampleSize => _sampleSize;
+
+  double _maxNumber = 400;
+  double  get maxNumber => _maxNumber;
+
+  double _sortingSpeed = 0.0;
+  double get sortingSpeed => _sortingSpeed;
 
   bool isLoading = true;
   bool isSorting = false;
   bool isContentExpanded = false;
 
-  var currentDrnIdx = 0;
+  var _currentDrnIdx = 0;
   List<Duration> speeds = [
     Duration(milliseconds: 100),
     Duration(milliseconds: 70),
@@ -76,7 +83,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
     _numbers = [];
     for (int i = 0; i < _sampleSize; ++i) {
-      _numbers.add(Random().nextInt(maxNumber.toInt()));
+      _numbers.add(Random().nextInt(_maxNumber.toInt()));
     }
 
     _streamController.add(_numbers);
@@ -100,25 +107,24 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await _mergeSort(0, _sampleSize.toInt() - 1);
 
       isSorting = false;
-      checkingValue = -1;
+      _chkValueIdx = -1;
       notifyListeners();
       _snackBarService.showSnackbar(message: "Completed");
     }
   }
 
   updateSpeed(double value) {
-    //sortingSpeed-> 0.0, 0.25, 0.5, 0.75, 1.0
-    if (value == 0.0) currentDrnIdx = 0;
-    if (value == 0.25) currentDrnIdx = 1;
-    if (value == 0.5) currentDrnIdx = 2;
-    if (value == 0.75) currentDrnIdx = 3;
-    if (value == 1.0) currentDrnIdx = 4;
-    sortingSpeed = value;
+    if (value == 0.0) _currentDrnIdx = 0;
+    if (value == 0.25) _currentDrnIdx = 1;
+    if (value == 0.5) _currentDrnIdx = 2;
+    if (value == 0.75) _currentDrnIdx = 3;
+    if (value == 1.0) _currentDrnIdx = 4;
+    _sortingSpeed = value;
     notifyListeners();
   }
 
   Duration _getDuration() {
-    return speeds[currentDrnIdx];
+    return speeds[_currentDrnIdx];
   }
 
   GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
@@ -139,10 +145,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     return _numbers;
   }
 
-  double getSampleSize() {
-    return _sampleSize;
-  }
-
   _bubbleSort() async {
     mainFlow: for (int i = 0; i < _numbers.length; ++i) {
       for (int j = 0; j < _numbers.length - i - 1; ++j) {
@@ -155,7 +157,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         if (!isSorting) break mainFlow;
         await Future.delayed(_getDuration(), () {});
 
-        checkingValue = _numbers[j];
+        _chkValueIdx = j;
         _streamController.add(_numbers);
       }
     }
@@ -186,6 +188,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         }
 
         await Future.delayed(_getDuration(), () {});
+        _chkValueIdx = k;
         _streamController.add(_numbers);
 
         k++;
@@ -206,6 +209,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         k++;
 
         await Future.delayed(_getDuration(), () {});
+        _chkValueIdx = k;
         _streamController.add(_numbers);
       }
     }
@@ -217,7 +221,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       await _mergeSort(middleIndex + 1, rightIndex);
 
       await Future.delayed(_getDuration(), () {});
-
+      _chkValueIdx = middleIndex;
       _streamController.add(_numbers);
 
       await merge(leftIndex, middleIndex, rightIndex);

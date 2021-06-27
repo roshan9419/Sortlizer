@@ -144,7 +144,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        for (int i = 1; i <= 5; i++)
+                        for (int i = 1; i <= model.speeds.length; i++)
                           Text(
                             '${i}x',
                             style: Theme.of(context)
@@ -329,13 +329,13 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                   child: Padding(
                     padding: EdgeInsets.only(right: 2),
                     child: CustomPaint(
-                      painter: BarPainter(
-                          index: counter,
-                          value: num,
-                          checkingValue: model.checkingValue,
-                          width: MediaQuery.of(context).size.width /
-                              model.getSampleSize()),
-                    ),
+                        painter: BarPainter(
+                            index: counter,
+                            value: num,
+                            maxValue: model.maxNumber,
+                            checkingValueIdx: model.checkingValueIdx,
+                            width: MediaQuery.of(context).size.width /
+                                model.sampleSize)),
                   ),
                 );
               }).toList(),
@@ -348,30 +348,30 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
 class BarPainter extends CustomPainter {
   final double width;
   final int value;
-  final int checkingValue;
+  final int checkingValueIdx;
   final double maxValue;
   final int index;
 
   BarPainter(
       {this.width,
       this.value,
-      this.checkingValue,
+      this.checkingValueIdx,
       this.maxValue,
       this.index});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
-    paint.color = (checkingValue != -1 && value == checkingValue)
+    paint.color = (checkingValueIdx != -1 && index == checkingValueIdx)
         ? Colors.red
         : blueThemeColor;
 
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;
 
-    var pt1 = Offset(index * this.width, 400 - this.value.ceilToDouble());
-    // var pt2 = Offset(index * this.width, this.value.ceilToDouble());
-    var pt2 = Offset(index * this.width, 400);
+    var pt1 = Offset(index * this.width, maxValue - this.value.ceilToDouble());
+    var pt2 = Offset(index * this.width, maxValue);
+    var pt3 = Offset(index * this.width, this.value.ceilToDouble());
 
     canvas.drawLine(pt1, pt2, paint); // TODO - NEED TO WORK
   }
