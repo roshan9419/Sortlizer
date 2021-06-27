@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/bottomSheetType.dart';
 import 'package:sorting_visualization/utils/contents.dart';
-import 'package:sorting_visualization/utils/sorting_color_schemes.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -27,7 +25,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   int _chkValueIdx = -1;
   int get checkingValueIdx => _chkValueIdx;
 
-  double _sampleSize = 100;
+  double _sampleSize = 50;
   double get sampleSize => _sampleSize;
 
   double _maxNumber = 400;

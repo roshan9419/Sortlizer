@@ -30,11 +30,11 @@ class DataContent {
       case AlgorithmType.BUBBLE_SORT:
         return bubbleSortDescription();
       case AlgorithmType.INSERTION_SORT:
-        return mergeSortDescription();
+        return bubbleSortDescription();
       case AlgorithmType.SELECTION_SORT:
         return bubbleSortDescription();
       case AlgorithmType.MERGE_SORT:
-        return bubbleSortDescription();
+        return mergeSortDescription();
       case AlgorithmType.QUICK_SORT:
         return bubbleSortDescription();
       default:
@@ -47,11 +47,11 @@ class DataContent {
       case AlgorithmType.BUBBLE_SORT:
         return bubbleSortTimeComplexities();
       case AlgorithmType.INSERTION_SORT:
-        return mergeSortTimeComplexities();
+        return bubbleSortTimeComplexities();
       case AlgorithmType.SELECTION_SORT:
         return bubbleSortTimeComplexities();
       case AlgorithmType.MERGE_SORT:
-        return bubbleSortTimeComplexities();
+        return mergeSortTimeComplexities();
       case AlgorithmType.QUICK_SORT:
         return bubbleSortTimeComplexities();
       default:
@@ -64,11 +64,11 @@ class DataContent {
       case AlgorithmType.BUBBLE_SORT:
         return bubbleSortCode();
       case AlgorithmType.INSERTION_SORT:
-        return mergeSortCode();
+        return bubbleSortCode();
       case AlgorithmType.SELECTION_SORT:
         return bubbleSortCode();
       case AlgorithmType.MERGE_SORT:
-        return bubbleSortCode();
+        return mergeSortCode();
       case AlgorithmType.QUICK_SORT:
         return bubbleSortCode();
       default:

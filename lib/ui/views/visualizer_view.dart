@@ -328,7 +328,7 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                 return Container(
                   height: model.maxNumber,
                   child: Padding(
-                    padding: EdgeInsets.only(right: 2),
+                    padding: EdgeInsets.only(right: division * 0.5),
                     child: CustomPaint(
                         painter: BarPainter(
                             index: counter,
