@@ -5,9 +5,8 @@ import 'package:sorting_visualization/ui/ui_theme.dart';
 
 class MyStopWatch extends StatefulWidget {
   final bool onGoing;
-  final bool freshStart;
 
-  const MyStopWatch({Key key, this.onGoing, this.freshStart}) : super(key: key);
+  const MyStopWatch({Key key, this.onGoing}) : super(key: key);
 
   @override
   _MyStopWatchState createState() => _MyStopWatchState();
@@ -15,8 +14,15 @@ class MyStopWatch extends StatefulWidget {
 
 class _MyStopWatchState extends State<MyStopWatch> {
   Stopwatch _stopwatch = new Stopwatch();
+  bool isStarted = true;
 
 
+  init() {
+    if(isStarted)
+    setState(() {
+      if (widget.onGoing) _stopwatch.start();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

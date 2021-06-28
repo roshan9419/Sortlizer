@@ -6,6 +6,7 @@ import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
 import 'package:sorting_visualization/ui/widgets/bar_painter.dart';
+import 'package:sorting_visualization/ui/widgets/bars_loader.dart';
 import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
 import 'package:sorting_visualization/ui/widgets/menu_drawer.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
@@ -85,20 +86,27 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
               ],
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text('Time',
-                  style: theme.textTheme.overline
-                      .copyWith(color: mediumGrayColor, letterSpacing: 0.5)),
-              Text(
-                '0ms',
-                style: theme.textTheme.caption
-                    .copyWith(color: lightGrayColor, letterSpacing: 0.5),
-              )
-            ],
-          ),
+          if (!model.isFirstTime)
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(model.isSorting ? 'Sorting' : 'Time taken',
+                    style: theme.textTheme.overline
+                        .copyWith(color: mediumGrayColor, letterSpacing: 0.5)),
+                SizedBox(height: 2),
+                model.isSorting
+                    ? BarsLoader()
+                    : Text(
+                        '${model.sortDuration} ms',
+                        style: theme.textTheme.caption.copyWith(
+                            color: lightGrayColor, letterSpacing: 0.5),
+                      )
+                // MyStopWatch(
+                //   onGoing: true,
+                // )
+              ],
+            ),
           Spacer(),
           !model.isLoading ? _VisualizerContainerWidget() : SizedBox.shrink(),
           SizedBox(
@@ -321,7 +329,8 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
             List<int> numbers = snapshot.data;
             int counter = 0;
 
-            var division = (MediaQuery.of(context).size.width.toInt() / model.sampleSize);
+            var division =
+                (MediaQuery.of(context).size.width.toInt() / model.sampleSize);
 
             return Row(
               children: numbers.map((int num) {
@@ -336,7 +345,7 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                             painter: BarPainter(
                                 index: counter,
                                 value: num,
-                                maxValue: model.maxNumber-10,
+                                maxValue: model.maxNumber - 10,
                                 checkingValueIdx: model.checkingValueIdx,
                                 width: division * 0.5)),
                       ],

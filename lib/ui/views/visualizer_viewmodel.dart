@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
-import 'package:sorting_visualization/datamodels/bottomSheetType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
 import 'package:sorting_visualization/utils/contents.dart';
 import 'package:stacked/stacked.dart';
@@ -14,7 +13,6 @@ import 'package:stacked_services/stacked_services.dart';
 class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   final _snackBarService = locator<SnackbarService>();
-  final _bottomSheetService = locator<BottomSheetService>();
   final _dialogService = locator<DialogService>();
   final _navigationService = locator<NavigationService>();
   final dataContent = DataContent();
@@ -36,9 +34,13 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   double _sortingSpeed = 0.0;
   double get sortingSpeed => _sortingSpeed;
 
+  int _sortDuration = 0;
+  int get sortDuration => _sortDuration;
+
   bool isLoading = true;
   bool isSorting = false;
   bool isContentExpanded = false;
+  bool isFirstTime = true;
 
   var _currentDrnIdx = 0;
   List<Duration> speeds = [
@@ -87,9 +89,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
 
     _streamController.add(_numbers);
+    _sortDuration = 0;
+    notifyListeners();
   }
 
   onActionBtn() async {
+    isFirstTime = false;
     if (isArraySorted()) {
       _snackBarService.showSnackbar(message: "Array already sorted!");
       return;
@@ -98,8 +103,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       isSorting = false;
       notifyListeners();
     } else {
+      Stopwatch _stopWatch = new Stopwatch()..start();
       isSorting = true;
       notifyListeners();
+
       if (_algorithmType == AlgorithmType.BUBBLE_SORT) {
         await _bubbleSort();
       }
@@ -107,6 +114,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await _mergeSort(0, _sampleSize - 1);
 
       isSorting = false;
+      _stopWatch.stop();
+      _sortDuration = _stopWatch.elapsed.inMilliseconds;
       _chkValueIdx = -1;
       notifyListeners();
       _snackBarService.showSnackbar(message: "Completed");
