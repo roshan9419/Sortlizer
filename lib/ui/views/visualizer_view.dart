@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
+import 'package:sorting_visualization/ui/widgets/bar_painter.dart';
 import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
 import 'package:sorting_visualization/ui/widgets/menu_drawer.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
@@ -326,58 +327,25 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
               children: numbers.map((int num) {
                 counter++;
                 return Container(
-                  height: model.maxNumber,
+                  height: model.maxNumber.toDouble(),
                   child: Padding(
                     padding: EdgeInsets.only(right: division * 0.5),
-                    child: CustomPaint(
-                        painter: BarPainter(
-                            index: counter,
-                            value: num,
-                            maxValue: model.maxNumber,
-                            checkingValueIdx: model.checkingValueIdx,
-                            width: division * 0.5)),
+                    child: Column(
+                      children: [
+                        CustomPaint(
+                            painter: BarPainter(
+                                index: counter,
+                                value: num,
+                                maxValue: model.maxNumber-10,
+                                checkingValueIdx: model.checkingValueIdx,
+                                width: division * 0.5)),
+                      ],
+                    ),
                   ),
                 );
               }).toList(),
             );
           }),
     );
-  }
-}
-
-class BarPainter extends CustomPainter {
-  final double width;
-  final int value;
-  final int checkingValueIdx;
-  final double maxValue;
-  final int index;
-
-  BarPainter(
-      {this.width,
-      this.value,
-      this.checkingValueIdx,
-      this.maxValue,
-      this.index});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    Paint paint = Paint();
-    paint.color = (checkingValueIdx != -1 && index == checkingValueIdx)
-        ? Colors.red
-        : blueThemeColor;
-
-    paint.strokeWidth = width;
-    paint.strokeCap = StrokeCap.round;
-
-    var pt1 = Offset(index * this.width, maxValue);
-    var pt2 = Offset(index * this.width, maxValue - this.value.ceilToDouble());
-    var pt3 = Offset(index * this.width, this.value.ceilToDouble());
-
-    canvas.drawLine(pt1, pt2, paint); // TODO - NEED TO WORK
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
   }
 }

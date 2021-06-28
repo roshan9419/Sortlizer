@@ -4,6 +4,7 @@ import 'package:sorting_visualization/ui/ui_theme.dart';
 
 class NeumorphicRectButton extends StatelessWidget {
   final String labelText;
+  final Color labelTextColor;
   final Color btnColor;
   final double btnWidth;
   final double btnHeight;
@@ -14,6 +15,7 @@ class NeumorphicRectButton extends StatelessWidget {
   const NeumorphicRectButton(
       {Key key,
       this.labelText,
+      this.labelTextColor,
       this.btnColor,
       this.btnWidth,
       this.btnHeight,
@@ -28,7 +30,11 @@ class NeumorphicRectButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(btnRadius ?? 5),
       child: Container(
-        width: btnWidth ?? 50,
+        width: btnWidth == null
+            ? (labelText != null && labelText.isNotEmpty)
+                ? labelText.length * 20.0
+                : 50.0
+            : btnWidth,
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: btnColor ?? darkBtnColor2,
@@ -42,8 +48,14 @@ class NeumorphicRectButton extends StatelessWidget {
                   blurRadius: 10),
             ]),
         child: child == null
-            ? Text((labelText != null && labelText.isNotEmpty) ? labelText : "",
-                style: Theme.of(context).textTheme.subtitle2)
+            ? Text(
+                (labelText != null && labelText.isNotEmpty) ? labelText : "",
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2
+                    .copyWith(color: labelTextColor ?? Colors.white),
+                textAlign: TextAlign.center,
+              )
             : child,
       ),
     );

@@ -58,10 +58,10 @@ class _CustomArrayBottomSheetState extends State<CustomArrayBottomSheet> {
                       border: Border.all(color: Color(0xffafafaf))),
                   child: TextField(
                     maxLines: 1,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.numberWithOptions(signed: true),
                     controller: _controller,
                     style: theme.textTheme.subtitle2
-                        .copyWith(color: Color(0xff00031D)),
+                        .copyWith(color: lightGrayColor),
                     decoration: InputDecoration(
                       hintText: widget.sheetRequest.description,
                       hintStyle: theme.textTheme.caption

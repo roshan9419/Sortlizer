@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/bottomSheetType.dart';
+import 'package:sorting_visualization/datamodels/dialogType.dart';
 import 'package:sorting_visualization/utils/contents.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -14,6 +15,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   final _snackBarService = locator<SnackbarService>();
   final _bottomSheetService = locator<BottomSheetService>();
+  final _dialogService = locator<DialogService>();
   final _navigationService = locator<NavigationService>();
   final dataContent = DataContent();
 
@@ -25,11 +27,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   int _chkValueIdx = -1;
   int get checkingValueIdx => _chkValueIdx;
 
-  double _sampleSize = 50;
-  double get sampleSize => _sampleSize;
+  int _sampleSize = 50;
+  int get sampleSize => _sampleSize;
 
-  double _maxNumber = 400;
-  double  get maxNumber => _maxNumber;
+  int _maxNumber = 400;
+  int get maxNumber => _maxNumber;
 
   double _sortingSpeed = 0.0;
   double get sortingSpeed => _sortingSpeed;
@@ -102,7 +104,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await _bubbleSort();
       }
       else if (_algorithmType == AlgorithmType.MERGE_SORT)
-        await _mergeSort(0, _sampleSize.toInt() - 1);
+        await _mergeSort(0, _sampleSize - 1);
 
       isSorting = false;
       _chkValueIdx = -1;
@@ -254,19 +256,19 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   onCustomBtnClick() async {
-    var sheetResponse = await _bottomSheetService.showCustomSheet(
-        variant: BottomSheetType.CUSTOM_ARRAY,
-        title: 'Enter the elements of array:',
-        description: 'Example: 23, 45, 98, 67',
-        barrierDismissible: true);
+    var dialogResponse = await _dialogService.showCustomDialog(
+      variant: DialogType.CUSTOM_INPUT,
+      title: "Provide elements of the Array",
+      description: "Example: 23, 45, 98, 67",
+      mainButtonTitle: "Submit",
+      secondaryButtonTitle: "Cancel",
+      barrierDismissible: false
+    );
 
-    if (sheetResponse != null &&
-        sheetResponse.confirmed &&
-        sheetResponse.responseData.toString().isNotEmpty) {
-      print('CONFIRMED' + sheetResponse.responseData);
+    if (dialogResponse != null && dialogResponse.confirmed && dialogResponse.responseData.toString().isNotEmpty) {
 
       List<String> responseArray =
-          sheetResponse.responseData.toString().split(",");
+      dialogResponse.responseData.toString().split(",");
       List<int> inputArray = [];
       bool flag = true;
 
@@ -285,7 +287,14 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       if (flag) {
         _numbers = inputArray;
-        _sampleSize = inputArray.length.toDouble();
+        _sampleSize = inputArray.length;
+        _maxNumber = _numbers.first;
+        _numbers.forEach((num) {
+          if (_maxNumber < num) {
+            _maxNumber = num;
+          }
+        });
+        // notifyListeners();
       }
     }
   }
