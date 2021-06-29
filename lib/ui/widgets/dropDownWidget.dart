@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sorting_visualization/ui/ui_theme.dart';
 
 class DropDownWidget extends StatefulWidget {
   final String selectedType;
@@ -17,10 +18,6 @@ class DropDownWidget extends StatefulWidget {
 class _DropDownWidgetState extends State<DropDownWidget> {
   String _selectedType;
 
-  init() {
-    _selectedType = widget.selectedType;
-  }
-
   _onTap(val) {
     widget.onTap(val);
     setState(() {
@@ -29,30 +26,31 @@ class _DropDownWidgetState extends State<DropDownWidget> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _selectedType = widget.selectedType;
+  }
+
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
-        isDense: true,
         value: _selectedType,
         iconSize: 0,
         items: widget.menuItemsList.toList().map((String value) {
           return new DropdownMenuItem<String>(
             value: value,
             child: Container(
-              child: Row(
-                children: [
-                  Text(value,
-                      style: theme.textTheme.subtitle1.copyWith(
-                          fontWeight: value == _selectedType
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                          color: Colors.white,
-                          letterSpacing: 1),
-                      maxLines: 1,
-                      softWrap: true),
-                ],
-              ),
+              child: Text(value,
+                  style: theme.textTheme.subtitle2.copyWith(
+                      fontWeight: value == _selectedType
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                      color: value == _selectedType ? Colors.blue : lightGrayColor,
+                      letterSpacing: 1),
+                  maxLines: 1,
+                  softWrap: true),
             ),
           );
         }).toList(),

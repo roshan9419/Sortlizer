@@ -1,3 +1,3 @@
 enum DialogType {
-  CUSTOM_INPUT
+  CUSTOM_INPUT, CUSTOM_ARRAY_SIZE
 }

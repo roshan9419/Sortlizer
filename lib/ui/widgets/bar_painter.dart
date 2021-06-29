@@ -31,9 +31,9 @@ class BarPainter extends CustomPainter {
 
     var pt1 = Offset(index * this.width, maxValue.ceilToDouble());
     var pt2 = Offset(index * this.width, maxValue - this.value.ceilToDouble());
-    var pt3 = Offset(index * this.width, this.value.ceilToDouble());
+    // var pt3 = Offset(index * this.width, this.value.ceilToDouble());
 
-    canvas.drawLine(pt1, pt2, paint); // TODO - NEED TO WORK
+    canvas.drawLine(pt1, pt2, paint);
   }
 
   @override

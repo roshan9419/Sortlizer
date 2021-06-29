@@ -22,6 +22,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   List<int> _numbers = [];
 
+  GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
+
   int _chkValueIdx = -1;
   int get checkingValueIdx => _chkValueIdx;
 
@@ -36,6 +38,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   int _sortDuration = 0;
   int get sortDuration => _sortDuration;
+
+  int _totalComparisons = 0;
+  int get totalComparisons => _totalComparisons;
 
   bool isLoading = true;
   bool isSorting = false;
@@ -84,12 +89,14 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       return;
     }
     _numbers = [];
+    print(_sampleSize);
     for (int i = 0; i < _sampleSize; ++i) {
       _numbers.add(Random().nextInt(_maxNumber.toInt()));
     }
 
     _streamController.add(_numbers);
     _sortDuration = 0;
+    _totalComparisons = 0;
     notifyListeners();
   }
 
@@ -136,20 +143,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     return speeds[_currentDrnIdx];
   }
 
-  GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
-
   getGlobalKey() {
     return _globalDrawerKey;
-  }
-
-  openMenuDrawer() {
-    _globalDrawerKey.currentState.openEndDrawer();
-  }
-
-  expandContentSheet() {
-    isContentExpanded = !isContentExpanded;
-    _snackBarService.showSnackbar(message: 'Need to be done: $isContentExpanded');
-    notifyListeners();
   }
 
   List<int> getNumbers() {
@@ -197,6 +192,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           _numbers[k] = rightList[j];
           j++;
         }
+        _totalComparisons++;
 
         await Future.delayed(_getDuration(), () {});
         _chkValueIdx = k;
@@ -209,6 +205,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _numbers[k] = leftList[i];
         i++;
         k++;
+        _totalComparisons++;
 
         await Future.delayed(_getDuration(), () {});
         _streamController.add(_numbers);
@@ -294,14 +291,13 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       if (flag) {
         _numbers = inputArray;
-        _sampleSize = inputArray.length;
-        _maxNumber = _numbers.first;
-        _numbers.forEach((num) {
-          if (_maxNumber < num) {
-            _maxNumber = num;
-          }
-        });
-        // notifyListeners();
+        _sampleSize = _numbers.length;
+        // _numbers.forEach((num) {
+        //   if (_maxNumber < num) {
+        //     _maxNumber = num;
+        //   }
+        // });
+        notifyListeners();
       }
     }
   }
@@ -321,5 +317,21 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       _algorithmType = dataContent.getAlgorithmType(value);
     }
     notifyListeners();
+  }
+
+  openMenuDrawer() {
+    _globalDrawerKey.currentState.openEndDrawer();
+  }
+
+  changeArraySize() async {
+    var dialogResponse = await _dialogService.showCustomDialog(
+        variant: DialogType.CUSTOM_ARRAY_SIZE,
+        title: "Provide size of the Array",
+        description: "1 < Input < 500",
+        mainButtonTitle: "Submit",
+        secondaryButtonTitle: "Cancel",
+        barrierDismissible: false
+    );
+
   }
 }

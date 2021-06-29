@@ -92,14 +92,14 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(model.isSorting ? 'Sorting' : 'Time taken',
+                Text(model.isSorting ? 'Sorting' : 'Sort Result',
                     style: theme.textTheme.overline
                         .copyWith(color: mediumGrayColor, letterSpacing: 0.5)),
                 SizedBox(height: 2),
                 model.isSorting
                     ? MyBarLoader()
                     : Text(
-                        '${model.sortDuration} ms',
+                        '${model.sortDuration} ms, ${model.totalComparisons} Comparisons',
                         style: theme.textTheme.caption.copyWith(
                             color: lightGrayColor, letterSpacing: 0.5),
                       )
@@ -188,12 +188,12 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                         onTap: model.onCustomBtnClick),
                     NeumorphicButton(
                       icon: Icon(
-                        Icons.info_outline,
+                        Icons.bar_chart_sharp,
                         color: lightGrayColor,
                       ),
                       btnSize: 46,
-                      labelText: "Info",
-                      onTap: model.expandContentSheet,
+                      labelText: "Size",
+                      onTap: model.changeArraySize,
                     ),
                     NeumorphicButton(
                       icon: Icon(
@@ -346,7 +346,7 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                             painter: BarPainter(
                                 index: counter,
                                 value: num,
-                                maxValue: model.maxNumber - 10,
+                                maxValue: model.maxNumber,
                                 checkingValueIdx: model.checkingValueIdx,
                                 width: division * 0.5,
                               barColor: Theme.of(context).primaryColor
