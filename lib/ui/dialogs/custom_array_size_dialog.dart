@@ -82,7 +82,8 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [darkBackgroundStart, darkBackgroundFinish])),
+              colors: [darkBackgroundStart, darkBackgroundFinish]),
+      ),
       padding: EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -12,7 +12,6 @@ import 'package:sorting_visualization/ui/widgets/menu_drawer.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:stacked/stacked.dart';
 
-
 class VisualizerView extends StatelessWidget {
   final AlgorithmType algorithmType;
 
@@ -30,6 +29,7 @@ class VisualizerView extends StatelessWidget {
                 colors: [darkBackgroundStart, darkBackgroundFinish])),
         child: Scaffold(
           key: model.getGlobalKey(),
+          resizeToAvoidBottomPadding: false,
           endDrawer: MenuDrawer(
             menuItemsList: model.getAlgorithmsList(),
             selectedValue: model.getTitle(),
@@ -149,6 +149,14 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
             controller: scrollController,
             child: Column(
               children: [
+                /*Container(
+                  width: 50,
+                  height: 1,
+                  margin: EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                      color: lightGrayColor,
+                      borderRadius: BorderRadius.circular(5)),
+                ),*/
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
@@ -340,19 +348,14 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                   height: model.maxNumber.toDouble(),
                   child: Padding(
                     padding: EdgeInsets.only(right: division * 0.5),
-                    child: Column(
-                      children: [
-                        CustomPaint(
-                            painter: BarPainter(
-                                index: counter,
-                                value: num,
-                                maxValue: model.maxNumber,
-                                checkingValueIdx: model.checkingValueIdx,
-                                width: division * 0.5,
-                              barColor: Theme.of(context).primaryColor
-                            )),
-                      ],
-                    ),
+                    child: CustomPaint(
+                        painter: BarPainter(
+                            index: counter,
+                            value: num,
+                            maxValue: model.maxNumber,
+                            checkingValueIdx: model.checkingValueIdx,
+                            width: division * 0.5,
+                            barColor: Theme.of(context).primaryColor)),
                   ),
                 );
               }).toList(),

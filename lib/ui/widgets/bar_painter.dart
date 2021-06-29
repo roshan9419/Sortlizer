@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../ui_theme.dart';
-
 class BarPainter extends CustomPainter {
   final double width;
   final int value;
@@ -13,10 +11,10 @@ class BarPainter extends CustomPainter {
 
   BarPainter(
       {this.width,
-        this.value,
-        this.checkingValueIdx,
-        this.maxValue,
-        this.index,
+      this.value,
+      this.checkingValueIdx,
+      this.maxValue,
+      this.index,
       this.barColor});
 
   @override
@@ -29,11 +27,19 @@ class BarPainter extends CustomPainter {
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;
 
-    var pt1 = Offset(index * this.width, maxValue.ceilToDouble());
-    var pt2 = Offset(index * this.width, maxValue - this.value.ceilToDouble());
-    // var pt3 = Offset(index * this.width, this.value.ceilToDouble());
+    var pt1 = Offset(index * width, maxValue.ceilToDouble());
+    var pt2 = Offset(index * width, maxValue - value.ceilToDouble());
+    var pt3 = Offset(index * width, value.ceilToDouble());
 
-    canvas.drawLine(pt1, pt2, paint);
+    // canvas.drawLine(pt1, pt1, paint); //NO
+    canvas.drawLine(pt1, pt2, paint); //NEED
+    // canvas.drawLine(pt1, pt3, paint); //REVERSE
+    // canvas.drawLine(pt2, pt1, paint); //SAME AS NEED
+    // canvas.drawLine(pt2, pt2, paint); //DOT SORT
+    // canvas.drawLine(pt2, pt3, paint); //HALF-HALF SORT
+    // canvas.drawLine(pt3, pt1, paint); //REVERSE
+    // canvas.drawLine(pt3, pt2, paint); //HALF-HALF SORT
+    // canvas.drawLine(pt3, pt3, paint); //REVERSE DOT SORT
   }
 
   @override

@@ -95,9 +95,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       return;
     }
     _numbers = [];
-    print(_sampleSize);
     for (int i = 0; i < _sampleSize; ++i) {
-      _numbers.add(Random().nextInt(_maxNumber.toInt()));
+      int rndNum = Random().nextInt(_maxNumber.toInt());
+      if (rndNum < 10) rndNum += 10; // Just for UI Purpose
+      _numbers.add(rndNum);
     }
 
     _streamController.add(_numbers);
@@ -277,7 +278,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     var dialogResponse = await _dialogService.showCustomDialog(
         variant: DialogType.CUSTOM_INPUT,
         title: "Provide elements of the Array",
-        description: "Example: 23, 45, 98, 67",
+        description: "Example: 23, 45, 98, 67 (Max - 500)",
         mainButtonTitle: "Submit",
         secondaryButtonTitle: "Cancel",
         barrierDismissible: false);
@@ -293,17 +294,23 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       responseArray.forEach((element) {
         try {
           var num = int.parse(element.trim());
-          inputArray.add(num);
+          if (num > 500)
+            flag = false;
+          else
+            inputArray.add(num);
         } catch (e) {
           flag = false;
         }
       });
 
       !flag
-          ? _snackBarService.showSnackbar(message: "Invalid numbers")
+          ? _snackBarService.showSnackbar(
+              message: "Your Array: $inputArray",
+              title: "Some elements greater than 500 are not added",
+              duration: Duration(milliseconds: 3000))
           : _snackBarService.showSnackbar(message: "Your Array: $inputArray");
 
-      if (flag) {
+      if (inputArray.isNotEmpty) {
         _numbers = inputArray;
         _sampleSize = _numbers.length;
         // _numbers.forEach((num) {
