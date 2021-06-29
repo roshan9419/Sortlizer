@@ -20,9 +20,9 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
   var _controller = new TextEditingController();
 
   bool isDisabled = true;
-  int maxArraySize = 500;
+  int maxArraySize = 1000;
 
-  List<String> sizeList = ["Choose", "100", "200", "300", "400", "500"];
+  List<String> sizeList = ["Choose", "50", "100", "200", "300", "400", "500", "1000"];
   String _selectedSize;
   String errorMessage = "Invalid Size";
 

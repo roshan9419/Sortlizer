@@ -347,7 +347,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     var dialogResponse = await _dialogService.showCustomDialog(
         variant: DialogType.CUSTOM_ARRAY_SIZE,
         title: "Provide size of the Array",
-        description: "1 < Input < 500",
+        description: "1 < Input < 1000",
         mainButtonTitle: "Submit",
         secondaryButtonTitle: "Cancel",
         barrierDismissible: false);
