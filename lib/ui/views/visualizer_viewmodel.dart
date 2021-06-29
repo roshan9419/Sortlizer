@@ -125,7 +125,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       _sortDuration = _stopWatch.elapsed.inMilliseconds;
       _chkValueIdx = -1;
       notifyListeners();
-      _snackBarService.showSnackbar(message: "Completed");
+      _snackBarService.showSnackbar(message: "Completed", duration: Duration(milliseconds: 800));
     }
   }
 
@@ -161,6 +161,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         }
 
         if (!isSorting) break mainFlow;
+        _totalComparisons++;
         await Future.delayed(_getDuration(), () {});
 
         _chkValueIdx = j;
@@ -194,6 +195,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         }
         _totalComparisons++;
 
+        if (!isSorting) return;
         await Future.delayed(_getDuration(), () {});
         _chkValueIdx = k;
         _streamController.add(_numbers);
@@ -207,6 +209,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         k++;
         _totalComparisons++;
 
+        if (!isSorting) return;
         await Future.delayed(_getDuration(), () {});
         _streamController.add(_numbers);
       }
@@ -215,7 +218,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _numbers[k] = rightList[j];
         j++;
         k++;
+        _totalComparisons++;
 
+        if (!isSorting) return;
         await Future.delayed(_getDuration(), () {});
         _chkValueIdx = k;
         _streamController.add(_numbers);
@@ -228,8 +233,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       await _mergeSort(leftIndex, middleIndex);
       await _mergeSort(middleIndex + 1, rightIndex);
 
+      if (!isSorting) return;
       await Future.delayed(_getDuration(), () {});
       _chkValueIdx = middleIndex;
+      _totalComparisons++;
       _streamController.add(_numbers);
 
       await merge(leftIndex, middleIndex, rightIndex);
