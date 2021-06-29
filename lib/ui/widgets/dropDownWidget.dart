@@ -6,9 +6,10 @@ class DropDownWidget extends StatefulWidget {
   final String selectedType;
   final List<String> menuItemsList;
   final Function onTap;
+  final bool showDropDownIcon;
 
   const DropDownWidget(
-      {Key key, this.selectedType, this.menuItemsList, this.onTap})
+      {Key key, this.selectedType, this.menuItemsList, this.onTap, this.showDropDownIcon = true})
       : super(key: key);
 
   @override
@@ -37,7 +38,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         value: _selectedType,
-        iconSize: 0,
+        iconSize: widget.showDropDownIcon ? 30 : 0,
         items: widget.menuItemsList.toList().map((String value) {
           return new DropdownMenuItem<String>(
             value: value,

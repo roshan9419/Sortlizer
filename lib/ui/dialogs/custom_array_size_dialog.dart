@@ -19,16 +19,39 @@ class CustomArraySizeDialog extends StatefulWidget {
 class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
   var _controller = new TextEditingController();
 
-  bool showError = false;
+  bool isDisabled = true;
   int maxArraySize = 500;
 
-  List<String> sizeList = ["100", "200", "300", "400", "500"];
+  List<String> sizeList = ["Choose", "100", "200", "300", "400", "500"];
   String _selectedSize;
+  String errorMessage = "Invalid Size";
 
   onSubmit() {
-    if (showError) return;
-    widget.onDialogTap(
-        DialogResponse(confirmed: true, responseData: _controller.text));
+    if (isDisabled) return;
+    widget.onDialogTap(DialogResponse(
+        confirmed: true,
+        responseData: _selectedSize != sizeList[0]
+            ? _selectedSize
+            : _controller.text.toString()));
+  }
+
+  updateValue(String value) {
+    if (_controller.text.toString().isEmpty && _selectedSize == sizeList[0]) {
+      setState(() {
+        isDisabled = true;
+      });
+    }
+    if (_controller.text.toString().isEmpty) return;
+    setState(() {
+      _selectedSize = sizeList[0];
+      try {
+        var size = int.parse(value);
+        if (size > maxArraySize) throw Exception("Array Size is Greater");
+        isDisabled = false;
+      } catch (e) {
+        isDisabled = true;
+      }
+    });
   }
 
   dismissDialog() {
@@ -38,6 +61,10 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
   updateSelectedSize(String value) {
     setState(() {
       _selectedSize = value;
+      isDisabled = false;
+      if (_selectedSize == sizeList[0] && _controller.text.toString().isEmpty)
+        isDisabled = true;
+      _controller.clear();
     });
   }
 
@@ -95,7 +122,9 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
                           focusedBorder: InputBorder.none,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none),
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        updateValue(value);
+                      },
                     )),
               ),
               SizedBox(width: 10),
@@ -109,12 +138,13 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
                 child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     decoration: BoxDecoration(
-                        color: darkBackgroundFinish,
+                        color: darkBackgroundStart,
                         borderRadius: BorderRadius.all(Radius.circular(5.0)),
                         border: Border.all(color: Color(0xffafafaf))),
                     child: DropDownWidget(
+                      key: UniqueKey(),
                       menuItemsList: sizeList,
-                      selectedType: "100",
+                      selectedType: _selectedSize,
                       onTap: updateSelectedSize,
                     )),
               ),
@@ -133,7 +163,9 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
               Expanded(
                 child: NeumorphicRectButton(
                   labelText: widget.dialogRequest.mainButtonTitle,
-                  btnColor: theme.primaryColor,
+                  btnColor: isDisabled
+                      ? theme.primaryColor.withOpacity(0.5)
+                      : theme.primaryColor,
                   onTap: onSubmit,
                 ),
               )
