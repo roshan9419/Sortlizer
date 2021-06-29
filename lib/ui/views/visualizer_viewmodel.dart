@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
+import 'package:sorting_visualization/ui/widgets/sorting_history.dart';
 import 'package:sorting_visualization/utils/contents.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -21,6 +22,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   VisualizerViewModel(this._algorithmType);
 
   List<int> _numbers = [];
+
+  List<SortHistory> _sortingHistoryList = [];
 
   GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
 
@@ -126,10 +129,17 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       } else if (_algorithmType == AlgorithmType.MERGE_SORT)
         await _mergeSort(0, _sampleSize - 1);
 
-      isSorting = false;
       _stopWatch.stop();
+      isSorting = false;
       _sortDuration = _stopWatch.elapsed.inMilliseconds;
       _chkValueIdx = -1;
+
+      _sortingHistoryList.add(SortHistory(
+          algoTitle: dataContent.getAlgorithmTitle(_algorithmType),
+          arraySize: _sampleSize,
+          timeTaken: _sortDuration,
+          totalComparisons: _totalComparisons));
+
       notifyListeners();
       _snackBarService.showSnackbar(
           message: "Completed", duration: Duration(milliseconds: 800));
@@ -156,6 +166,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   List<int> getNumbers() {
     return _numbers;
+  }
+
+  List<SortHistory> getSortingHistoryList() {
+    return _sortingHistoryList;
   }
 
   _bubbleSort() async {
@@ -306,7 +320,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       !flag
           ? _snackBarService.showSnackbar(
               message: "Your Array: $inputArray",
-              title: "Some elements greater than 500 are not added",
+              title: "Elements greater than 500 are not added",
               duration: Duration(milliseconds: 3000))
           : _snackBarService.showSnackbar(message: "Your Array: $inputArray");
 

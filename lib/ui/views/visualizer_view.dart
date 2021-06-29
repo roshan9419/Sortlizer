@@ -10,6 +10,7 @@ import 'package:sorting_visualization/ui/widgets/bars_loader.dart';
 import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
 import 'package:sorting_visualization/ui/widgets/menu_drawer.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
+import 'package:sorting_visualization/ui/widgets/sorting_history.dart';
 import 'package:stacked/stacked.dart';
 
 class VisualizerView extends StatelessWidget {
@@ -233,6 +234,11 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   ],
                 ),
                 SizedBox(height: 30),
+                if (model.getSortingHistoryList().isNotEmpty)
+                  SortingHistoryTable(
+                    itemsList: model.getSortingHistoryList(),
+                    tableName: "Sorting History",
+                  ),
                 _buildAlgorithmContent(context, model),
               ],
             ),
