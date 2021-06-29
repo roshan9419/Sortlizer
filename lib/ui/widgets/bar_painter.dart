@@ -9,20 +9,22 @@ class BarPainter extends CustomPainter {
   final int checkingValueIdx;
   final int maxValue;
   final int index;
+  final Color barColor;
 
   BarPainter(
       {this.width,
         this.value,
         this.checkingValueIdx,
         this.maxValue,
-        this.index});
+        this.index,
+      this.barColor});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
     paint.color = (checkingValueIdx != -1 && index == checkingValueIdx)
         ? Colors.red
-        : blueThemeColor;
+        : barColor ?? Colors.blue;
 
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;

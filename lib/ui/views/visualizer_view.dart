@@ -12,6 +12,7 @@ import 'package:sorting_visualization/ui/widgets/menu_drawer.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:stacked/stacked.dart';
 
+
 class VisualizerView extends StatelessWidget {
   final AlgorithmType algorithmType;
 
@@ -96,7 +97,7 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                         .copyWith(color: mediumGrayColor, letterSpacing: 0.5)),
                 SizedBox(height: 2),
                 model.isSorting
-                    ? BarsLoader()
+                    ? MyBarLoader()
                     : Text(
                         '${model.sortDuration} ms',
                         style: theme.textTheme.caption.copyWith(
@@ -347,7 +348,9 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                                 value: num,
                                 maxValue: model.maxNumber - 10,
                                 checkingValueIdx: model.checkingValueIdx,
-                                width: division * 0.5)),
+                                width: division * 0.5,
+                              barColor: Theme.of(context).primaryColor
+                            )),
                       ],
                     ),
                   ),

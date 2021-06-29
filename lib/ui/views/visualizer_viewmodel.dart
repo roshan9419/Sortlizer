@@ -137,14 +137,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
+
   getGlobalKey() {
     return _globalDrawerKey;
   }
+
   openMenuDrawer() {
-    if (isSorting) {
-      _snackBarService.showSnackbar(message: "To change Algorithm Stop Sorting");
-      return;
-    }
     _globalDrawerKey.currentState.openEndDrawer();
   }
 
@@ -317,7 +315,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   onMenuItemClick(String value) {
-    _algorithmType = dataContent.getAlgorithmType(value);
+    if (isSorting) {
+      // _snackBarService.showSnackbar(message: "To change Algorithm Stop Sorting");
+    } else {
+      _algorithmType = dataContent.getAlgorithmType(value);
+    }
     notifyListeners();
   }
 }

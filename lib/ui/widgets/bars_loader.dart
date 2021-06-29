@@ -1,71 +1,70 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class BarsLoader extends StatefulWidget {
+  final int duration;
+
+  BarsLoader({Key key, this.duration}) : super(key: key);
   @override
   _BarsLoaderState createState() => _BarsLoaderState();
 }
 
 class _BarsLoaderState extends State<BarsLoader>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation _sizeAnimation1;
-  Animation _sizeAnimation2;
-  Animation _sizeAnimation3;
+  AnimationController _animController;
+  Animation<double> _animation;
 
   double _width = 3;
   double _height = 10;
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this, duration: Duration(seconds: 1));
-    _sizeAnimation1 = Tween<double>(begin: 1, end: _height - 3).animate(_controller);
-    _sizeAnimation2 = Tween<double>(begin: 5, end: _height).animate(_controller);
-    _sizeAnimation3 = Tween<double>(begin: 1, end: _height - 3).animate(_controller);
-
-    _controller.addListener(() {
-      setState(() {});
-    });
-
-    _controller.repeat();
     super.initState();
+    _animController = AnimationController(
+        duration: Duration(milliseconds: widget.duration), vsync: this);
+    final curvedAnimation = CurvedAnimation(
+        parent: _animController, curve: Curves.easeOutSine);
+
+    _animation = Tween<double>(begin: 1, end: _height).animate(curvedAnimation)
+      ..addListener(() {
+        setState(() {
+
+        });
+      });
+    _animController.repeat(reverse: true);
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _animController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 50,
-      height: 15,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: _width,
-            height: _sizeAnimation1.value,
-            color: Colors.white,
-          ),
-          SizedBox(width: 5),
-          Container(
-            width: _width,
-            height: _sizeAnimation2.value,
-            color: Colors.white,
-          ),
-          SizedBox(width: 5),
-          Container(
-            width: _width,
-            height: _sizeAnimation3.value,
-            color: Colors.white,
-          ),
-        ],
+      width: _width,
+      height: _animation.value,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(2)
       ),
     );
   }
 }
+
+class MyBarLoader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        BarsLoader(duration: 500),
+        SizedBox(width: 3),
+        BarsLoader(duration: 1000),
+        SizedBox(width: 3),
+        BarsLoader(duration: 1500),
+      ],
+    );
+  }
+}
+
