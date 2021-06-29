@@ -11,13 +11,13 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
-
   final _snackBarService = locator<SnackbarService>();
   final _dialogService = locator<DialogService>();
   final _navigationService = locator<NavigationService>();
   final dataContent = DataContent();
 
   AlgorithmType _algorithmType;
+
   VisualizerViewModel(this._algorithmType);
 
   List<int> _numbers = [];
@@ -25,21 +25,27 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
 
   int _chkValueIdx = -1;
+
   int get checkingValueIdx => _chkValueIdx;
 
   int _sampleSize = 50;
+
   int get sampleSize => _sampleSize;
 
   int _maxNumber = 400;
+
   int get maxNumber => _maxNumber;
 
   double _sortingSpeed = 0.0;
+
   double get sortingSpeed => _sortingSpeed;
 
   int _sortDuration = 0;
+
   int get sortDuration => _sortDuration;
 
   int _totalComparisons = 0;
+
   int get totalComparisons => _totalComparisons;
 
   bool isLoading = true;
@@ -116,8 +122,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       if (_algorithmType == AlgorithmType.BUBBLE_SORT) {
         await _bubbleSort();
-      }
-      else if (_algorithmType == AlgorithmType.MERGE_SORT)
+      } else if (_algorithmType == AlgorithmType.MERGE_SORT)
         await _mergeSort(0, _sampleSize - 1);
 
       isSorting = false;
@@ -125,7 +130,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       _sortDuration = _stopWatch.elapsed.inMilliseconds;
       _chkValueIdx = -1;
       notifyListeners();
-      _snackBarService.showSnackbar(message: "Completed", duration: Duration(milliseconds: 800));
+      _snackBarService.showSnackbar(
+          message: "Completed", duration: Duration(milliseconds: 800));
     }
   }
 
@@ -152,7 +158,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   _bubbleSort() async {
-    mainFlow: for (int i = 0; i < _numbers.length; ++i) {
+    mainFlow:
+    for (int i = 0; i < _numbers.length; ++i) {
       for (int j = 0; j < _numbers.length - i - 1; ++j) {
         if (_numbers[j] > _numbers[j + 1]) {
           int temp = _numbers[j];
@@ -268,18 +275,18 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   onCustomBtnClick() async {
     var dialogResponse = await _dialogService.showCustomDialog(
-      variant: DialogType.CUSTOM_INPUT,
-      title: "Provide elements of the Array",
-      description: "Example: 23, 45, 98, 67",
-      mainButtonTitle: "Submit",
-      secondaryButtonTitle: "Cancel",
-      barrierDismissible: false
-    );
+        variant: DialogType.CUSTOM_INPUT,
+        title: "Provide elements of the Array",
+        description: "Example: 23, 45, 98, 67",
+        mainButtonTitle: "Submit",
+        secondaryButtonTitle: "Cancel",
+        barrierDismissible: false);
 
-    if (dialogResponse != null && dialogResponse.confirmed && dialogResponse.responseData.toString().isNotEmpty) {
-
+    if (dialogResponse != null &&
+        dialogResponse.confirmed &&
+        dialogResponse.responseData.toString().isNotEmpty) {
       List<String> responseArray =
-      dialogResponse.responseData.toString().split(",");
+          dialogResponse.responseData.toString().split(",");
       List<int> inputArray = [];
       bool flag = true;
 
@@ -331,14 +338,25 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   changeArraySize() async {
+    if (isSorting) {
+      _snackBarService.showSnackbar(
+          message: "Sorting in progress...",
+          duration: Duration(milliseconds: 700));
+      return;
+    }
     var dialogResponse = await _dialogService.showCustomDialog(
         variant: DialogType.CUSTOM_ARRAY_SIZE,
         title: "Provide size of the Array",
         description: "1 < Input < 500",
         mainButtonTitle: "Submit",
         secondaryButtonTitle: "Cancel",
-        barrierDismissible: false
-    );
+        barrierDismissible: false);
 
+    if (dialogResponse != null &&
+        dialogResponse.confirmed &&
+        dialogResponse.responseData.toString().isNotEmpty) {
+      _sampleSize = int.parse(dialogResponse.responseData.toString());
+      reset();
+    }
   }
 }
