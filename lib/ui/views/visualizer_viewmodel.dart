@@ -124,10 +124,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       isSorting = true;
       notifyListeners();
 
-      if (_algorithmType == AlgorithmType.BUBBLE_SORT) {
+      if (_algorithmType == AlgorithmType.BUBBLE_SORT)
         await _bubbleSort();
-      } else if (_algorithmType == AlgorithmType.MERGE_SORT)
+      else if (_algorithmType == AlgorithmType.MERGE_SORT)
         await _mergeSort(0, _sampleSize - 1);
+      else if (_algorithmType == AlgorithmType.QUICK_SORT)
+        await _quickSort(0, _sampleSize.toInt() - 1);
 
       _stopWatch.stop();
       isSorting = false;
@@ -172,6 +174,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     return _sortingHistoryList;
   }
 
+  /// BUBBLE SORT IMPLEMENTATION
   _bubbleSort() async {
     mainFlow:
     for (int i = 0; i < _numbers.length; ++i) {
@@ -192,6 +195,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
+  /// MERGE SORT IMPLEMENTATION
   _mergeSort(int leftIndex, int rightIndex) async {
     Future<void> merge(int leftIndex, int middleIndex, int rightIndex) async {
       int leftSize = middleIndex - leftIndex + 1;
@@ -262,6 +266,68 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       _streamController.add(_numbers);
 
       await merge(leftIndex, middleIndex, rightIndex);
+    }
+  }
+
+  /// QUICK SORT IMPLEMENTATION
+  _quickSort(int leftIndex, int rightIndex) async {
+    Future<int> _partition(int left, int right) async {
+      int p = (left + (right - left) / 2).toInt();
+
+      var temp = _numbers[p];
+      _numbers[p] = _numbers[right];
+      _numbers[right] = temp;
+
+      _chkValueIdx = p;
+      if (!isSorting) return -1;
+      await Future.delayed(_getDuration(), () {});
+      _streamController.add(_numbers);
+
+      int cursor = left;
+      for (int i = left; i < right; i++) {
+        _totalComparisons++;
+        if (compare(_numbers[i], _numbers[right]) <= 0) {
+          var temp = _numbers[i];
+          _numbers[i] = _numbers[cursor];
+          _numbers[cursor] = temp;
+          cursor++;
+
+          _chkValueIdx = i;
+          if (!isSorting) return -1;
+          await Future.delayed(_getDuration(), () {});
+          _streamController.add(_numbers);
+        }
+      }
+
+      temp = _numbers[right];
+      _numbers[right] = _numbers[cursor];
+      _numbers[cursor] = temp;
+
+      _chkValueIdx = right;
+      if (!isSorting) return -1;
+      await Future.delayed(_getDuration(), () {});
+      _streamController.add(_numbers);
+
+      return cursor;
+    }
+
+    if (leftIndex < rightIndex) {
+      _totalComparisons++;
+      if (!isSorting) return;
+      int p = await _partition(leftIndex, rightIndex);
+      if (p == -1) return;
+      await _quickSort(leftIndex, p - 1);
+      await _quickSort(p + 1, rightIndex);
+    }
+  }
+
+  compare(int a, int b) {
+    if (a < b) {
+      return -1;
+    } else if (a > b) {
+      return 1;
+    } else {
+      return 0;
     }
   }
 
