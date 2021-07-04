@@ -144,6 +144,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await _mergeSort(0, _sampleSize - 1);
       else if (_algorithmType == AlgorithmType.QUICK_SORT)
         await _quickSort(0, _sampleSize.toInt() - 1);
+      else if (_algorithmType == AlgorithmType.SELECTION_SORT)
+        await _selectionSort();
 
       _stopWatch.stop();
       isSorting = false;
@@ -350,6 +352,25 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       return 1;
     } else {
       return 0;
+    }
+  }
+
+  /// SELECTION SORT IMPLEMENTATION
+  _selectionSort() async {
+    mainFlow: for (int i = 0; i < _numbers.length; i++) {
+      for (int j = i + 1; j < _numbers.length; j++) {
+        if (_numbers[i] > _numbers[j]) {
+          int temp = _numbers[i];
+          _numbers[i] = _numbers[j];
+          _numbers[j] = temp;
+        }
+
+        if (!isSorting) break mainFlow;
+        _totalComparisons++;
+        _chkValueIdx = j;
+        await Future.delayed(_getDuration());
+        _streamController.add(_numbers);
+      }
     }
   }
 
