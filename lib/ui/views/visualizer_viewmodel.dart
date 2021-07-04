@@ -92,16 +92,24 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     return _streamController;
   }
 
-  reset() {
+  reset({List<int> customNumbers}) {
     if (isSorting) {
       _snackBarService.showSnackbar(message: "Sorting in Progress...");
       return;
     }
     _numbers = [];
-    for (int i = 0; i < _sampleSize; ++i) {
-      int rndNum = Random().nextInt(_maxNumber.toInt());
-      if (rndNum < 10) rndNum += 10; // Just for UI Purpose
-      _numbers.add(rndNum);
+
+    if (customNumbers != null && customNumbers.isNotEmpty) {
+      customNumbers.forEach((num) {
+        _numbers.add(num);
+      });
+    }
+    else {
+      for (int i = 0; i < _sampleSize; ++i) {
+        int rndNum = Random().nextInt(_maxNumber.toInt());
+        if (rndNum < 10) rndNum += 10; // Just for UI Purpose
+        _numbers.add(rndNum);
+      }
     }
 
     _streamController.add(_numbers);
@@ -391,13 +399,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           : _snackBarService.showSnackbar(message: "Your Array: $inputArray");
 
       if (inputArray.isNotEmpty) {
-        _numbers = inputArray;
-        _sampleSize = _numbers.length;
-        // _numbers.forEach((num) {
-        //   if (_maxNumber < num) {
-        //     _maxNumber = num;
-        //   }
-        // });
+        _sampleSize = inputArray.length;
+        reset(customNumbers: inputArray);
         notifyListeners();
       }
     }
