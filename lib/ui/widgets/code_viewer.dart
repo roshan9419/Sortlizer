@@ -69,10 +69,10 @@ class _CodeViewerState extends State<CodeViewer> {
             children: [
               Text(
                 widget.codeContent,
-                style: Theme.of(context)
-                    .textTheme
-                    .subtitle2
-                    .copyWith(color: isDark ? Colors.white : Colors.black87),
+                style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    color: isDark ? Colors.white : Colors.black87,
+                    fontFamily: 'Arial',
+                    fontWeight: FontWeight.normal),
               ),
               Positioned(
                   top: 0,

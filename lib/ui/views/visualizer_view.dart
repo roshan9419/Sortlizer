@@ -163,7 +163,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        for (int i = 1; i <= model.speeds.length; i++)
+                        for (int i = 1; i <= 5; i++)
                           Text(
                             '${i}x',
                             style: Theme.of(context)
@@ -177,7 +177,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   height: 30,
                   child: Slider(
                       value: model.sortingSpeed,
-                      divisions: 4,
+                      divisions: 10,
                       onChanged: (val) {
                         print('Value Changed: $val');
                         model.updateSpeed(val);

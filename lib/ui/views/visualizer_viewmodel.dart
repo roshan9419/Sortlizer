@@ -56,14 +56,20 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isContentExpanded = false;
   bool isFirstTime = true;
 
-  var _currentDrnIdx = 0;
-  List<Duration> speeds = [
+  // var _currentDrnIdx = 0;
+
+  /*List<Duration> speeds = [
+    Duration(milliseconds: 250),
+    Duration(milliseconds: 200),
+    Duration(milliseconds: 180),
+    Duration(milliseconds: 130),
+    Duration(milliseconds: 80),
     Duration(milliseconds: 50),
     Duration(milliseconds: 30),
     Duration(milliseconds: 20),
     Duration(milliseconds: 10),
-    Duration(milliseconds: 5)
-  ];
+    Duration(milliseconds: 5),
+  ];*/
 
   StreamController<List<int>> _streamController;
 
@@ -157,17 +163,25 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   updateSpeed(double value) {
-    if (value == 0.0) _currentDrnIdx = 0;
-    if (value == 0.25) _currentDrnIdx = 1;
-    if (value == 0.5) _currentDrnIdx = 2;
-    if (value == 0.75) _currentDrnIdx = 3;
-    if (value == 1.0) _currentDrnIdx = 4;
+ /*   if (value == 0.0) _currentDrnIdx = 0;
+    if (value == 0.0) _currentDrnIdx = 1;
+    if (value == 0.0) _currentDrnIdx = 2;
+    if (value == 0.0) _currentDrnIdx = 3;
+    if (value == 0.0) _currentDrnIdx = 4;
+    if (value == 0.0) _currentDrnIdx = 5;
+    if (value == 0.25) _currentDrnIdx = 6;
+    if (value == 0.5) _currentDrnIdx = 7;
+    if (value == 0.75) _currentDrnIdx = 8;
+    if (value == 1.0) _currentDrnIdx = 9;*/
+
+    //5, 10, 30,
     _sortingSpeed = value;
+    print(150 - _sortingSpeed * 145);
     notifyListeners();
   }
 
   Duration _getDuration() {
-    return speeds[_currentDrnIdx];
+    return Duration(milliseconds: (150 - _sortingSpeed * 145).toInt());//speeds[_currentDrnIdx];
   }
 
   getGlobalKey() {
