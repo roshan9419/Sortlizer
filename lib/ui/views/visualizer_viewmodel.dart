@@ -51,25 +51,14 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   int get totalComparisons => _totalComparisons;
 
+  double _sliderValue = 0;
+
+  double get sliderValue => _sliderValue;
+
   bool isLoading = true;
   bool isSorting = false;
   bool isContentExpanded = false;
   bool isFirstTime = true;
-
-  // var _currentDrnIdx = 0;
-
-  /*List<Duration> speeds = [
-    Duration(milliseconds: 250),
-    Duration(milliseconds: 200),
-    Duration(milliseconds: 180),
-    Duration(milliseconds: 130),
-    Duration(milliseconds: 80),
-    Duration(milliseconds: 50),
-    Duration(milliseconds: 30),
-    Duration(milliseconds: 20),
-    Duration(milliseconds: 10),
-    Duration(milliseconds: 5),
-  ];*/
 
   StreamController<List<int>> _streamController;
 
@@ -100,7 +89,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   reset({List<int> customNumbers}) {
     if (isSorting) {
-      _snackBarService.showSnackbar(message: "Sorting in Progress...");
+      _snackBarService.showSnackbar(message: "Sorting in Progress...", duration: Duration(milliseconds: 800));
       return;
     }
     _numbers = [];
@@ -113,7 +102,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     else {
       for (int i = 0; i < _sampleSize; ++i) {
         int rndNum = Random().nextInt(_maxNumber.toInt());
-        if (rndNum < 10) rndNum += 10; // Just for UI Purpose
+        if (rndNum < 10) rndNum += 20; // Just for UI Purpose
         _numbers.add(rndNum);
       }
     }
@@ -159,31 +148,21 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           totalComparisons: _totalComparisons));
 
       notifyListeners();
-      _snackBarService.showSnackbar(
-          message: "Completed", duration: Duration(milliseconds: 800));
+      // _snackBarService.showSnackbar(
+      //     message: "Completed", duration: Duration(milliseconds: 800));
     }
   }
 
   updateSpeed(double value) {
- /*   if (value == 0.0) _currentDrnIdx = 0;
-    if (value == 0.0) _currentDrnIdx = 1;
-    if (value == 0.0) _currentDrnIdx = 2;
-    if (value == 0.0) _currentDrnIdx = 3;
-    if (value == 0.0) _currentDrnIdx = 4;
-    if (value == 0.0) _currentDrnIdx = 5;
-    if (value == 0.25) _currentDrnIdx = 6;
-    if (value == 0.5) _currentDrnIdx = 7;
-    if (value == 0.75) _currentDrnIdx = 8;
-    if (value == 1.0) _currentDrnIdx = 9;*/
-
-    //5, 10, 30,
-    _sortingSpeed = value;
-    print(150 - _sortingSpeed * 145);
+    // 200ms, 180ms, 160ms, 140ms, 120ms, 100ms, 80ms, 60ms, 40ms, 20ms, 0ms
+    _sliderValue = value;
+    _sortingSpeed = 150 - value * 149;
+    print('VAL => $value | Speed => $sortingSpeed');
     notifyListeners();
   }
 
   Duration _getDuration() {
-    return Duration(milliseconds: (150 - _sortingSpeed * 145).toInt());//speeds[_currentDrnIdx];
+    return Duration(milliseconds: _sortingSpeed.toInt());//speeds[_currentDrnIdx];
   }
 
   getGlobalKey() {
@@ -398,10 +377,17 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   onCustomBtnClick() async {
+    if (isSorting) {
+      _snackBarService.showSnackbar(
+          message: "Sorting in progress...",
+          duration: Duration(milliseconds: 700));
+      return;
+    }
+
     var dialogResponse = await _dialogService.showCustomDialog(
         variant: DialogType.CUSTOM_INPUT,
         title: "Provide elements of the Array",
-        description: "Example: 23, 45, 98, 67 (Max - 500)",
+        description: "Example: 23, 45, 98, 67 (Max - $_maxNumber)",
         mainButtonTitle: "Submit",
         secondaryButtonTitle: "Cancel",
         barrierDismissible: false);
@@ -417,7 +403,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       responseArray.forEach((element) {
         try {
           var num = int.parse(element.trim());
-          if (num > 500)
+          if (num > _maxNumber)
             flag = false;
           else
             inputArray.add(num);
@@ -429,7 +415,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       !flag
           ? _snackBarService.showSnackbar(
               message: "Your Array: $inputArray",
-              title: "Elements greater than 500 are not added",
+              title: "Elements greater than $_maxNumber are not added",
               duration: Duration(milliseconds: 3000))
           : _snackBarService.showSnackbar(message: "Your Array: $inputArray");
 

@@ -176,10 +176,9 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                 Container(
                   height: 30,
                   child: Slider(
-                      value: model.sortingSpeed,
+                      value: model.sliderValue,
                       divisions: 10,
                       onChanged: (val) {
-                        print('Value Changed: $val');
                         model.updateSpeed(val);
                       }),
                 ),
