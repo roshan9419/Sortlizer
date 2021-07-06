@@ -129,8 +129,8 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
   Widget _buildBottomCommandCenter(
       BuildContext context, VisualizerViewModel model) {
     return DraggableScrollableSheet(
-      initialChildSize: !model.isContentExpanded ? 0.23 : 0.9,
-      minChildSize: 0.23,
+      initialChildSize: !model.isContentExpanded ? 0.22 : 0.9,
+      minChildSize: 0.22,
       expand: true,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(

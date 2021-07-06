@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
@@ -39,7 +40,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   int get maxNumber => _maxNumber;
 
-  double _sortingSpeed = 0.0;
+  double _sortingSpeed = 150;
 
   double get sortingSpeed => _sortingSpeed;
 
@@ -51,7 +52,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   int get totalComparisons => _totalComparisons;
 
-  double _sliderValue = 0;
+  double _sliderValue = 0.0;
 
   double get sliderValue => _sliderValue;
 
@@ -61,6 +62,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isFirstTime = true;
 
   StreamController<List<int>> _streamController;
+  AudioPlayer _audioPlayer;
 
   @override
   Future<StreamController<List<int>>> futureToRun() async {
@@ -75,11 +77,14 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     reset();
     isLoading = false;
     notifyListeners();
+    _audioPlayer = AudioPlayer();
+    _audioPlayer.setAsset('assets/audios/sort_sound.mp3');
   }
 
   @override
   void dispose() {
     _streamController.close();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -114,6 +119,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   onActionBtn() async {
+    _audioPlayer.play();
     isFirstTime = false;
     if (isArraySorted()) {
       _snackBarService.showSnackbar(message: "Array already sorted!");
