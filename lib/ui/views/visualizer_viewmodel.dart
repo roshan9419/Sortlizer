@@ -62,7 +62,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isFirstTime = true;
 
   StreamController<List<int>> _streamController;
-  AudioPlayer _audioPlayer;
+  // AudioPlayer _audioPlayer;
 
   @override
   Future<StreamController<List<int>>> futureToRun() async {
@@ -77,14 +77,19 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     reset();
     isLoading = false;
     notifyListeners();
-    _audioPlayer = AudioPlayer();
-    _audioPlayer.setAsset('assets/audios/sort_sound.mp3');
+    // _audioPlayer = AudioPlayer();
+    // _audioPlayer.setAsset('assets/audios/sort_sound.mp3');
+  }
+
+  playAudio() {
+    // var audioFile = 'assets/audio/sort_sound.mp3';
+    // _audioPlayer.play();
   }
 
   @override
   void dispose() {
     _streamController.close();
-    _audioPlayer.dispose();
+    // _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -119,7 +124,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   onActionBtn() async {
-    _audioPlayer.play();
     isFirstTime = false;
     if (isArraySorted()) {
       _snackBarService.showSnackbar(message: "Array already sorted!");
@@ -196,6 +200,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
         if (!isSorting) break mainFlow;
         _totalComparisons++;
+        // playAudio();
         await Future.delayed(_getDuration(), () {});
 
         _chkValueIdx = j;

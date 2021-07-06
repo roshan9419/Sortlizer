@@ -40,6 +40,10 @@ class _CodeViewerState extends State<CodeViewer> {
     });
   }
 
+  List<String> contentList() {
+    return widget.codeContent.split("\n");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -58,6 +62,7 @@ class _CodeViewerState extends State<CodeViewer> {
           ),
         Container(
           width: double.infinity,
+          padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: isDark
                   ? atomOneDarkTheme['root'].backgroundColor
@@ -78,15 +83,26 @@ class _CodeViewerState extends State<CodeViewer> {
               borderRadius: BorderRadius.all(Radius.circular(5))),
           child: Stack(
             children: [
-              HighlightView(
-                widget.codeContent,
-                language: 'cpp',
-                theme: isDark ? atomOneDarkTheme : monoBlueTheme,
-                padding: EdgeInsets.all(10),
-                textStyle: TextStyle(
-                  fontFamily: 'Arial',
-                  fontSize: 16,
-                ),
+              Column(
+                children: [
+                  for (int i = 0; i < contentList().length; i += 70)
+                    HighlightView(
+                      contentList()
+                          .sublist(
+                              i,
+                              i + 70 > contentList().length
+                                  ? contentList().length - 1
+                                  : i + 70)
+                          .join("\n"),
+                      language: 'cpp',
+                      theme: isDark ? atomOneDarkTheme : monoBlueTheme,
+                      padding: EdgeInsets.all(10),
+                      textStyle: TextStyle(
+                        fontFamily: 'Arial',
+                        fontSize: 16,
+                      ),
+                    ),
+                ],
               ),
               Positioned(
                   top: 0,
