@@ -1,6 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:flutter_highlight/themes/a11y-dark.dart';
+import 'package:flutter_highlight/themes/atelier-forest-dark.dart';
+import 'package:flutter_highlight/themes/atom-one-dark-reasonable.dart';
+import 'package:flutter_highlight/themes/atom-one-dark.dart';
+import 'package:flutter_highlight/themes/dark.dart';
+import 'package:flutter_highlight/themes/github.dart';
+import 'package:flutter_highlight/themes/kimbie.dark.dart';
+import 'package:flutter_highlight/themes/mono-blue.dart';
+import 'package:flutter_highlight/themes/solarized-dark.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 
 class CodeViewer extends StatefulWidget {
@@ -49,7 +59,9 @@ class _CodeViewerState extends State<CodeViewer> {
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
-              color: isDark ? Color(0xff2B2B2B) : Colors.white,
+              color: isDark
+                  ? atomOneDarkTheme['root'].backgroundColor
+                  : monoBlueTheme['root'].backgroundColor,
               border: Border.all(color: Colors.grey),
               boxShadow: [
                 BoxShadow(
@@ -64,15 +76,17 @@ class _CodeViewerState extends State<CodeViewer> {
                     blurRadius: 10)
               ],
               borderRadius: BorderRadius.all(Radius.circular(5))),
-          padding: EdgeInsets.all(10),
           child: Stack(
             children: [
-              Text(
+              HighlightView(
                 widget.codeContent,
-                style: Theme.of(context).textTheme.subtitle2.copyWith(
-                    color: isDark ? Colors.white : Colors.black87,
-                    fontFamily: 'Arial',
-                    fontWeight: FontWeight.normal),
+                language: 'cpp',
+                theme: isDark ? atomOneDarkTheme : monoBlueTheme,
+                padding: EdgeInsets.all(10),
+                textStyle: TextStyle(
+                  fontFamily: 'Arial',
+                  fontSize: 16,
+                ),
               ),
               Positioned(
                   top: 0,
