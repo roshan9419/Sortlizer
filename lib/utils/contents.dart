@@ -174,7 +174,7 @@ void merge(int array[], int const left, int const mid, int const right)
 void mergeSort(int array[], int const begin, int const end)
 {
     if (begin >= end)
-        return; // Returns recursivly
+        return; // Returns recursively
 
     auto mid = begin + (end - begin) / 2;
     mergeSort(array, begin, mid);

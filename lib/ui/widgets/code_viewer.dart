@@ -99,7 +99,7 @@ class _CodeViewerState extends State<CodeViewer> {
                       padding: EdgeInsets.all(10),
                       textStyle: TextStyle(
                         fontFamily: 'Arial',
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                     ),
                 ],
