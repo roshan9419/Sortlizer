@@ -66,6 +66,8 @@ class DataContent {
         return bubbleSortCode();
       case AlgorithmType.MERGE_SORT:
         return mergeSortCode();
+      case AlgorithmType.BOGO_SORT:
+        return bogoSortCode();
       default:
         return "";
     }
@@ -209,6 +211,31 @@ int main()
     printArray(arr, arr_size);
     return 0;
 }
+    """;
+  }
+
+  String bogoSortCode() {
+    return """
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+  int n;
+  cout << "Size of the array: ";
+  cin >> n;
+  
+  int arr[n];
+  for (int i = 0; i < n; i++)
+    cin >> arr[i];
+    
+  while (!isArraySorted(arr, n)) {
+    shuffleArray(arr);
+  }
+  
+  //Print Array
+  return 0;
+}
+
     """;
   }
 }
