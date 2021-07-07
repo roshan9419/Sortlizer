@@ -8,7 +8,8 @@ class DataContent {
     AlgorithmType.INSERTION_SORT: "Insertion Sort",
     AlgorithmType.SELECTION_SORT: "Selection Sort",
     AlgorithmType.MERGE_SORT: "Merge Sort",
-    AlgorithmType.QUICK_SORT: "Quick Sort"
+    AlgorithmType.QUICK_SORT: "Quick Sort",
+    AlgorithmType.BOGO_SORT: "Bogo Sort",
   };
 
   String getAlgorithmTitle(AlgorithmType type) {
@@ -37,6 +38,8 @@ class DataContent {
           "Merge Sort is a Divide and Conquer algorithm. It divides the input array into two halves, calls itself for the two halves, and then merges the two sorted halves. The merge() function is used for merging two halves. The merge(arr, l, m, r) is a key process that assumes that arr[l..m] and arr[m+1..r] are sorted and merges the two sorted sub-arrays into one.",
       AlgorithmType.QUICK_SORT:
           " QuickSort is a Divide and Conquer algorithm. It picks an element as pivot and partitions the given array around the picked pivot.",
+      AlgorithmType.BOGO_SORT:
+          "BogoSort also known as permutation sort, stupid sort, slow sort, shotgun sort or monkey sort is a particularly ineffective algorithm based on generate and test paradigm. The algorithm successively generates permutations of its input until it finds one that is sorted."
     };
 
     return algoDesc.containsKey(type) ? algoDesc[type] : "N.A";
@@ -50,6 +53,7 @@ class DataContent {
       AlgorithmType.SELECTION_SORT: ["O(n²)", "O(n²)", "O(n²)"],
       AlgorithmType.MERGE_SORT: ["O(nlogn)", "O(nlogn)", "O(nlogn)"],
       AlgorithmType.QUICK_SORT: ["O(n²)", "O(nlgon)", "O(nlogn)"],
+      AlgorithmType.BOGO_SORT: ["O(∞)", "O(n*n!)", "O(n)"],
     };
     return complexities.containsKey(type)
         ? complexities[type]

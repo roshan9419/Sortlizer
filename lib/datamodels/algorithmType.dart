@@ -3,7 +3,8 @@ enum AlgorithmType {
   INSERTION_SORT,
   SELECTION_SORT,
   MERGE_SORT,
-  QUICK_SORT
+  QUICK_SORT,
+  BOGO_SORT
 }
 
 String getAlgoTypeName(AlgorithmType type) {

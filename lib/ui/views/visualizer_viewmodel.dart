@@ -144,6 +144,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         case AlgorithmType.QUICK_SORT:
           await _quickSort(0, _sampleSize.toInt() - 1);
           break;
+        case AlgorithmType.BOGO_SORT:
+          await _bogoSort();
+          break;
       }
 
       _stopWatch.stop();
@@ -382,6 +385,18 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _streamController.add(_numbers);
       }
       _numbers[j + 1] = temp;
+    }
+  }
+
+  /// BOGO SORT
+  _bogoSort() async {
+    while(!isArraySorted()) {
+      _numbers.shuffle();
+      if (!isSorting) break;
+      _totalComparisons++;
+      _chkValueIdx = Random().nextInt(_numbers.length);
+      await Future.delayed(_getDuration());
+      _streamController.add(_numbers);
     }
   }
 
