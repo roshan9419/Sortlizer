@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
@@ -90,7 +89,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   reset({List<int> customNumbers}) {
     if (isSorting) {
-      _snackBarService.showSnackbar(message: "Sorting in Progress...", duration: Duration(milliseconds: 800));
+      _snackBarService.showSnackbar(
+          message: "Sorting in Progress...",
+          duration: Duration(milliseconds: 800));
       return;
     }
     _numbers = [];
@@ -99,8 +100,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       customNumbers.forEach((num) {
         _numbers.add(num);
       });
-    }
-    else {
+    } else {
       for (int i = 0; i < _sampleSize; ++i) {
         int rndNum = Random().nextInt(_maxNumber.toInt());
         if (rndNum < 10) rndNum += 20; // Just for UI Purpose
@@ -128,14 +128,23 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       isSorting = true;
       notifyListeners();
 
-      if (_algorithmType == AlgorithmType.BUBBLE_SORT)
-        await _bubbleSort();
-      else if (_algorithmType == AlgorithmType.MERGE_SORT)
-        await _mergeSort(0, _sampleSize - 1);
-      else if (_algorithmType == AlgorithmType.QUICK_SORT)
-        await _quickSort(0, _sampleSize.toInt() - 1);
-      else if (_algorithmType == AlgorithmType.SELECTION_SORT)
-        await _selectionSort();
+      switch (_algorithmType) {
+        case AlgorithmType.BUBBLE_SORT:
+          await _bubbleSort();
+          break;
+        case AlgorithmType.INSERTION_SORT:
+          await _insertionSort();
+          break;
+        case AlgorithmType.SELECTION_SORT:
+          await _selectionSort();
+          break;
+        case AlgorithmType.MERGE_SORT:
+          await _mergeSort(0, _sampleSize - 1);
+          break;
+        case AlgorithmType.QUICK_SORT:
+          await _quickSort(0, _sampleSize.toInt() - 1);
+          break;
+      }
 
       _stopWatch.stop();
       isSorting = false;
@@ -163,7 +172,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   Duration _getDuration() {
-    return Duration(milliseconds: _sortingSpeed.toInt());//speeds[_currentDrnIdx];
+    return Duration(
+        milliseconds: _sortingSpeed.toInt()); //speeds[_currentDrnIdx];
   }
 
   getGlobalKey() {
@@ -337,7 +347,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   /// SELECTION SORT IMPLEMENTATION
   _selectionSort() async {
-    mainFlow: for (int i = 0; i < _numbers.length; i++) {
+    mainFlow:
+    for (int i = 0; i < _numbers.length; i++) {
       for (int j = i + 1; j < _numbers.length; j++) {
         if (_numbers[i] > _numbers[j]) {
           int temp = _numbers[i];
@@ -351,6 +362,26 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await Future.delayed(_getDuration());
         _streamController.add(_numbers);
       }
+    }
+  }
+
+  /// INSERTION SORT IMPLEMENTATION
+  _insertionSort() async {
+    mainFlow:
+    for (int i = 1; i < _numbers.length; i++) {
+      int temp = _numbers[i];
+      int j = i - 1;
+      while (j >= 0 && temp < _numbers[j]) {
+        _numbers[j + 1] = _numbers[j];
+        j--;
+
+        if (!isSorting) break mainFlow;
+        _totalComparisons++;
+        _chkValueIdx = j;
+        await Future.delayed(_getDuration());
+        _streamController.add(_numbers);
+      }
+      _numbers[j + 1] = temp;
     }
   }
 
