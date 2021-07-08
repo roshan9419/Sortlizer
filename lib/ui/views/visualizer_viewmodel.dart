@@ -61,6 +61,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isSorting = false;
   bool isContentExpanded = false;
   bool isFirstTime = true;
+  bool isSoundEnable = false;
 
   StreamController<List<int>> _streamController;
   Soundpool _soundpool;
@@ -86,7 +87,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   playSound() async {
-    await _soundpool.play(_soundId);
+    if (this.isSoundEnable) await _soundpool.play(_soundId);
   }
 
   @override
@@ -539,5 +540,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       _sampleSize = int.parse(dialogResponse.responseData.toString());
       reset();
     }
+  }
+
+  onSwitchAction(bool value) {
+    this.isSoundEnable = value;
+    notifyListeners();
   }
 }

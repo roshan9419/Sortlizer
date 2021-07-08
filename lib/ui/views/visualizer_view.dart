@@ -35,6 +35,8 @@ class VisualizerView extends StatelessWidget {
             menuItemsList: model.getAlgorithmsList(),
             selectedValue: model.getTitle(),
             onTap: model.onMenuItemClick,
+            isSoundEnable: model.isSoundEnable,
+            onSwitchAction: model.onSwitchAction
           ),
           backgroundColor: Colors.transparent,
           body: Stack(

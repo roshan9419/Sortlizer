@@ -5,9 +5,16 @@ class MenuDrawer extends StatelessWidget {
   final List<String> menuItemsList;
   final String selectedValue;
   final Function(String) onTap;
+  final Function(bool) onSwitchAction;
+  final bool isSoundEnable;
 
   const MenuDrawer(
-      {Key key, @required this.menuItemsList, this.selectedValue, this.onTap})
+      {Key key,
+      @required this.menuItemsList,
+      this.selectedValue,
+      this.onTap,
+      this.onSwitchAction,
+      this.isSoundEnable})
       : super(key: key);
 
   @override
@@ -20,31 +27,57 @@ class MenuDrawer extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [darkBackgroundStart, darkBackgroundFinish])),
-        child: ListView.builder(
-            itemCount: menuItemsList.length,
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              String value = menuItemsList[index];
-              return ListTile(
-                onTap: () async {
-                  onTap(value);
-                  await Future.delayed(Duration(milliseconds: 50), () {});
-                  Navigator.pop(context);
-                },
-                tileColor: selectedValue == value
-                    ? Theme.of(context).primaryColor
-                    : Colors.transparent,
-                title: Text(
-                  value,
-                  style: Theme.of(context).textTheme.subtitle2.copyWith(
-                      color: selectedValue == value
-                          ? Colors.white
-                          : lightGrayColor,
-                    fontFamily: 'Arial'
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                  itemCount: menuItemsList.length,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    String value = menuItemsList[index];
+                    return ListTile(
+                      onTap: () async {
+                        onTap(value);
+                        await Future.delayed(Duration(milliseconds: 50), () {});
+                        Navigator.pop(context);
+                      },
+                      tileColor: selectedValue == value
+                          ? Theme.of(context).primaryColor
+                          : Colors.transparent,
+                      title: Text(
+                        value,
+                        style: Theme.of(context).textTheme.subtitle2.copyWith(
+                            color: selectedValue == value
+                                ? Colors.white
+                                : lightGrayColor,
+                            fontFamily: 'Arial'),
+                      ),
+                    );
+                  }),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 10),
+                  child: Text(
+                    'Sorting Sounds ?',
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        .copyWith(color: Colors.white),
                   ),
                 ),
-              );
-            }),
+                Switch(
+                  value: this.isSoundEnable,
+                  onChanged: (val) => this.onSwitchAction(val),
+                  activeColor: Theme.of(context).primaryColor,
+                  inactiveTrackColor: Colors.grey[800]
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
