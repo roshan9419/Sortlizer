@@ -76,32 +76,29 @@ class DataContent {
 #include <bits/stdc++.h>
 using namespace std;
 
-void bubbleSort(int arr[], int n)
-{
+void bubbleSort(int arr[], int n) {
   for (int i = 0; i < n-1; i++) // n times
     for (int j = 0; j < n-i-1; j++) // n times
       if (arr[j] > arr[j+1])
         swap(arr[j], arr[j+1]);
 }
 
-void printArray(int arr[], int n)
-{
+void print(int arr[], int n) {
   for (int i = 0; i < n; i++)
     cout << arr[i] << " ";
 }
 
-int main()
-{
+int main() {
   int arr[] = {10, 20, 10, 90, 30, 80, 70};
   int n = sizeof(arr) / sizeof(arr[0]);
   
   cout << "Before Sorting: ";
-  printArray(arr, n);
+  print(arr, n);
   
   bubbleSort(arr, n);
   
   cout << "\\nAfter Sorting: ";
-  printArray(arr, n);
+  print(arr, n);
   
   return 0;
 }
@@ -110,96 +107,51 @@ int main()
 
   String mergeSortCode() {
     return """
-// C++ program for Merge Sort
-#include <iostream>
+#include<bits/stdc++.h>
 using namespace std;
 
-// Merges two subarrays of array[].
-// First subarray is arr[begin..mid]
-// Second subarray is arr[mid+1..end]
-void merge(int array[], int const left, int const mid, int const right)
-{
-    auto const subArrayOne = mid - left + 1;
-    auto const subArrayTwo = right - mid;
+void merge(int a[], int L[], int R[], int nl, int nr) {
+	int i=0, j=0, k=0;
 
-    // Create temp arrays
-    auto *leftArray = new int[subArrayOne],
-         *rightArray = new int[subArrayTwo];
+	while(i < nl && j < nr) {
+		if(L[i] <= R[j]) a[k++] = L[i++];
+		else a[k++] = R[j++];
+	}
 
-    // Copy data to temp arrays leftArray[] and rightArray[]
-    for (auto i = 0; i < subArrayOne; i++)
-        leftArray[i] = array[left + i];
-    for (auto j = 0; j < subArrayTwo; j++)
-        rightArray[j] = array[mid + 1 + j];
-
-    auto indexOfSubArrayOne = 0, // Initial index of first sub-array
-        indexOfSubArrayTwo = 0; // Initial index of second sub-array
-    int indexOfMergedArray = left; // Initial index of merged array
-
-    // Merge the temp arrays back into array[left..right]
-    while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo) {
-        if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo]) {
-            array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-            indexOfSubArrayOne++;
-        }
-        else {
-            array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-            indexOfSubArrayTwo++;
-        }
-        indexOfMergedArray++;
-    }
-    // Copy the remaining elements of
-    // left[], if there are any
-    while (indexOfSubArrayOne < subArrayOne) {
-        array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-        indexOfSubArrayOne++;
-        indexOfMergedArray++;
-    }
-    // Copy the remaining elements of
-    // left[], if there are any
-    while (indexOfSubArrayTwo < subArrayTwo) {
-        array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-        indexOfSubArrayTwo++;
-        indexOfMergedArray++;
-    }
+	while(i<nl) a[k++] = L[i++];
+	while(j<nr) a[k++] = R[j++];
 }
 
-// begin is for left index and end is
-// right index of the sub-array
-// of arr to be sorted */
-void mergeSort(int array[], int const begin, int const end)
-{
-    if (begin >= end)
-        return; // Returns recursively
-
-    auto mid = begin + (end - begin) / 2;
-    mergeSort(array, begin, mid);
-    mergeSort(array, mid + 1, end);
-    merge(array, begin, mid, end);
+void mergeSort(int a[], int n) {
+	if(n == 1) return;
+	int mid = n/2;
+	int L[mid], R[n-mid];
+	
+	for(int i=0; i <= mid; i++) L[i] = a[i];
+	for(int i=mid; i < n; i++) R[i-mid] = a[i];
+	mergeSort(L, mid);
+	mergeSort(R, n-mid);
+	merge(a, L, R, mid, n-mid);
 }
 
-// UTILITY FUNCTIONS
-// Function to print an array
-void printArray(int A[], int size)
-{
-    for (auto i = 0; i < size; i++)
-        cout << A[i] << " ";
+void print(int arr[], int n) {
+	for(int i=0; i<n; i++)
+		cout << arr[i] << " ";
 }
 
-// Driver code
-int main()
-{
-    int arr[] = { 12, 11, 13, 5, 6, 7 };
-    auto arr_size = sizeof(arr) / sizeof(arr[0]);
-
-    cout << "Given array is \\n";
-    printArray(arr, arr_size);
-
-    mergeSort(arr, 0, arr_size - 1);
-
-    cout << "\\nSorted array is \\n";
-    printArray(arr, arr_size);
-    return 0;
+int main() {
+	int arr[10] = {12, 42, 32, 4, 2, 55, 32, 56, 23};
+	int n = sizeof(arr) / sizeof(arr[0]);
+	
+	cout << "Before Sorting: ";
+	print(arr, n);
+	
+	mergeSort(arr, n);
+	
+	cout << "\\nAfter Sorting: ";
+	print(arr, n);
+	
+	return 0;
 }
     """;
   }
