@@ -62,6 +62,10 @@ class DataContent {
     switch (type) {
       case AlgorithmType.BUBBLE_SORT:
         return bubbleSortCode();
+      case AlgorithmType.INSERTION_SORT:
+        return insertionSortCode();
+      case AlgorithmType.SELECTION_SORT:
+        return selectionSortCode();
       case AlgorithmType.MERGE_SORT:
         return mergeSortCode();
       case AlgorithmType.QUICK_SORT:
@@ -105,6 +109,51 @@ int main() {
   return 0;
 }
       """;
+  }
+
+  String insertionSortCode() {
+    return """
+#include<bits/stdc++.h>
+using namespace std;
+
+void insertionSort(int arr[], int n) {
+    for(int i = 0; i < n; ++i) {
+    	int temp = arr[i];
+    	int j = i;
+    	while(j > 0 && temp < arr[j-1]) {
+    		arr[j] = arr[j-1];
+    		j--;	
+		  }
+		  arr[j] = temp;
+	  }
+}
+
+void print(int arr[], int n) {
+  for (int i = 0; i < n; i++)
+    cout << arr[i] << " ";
+}
+
+int main() {
+    int arr[] = {34, 8, 64, 51, 32, 21};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    cout << "Before Sorting: ";
+    print(arr, n);
+    
+    insertionSort(arr, n);
+    
+    cout << "\\nAfter Sorting: ";
+    print(arr, n);
+	  
+	  return 0;
+}
+    """;
+  }
+
+  String selectionSortCode() {
+    return """
+#include<bits.stdc++.>
+    """;
   }
 
   String mergeSortCode() {
