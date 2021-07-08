@@ -83,8 +83,8 @@ class DataContent {
 using namespace std;
 
 void bubbleSort(int arr[], int n) {
-  for (int i = 0; i < n-1; i++) // n times
-    for (int j = 0; j < n-i-1; j++) // n times
+  for (int i = 0; i < n-1; i++)
+    for (int j = 0; j < n-i-1; j++)
       if (arr[j] > arr[j+1])
         swap(arr[j], arr[j+1]);
 }
@@ -152,7 +152,38 @@ int main() {
 
   String selectionSortCode() {
     return """
-#include<bits.stdc++.>
+#include<bits/stdc++.h>
+using namespace std;
+
+void selectionSort(int arr[], int n) {
+  for (int i = 0; i < n; i++) {
+    int minE = arr[i];
+    for (int j = i + 1; j < n; j++) {
+      minE = min(arr[j], minE);
+    }
+    swap(arr[i], minE);
+  }
+}
+
+void print(int arr[], int n) {
+  for (int i=0; i<n; i++)
+    cout << arr[i] << " ";
+}
+
+int main() {
+  int arr[] = {23, 54, 12, 90, 85, 50, 28, 45};
+  int n = sizeof(arr) / sizeof(arr[0]);
+  
+  cout << "Before Sorting: ";
+  print(arr, n);
+  
+  selectionSort(arr, n);
+  
+  cout << "\\nAfter Sorting: ";
+  print(arr, n);
+  
+  return 0;
+}
     """;
   }
 
