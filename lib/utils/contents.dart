@@ -291,20 +291,39 @@ int main() {
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-  int n;
-  cout << "Size of the array: ";
-  cin >> n;
+void shuffleArray(int arr[]) {
+  for (int i=0; i<n; i++)
+    swap(arr[i], arr[rand() % n]);
+}
+
+bool isArraySorted(int arr[], int n) {
+  for (int i=0; i<n-1; i++)
+    if (arr[i] > arr[i+1])
+      return false;
   
-  int arr[n];
-  for (int i = 0; i < n; i++)
-    cin >> arr[i];
+  return true;
+}
+
+void print(int arr[], int n) {
+  for (int i=0; i<n; i++)
+    cout << arr[i] << " ";
+}
+
+int main() {
+  
+  int arr[] = {10, 50, 80, 30, 20, 40, 60};
+  int n = sizeof(arr) / sizeof(arr[0]);
     
+  cout << "Before Sorting: ";
+  print(arr, n);
+  
   while (!isArraySorted(arr, n)) {
     shuffleArray(arr);
   }
   
-  //Print Array
+  cout << "\\nAfter Sorting: ";
+  print(arr, n);
+  
   return 0;
 }
 
