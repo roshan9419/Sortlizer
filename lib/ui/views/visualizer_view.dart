@@ -327,7 +327,6 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
             CodeViewer(
               codeContent: model.getAlgorithmCode(),
               titleLabel: "C++",
-              sourceLabel: "GeeksForGeeks",
             )
         ],
       ),
