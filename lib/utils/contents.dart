@@ -64,6 +64,8 @@ class DataContent {
         return bubbleSortCode();
       case AlgorithmType.MERGE_SORT:
         return mergeSortCode();
+      case AlgorithmType.QUICK_SORT:
+        return quickSortCode();
       case AlgorithmType.BOGO_SORT:
         return bogoSortCode();
       default:
@@ -110,28 +112,28 @@ int main() {
 #include<bits/stdc++.h>
 using namespace std;
 
-void merge(int a[], int L[], int R[], int nl, int nr) {
+void merge(int arr[], int L[], int R[], int nl, int nr) {
 	int i=0, j=0, k=0;
 
 	while(i < nl && j < nr) {
-		if(L[i] <= R[j]) a[k++] = L[i++];
-		else a[k++] = R[j++];
+		if(L[i] <= R[j]) arr[k++] = L[i++];
+		else arr[k++] = R[j++];
 	}
 
-	while(i<nl) a[k++] = L[i++];
-	while(j<nr) a[k++] = R[j++];
+	while(i<nl) arr[k++] = L[i++];
+	while(j<nr) arr[k++] = R[j++];
 }
 
-void mergeSort(int a[], int n) {
+void mergeSort(int arr[], int n) {
 	if(n == 1) return;
 	int mid = n/2;
 	int L[mid], R[n-mid];
 	
-	for(int i=0; i <= mid; i++) L[i] = a[i];
-	for(int i=mid; i < n; i++) R[i-mid] = a[i];
+	for(int i=0; i <= mid; i++) L[i] = arr[i];
+	for(int i=mid; i < n; i++) R[i-mid] = arr[i];
 	mergeSort(L, mid);
 	mergeSort(R, n-mid);
-	merge(a, L, R, mid, n-mid);
+	merge(arr, L, R, mid, n-mid);
 }
 
 void print(int arr[], int n) {
@@ -147,6 +149,54 @@ int main() {
 	print(arr, n);
 	
 	mergeSort(arr, n);
+	
+	cout << "\\nAfter Sorting: ";
+	print(arr, n);
+	
+	return 0;
+}
+    """;
+  }
+
+  String quickSortCode() {
+    return """
+#include<bits/stdc++.h>
+using namespace std;
+
+int partition(int a[], int start, int end) {
+	int pivot = a[end];
+	int pIndex = start;
+	for(int i=start; i<end; i++) {
+		if(a[i]<=pivot) {
+			swap(a[i], a[pIndex]);
+			pIndex++;
+		}
+	}
+	swap(a[pIndex], a[end]);
+	return pIndex;
+}
+
+void quickSort(int arr[], int start, int end) {
+	if(start < end) {
+		int pIndex = partition(arr, start, end);
+		QuickSort(arr, start, pIndex-1);
+		QuickSort(arr, pIndex+1, end);
+	}
+}
+
+void print(int a[], int n) {
+	for(int i=0; i<n; i++)
+	  cout << a[i] << " ";
+}
+
+int main() {
+	int a[10] = {2, 10, 9, 3, 5, 8, 6, 7, 1, 4};
+	int n = sizeof(arr) / sizeof(arr[0]);
+	
+	cout << "Before Sorting: ";
+	print(arr, n);
+	
+	quickSort(arr, 0, n);
 	
 	cout << "\\nAfter Sorting: ";
 	print(arr, n);
