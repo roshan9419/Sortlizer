@@ -81,7 +81,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     isLoading = false;
     notifyListeners();
     _soundpool = Soundpool(streamType: StreamType.notification);
-    _soundId = await rootBundle.load("assets/audios/sort_sound.mp3").then((ByteData soundData) {
+    _soundId = await rootBundle
+        .load("assets/audios/sort_sound.mp3")
+        .then((ByteData soundData) {
       return _soundpool.load(soundData);
     });
   }
@@ -159,6 +161,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           break;
         case AlgorithmType.BOGO_SORT:
           await _bogoSort();
+          break;
+        case AlgorithmType.CYCLE_SORT:
+          await _cycleSort();
           break;
       }
 
@@ -411,9 +416,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
-  /// BOGO SORT
+  /// BOGO SORT IMPLEMENTATION
   _bogoSort() async {
-    while(!isArraySorted()) {
+    while (!isArraySorted()) {
       _numbers.shuffle();
       if (!isSorting) break;
       playSound();
@@ -421,6 +426,48 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       _chkValueIdx = Random().nextInt(_numbers.length);
       await Future.delayed(_getDuration());
       _streamController.add(_numbers);
+    }
+  }
+
+  /// CYCLE SORT IMPLEMENTATION
+  _cycleSort() async {
+    mainFlow:
+    for (int cs = 0; cs < _numbers.length - 1; cs++) {
+      int item = _numbers[cs];
+      int pos = cs;
+
+      for (int i = cs + 1; i < _numbers.length; i++) {
+        if (_numbers[i] < item) pos++;
+
+        if (!isSorting) break mainFlow;
+        playSound();
+        _totalComparisons++;
+        _chkValueIdx = i;
+        await Future.delayed(_getDuration());
+        _streamController.add(_numbers);
+      }
+
+      int temp = item;
+      item = _numbers[pos];
+      _numbers[pos] = temp;
+
+      while (pos != cs) {
+        pos = cs;
+        for (int i = cs + 1; i < _numbers.length; i++) {
+          if (_numbers[i] < item) pos++;
+
+          if (!isSorting) break mainFlow;
+          playSound();
+          _totalComparisons++;
+          _chkValueIdx = i;
+          await Future.delayed(_getDuration());
+          _streamController.add(_numbers);
+        }
+
+        int temp = item;
+        item = _numbers[pos];
+        _numbers[pos] = temp;
+      }
     }
   }
 

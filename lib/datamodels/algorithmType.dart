@@ -4,6 +4,7 @@ enum AlgorithmType {
   SELECTION_SORT,
   MERGE_SORT,
   QUICK_SORT,
+  CYCLE_SORT,
   BOGO_SORT
 }
 
