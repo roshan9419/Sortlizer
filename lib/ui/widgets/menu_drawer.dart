@@ -59,7 +59,7 @@ class MenuDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 10),
+                  padding: const EdgeInsets.only(left: 15.0, right: 10),
                   child: Text(
                     'Show Sorting History',
                     style: Theme.of(context)
