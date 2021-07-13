@@ -76,6 +76,8 @@ class DataContent {
         return quickSortCode();
       case AlgorithmType.BOGO_SORT:
         return bogoSortCode();
+      case AlgorithmType.CYCLE_SORT:
+        return cycleSortCode();
       default:
         return "";
     }
@@ -331,6 +333,72 @@ int main() {
   return 0;
 }
 
+    """;
+  }
+
+  String cycleSortCode() {
+    return """
+#include<bits/stdc++.h>
+using namespace std;
+
+int cycleSort(int arr[], int n) {
+  int writes = 0;
+  for (int cs = 0; cs < n - 1; cs++) {
+    int item = arr[cs];
+    int pos = cs;
+    
+    for (int i = cs + 1; i < n; i++) {
+      if (arr[i] < item) pos++;
+    }
+    
+    if (pos == cs) continue;
+    
+    while (item == arr[pos])
+      pos++;
+     
+    if (pos != cs) {
+      swap(item, arr[pos]);
+      writes++;
+    } 
+    
+    while (pos != cs) {
+      pos = cs;
+      for (int i = cs + 1; i < n; i++) {
+        if (arr[i] < item) pos++;
+      }
+      
+      while (item == arr[pos]) pos++;
+      
+      if (pos != cs) {
+        swap(item, arr[pos]);
+        writes++;
+      }
+    }
+  }
+  return writes;
+}
+
+void print(int arr[], int n) {
+  for (int i=0; i<n; i++)
+    cout << arr[i] << " ";
+}
+
+int main() {
+  int arr[] = {23, 59, 21, 8, 75, 80};
+  int n = sizeof(arr) / sizeof(arr[0]);
+  
+  cout << "Before Sorting: ";
+  print(arr, n);
+  
+  int totalWrites = cycleSort(arr, n);
+  
+  cout << "\\nAfter Sorting: ";
+  print(arr, n);
+  
+  cout << "\\nTotal Writes: " << totalWrites;
+  
+  return 0;
+}
     """;
   }
 }
