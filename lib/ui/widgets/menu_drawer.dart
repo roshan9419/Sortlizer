@@ -6,7 +6,7 @@ class MenuDrawer extends StatelessWidget {
   final String selectedValue;
   final Function(String) onTap;
   final Function(bool) onSwitchAction;
-  final bool isSoundEnable;
+  final bool isSwitchEnable;
 
   const MenuDrawer(
       {Key key,
@@ -14,7 +14,7 @@ class MenuDrawer extends StatelessWidget {
       this.selectedValue,
       this.onTap,
       this.onSwitchAction,
-      this.isSoundEnable})
+      this.isSwitchEnable})
       : super(key: key);
 
   @override
@@ -61,7 +61,7 @@ class MenuDrawer extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0, right: 10),
                   child: Text(
-                    'Sorting Sounds ?',
+                    'Show Sorting History',
                     style: Theme.of(context)
                         .textTheme
                         .caption
@@ -69,7 +69,7 @@ class MenuDrawer extends StatelessWidget {
                   ),
                 ),
                 Switch(
-                  value: this.isSoundEnable,
+                  value: this.isSwitchEnable,
                   onChanged: (val) => this.onSwitchAction(val),
                   activeColor: Theme.of(context).primaryColor,
                   inactiveTrackColor: Colors.grey[800]

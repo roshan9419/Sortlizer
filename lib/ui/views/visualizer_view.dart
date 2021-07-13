@@ -32,12 +32,11 @@ class VisualizerView extends StatelessWidget {
           key: model.getGlobalKey(),
           resizeToAvoidBottomPadding: false,
           endDrawer: MenuDrawer(
-            menuItemsList: model.getAlgorithmsList(),
-            selectedValue: model.getTitle(),
-            onTap: model.onMenuItemClick,
-            isSoundEnable: model.isSoundEnable,
-            onSwitchAction: model.onSwitchAction
-          ),
+              menuItemsList: model.getAlgorithmsList(),
+              selectedValue: model.getTitle(),
+              onTap: model.onMenuItemClick,
+              isSwitchEnable: model.isShowHistoryEnable,
+              onSwitchAction: model.onSwitchAction),
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [_VisualizerScreen(), BuildBottomDraggableSheet()],
@@ -235,7 +234,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   ],
                 ),
                 SizedBox(height: 30),
-                if (model.getSortingHistoryList().isNotEmpty)
+                if (model.getSortingHistoryList().isNotEmpty && model.isShowHistoryEnable)
                   SortingHistoryTable(
                     itemsList: model.getSortingHistoryList(),
                     tableName: "Sorting History",
