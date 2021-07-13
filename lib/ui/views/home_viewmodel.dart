@@ -14,6 +14,11 @@ class HomeViewModel extends BaseViewModel {
     return DataContent().getAlgorithms();
   }
 
+  String getAppVersion() {
+    // Need to use package
+    return "Version: 1.0.12";
+  }
+
   moveToVisualizerView() async {
     await _navigationService.navigateTo(Routes.visualizerView,
         arguments: VisualizerViewArguments(algorithmType: AlgorithmType.BUBBLE_SORT));

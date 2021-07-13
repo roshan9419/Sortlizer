@@ -84,6 +84,8 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
+                Text(model.getAppVersion(), style: theme.textTheme.overline.copyWith(color: lightGrayColor)),
+                SizedBox(height: 20),
               ],
             ),
           ),
