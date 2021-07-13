@@ -3,13 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
 import 'package:sorting_visualization/ui/widgets/sorting_history.dart';
 import 'package:sorting_visualization/utils/contents.dart';
-import 'package:soundpool/soundpool.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -65,8 +63,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isShowHistoryEnable = true;
 
   StreamController<List<int>> _streamController;
-  Soundpool _soundpool;
-  int _soundId;
+  // Soundpool _soundpool;
+  // int _soundId;
 
   @override
   Future<StreamController<List<int>>> futureToRun() async {
@@ -81,12 +79,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     reset();
     isLoading = false;
     notifyListeners();
-    _soundpool = Soundpool(streamType: StreamType.notification);
+    /*_soundpool = Soundpool(streamType: StreamType.notification);
     _soundId = await rootBundle
         .load("assets/audios/sort_sound.mp3")
         .then((ByteData soundData) {
       return _soundpool.load(soundData);
-    });
+    });*/
   }
 
   playSound() async {
