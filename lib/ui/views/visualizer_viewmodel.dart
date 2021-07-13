@@ -179,8 +179,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           totalComparisons: _totalComparisons));
 
       notifyListeners();
-      // _snackBarService.showSnackbar(
-      //     message: "Completed", duration: Duration(milliseconds: 800));
+      _globalDrawerKey.currentState.showSnackBar(
+        SnackBar(
+          content: Text("Completed"),
+          duration: Duration(milliseconds: 800),
+        ),
+      );
     }
   }
 
@@ -431,6 +435,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   /// CYCLE SORT IMPLEMENTATION
   _cycleSort() async {
+    int writes = 0;
     mainFlow:
     for (int cs = 0; cs < _numbers.length - 1; cs++) {
       int item = _numbers[cs];
@@ -440,16 +445,23 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         if (_numbers[i] < item) pos++;
 
         if (!isSorting) break mainFlow;
-        playSound();
         _totalComparisons++;
-        _chkValueIdx = i;
-        await Future.delayed(_getDuration());
-        _streamController.add(_numbers);
       }
 
-      int temp = item;
-      item = _numbers[pos];
-      _numbers[pos] = temp;
+      if (pos == cs) continue;
+
+      while (item == _numbers[pos]) {
+        _totalComparisons++;
+        pos += 1;
+      }
+
+      if (pos != cs) {
+        _totalComparisons++;
+        int temp = item;
+        item = _numbers[pos];
+        _numbers[pos] = temp;
+        writes++;
+      }
 
       while (pos != cs) {
         pos = cs;
@@ -457,16 +469,27 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           if (_numbers[i] < item) pos++;
 
           if (!isSorting) break mainFlow;
-          playSound();
           _totalComparisons++;
-          _chkValueIdx = i;
-          await Future.delayed(_getDuration());
-          _streamController.add(_numbers);
         }
 
-        int temp = item;
-        item = _numbers[pos];
-        _numbers[pos] = temp;
+        while (item == _numbers[pos]) {
+          _totalComparisons++;
+          pos++;
+        }
+
+        if (item != _numbers[pos]) {
+          _totalComparisons++;
+          int temp = item;
+          item = _numbers[pos];
+          _numbers[pos] = temp;
+          writes++;
+        }
+
+        if (!isSorting) break mainFlow;
+        playSound();
+        _chkValueIdx = pos;
+        await Future.delayed(_getDuration());
+        _streamController.add(_numbers);
       }
     }
   }
