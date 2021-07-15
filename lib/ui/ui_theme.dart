@@ -9,6 +9,7 @@ const darkBtnColor2 = Color(0xff26282f);
 const shadowColor1 = Color(0xff4e4c4c);
 
 const blueThemeColor = Color(0xff0A89D6);
+const orangeThemeColor = Color(0xffe84a1d);
 
 const lightGrayColor = Color(0xffB3B3B3);
 const mediumGrayColor = Color(0xff868686);
