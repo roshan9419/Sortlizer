@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sorting_visualization/datamodels/algo_history_track.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 
 class SortingHistoryTable extends StatelessWidget {
-  final List<SortHistory> itemsList;
+  final List<AlgoHistoryTrack> itemsList;
   final String tableName;
 
   SortingHistoryTable({Key key, @required this.itemsList, this.tableName})
@@ -61,17 +62,4 @@ class SortingHistoryTable extends StatelessWidget {
       child: Text(text, style: textStyle),
     );
   }
-}
-
-class SortHistory {
-  String algoTitle;
-  int arraySize;
-  int timeTaken;
-  int totalComparisons;
-
-  SortHistory(
-      {this.algoTitle,
-      this.arraySize,
-      this.timeTaken,
-      this.totalComparisons});
 }

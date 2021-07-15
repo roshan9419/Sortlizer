@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/app/locator.dart';
+import 'package:sorting_visualization/datamodels/algo_history_track.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
 import 'package:sorting_visualization/ui/widgets/sorting_history.dart';
@@ -23,7 +24,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   List<int> _numbers = [];
 
-  List<SortHistory> _sortingHistoryList = [];
+  List<AlgoHistoryTrack> _algoHistoryTrackList = [];
+  List<List<int>> _currentAlgoSortRecords = [];
 
   GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
 
@@ -63,6 +65,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isShowHistoryEnable = true;
 
   StreamController<List<int>> _streamController;
+
   // Soundpool _soundpool;
   // int _soundId;
 
@@ -85,10 +88,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         .then((ByteData soundData) {
       return _soundpool.load(soundData);
     });*/
-  }
-
-  playSound() async {
-    // if (this.isSoundEnable) await _soundpool.play(_soundId);
   }
 
   @override
@@ -125,6 +124,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _streamController.add(_numbers);
     _sortDuration = 0;
     _totalComparisons = 0;
+    _currentAlgoSortRecords.clear();
     notifyListeners();
   }
 
@@ -174,11 +174,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       _sortDuration = _stopWatch.elapsed.inMilliseconds;
       _chkValueIdx = -1;
 
-      _sortingHistoryList.add(SortHistory(
+      _algoHistoryTrackList.add(AlgoHistoryTrack(
           algoTitle: dataContent.getAlgorithmTitle(_algorithmType),
           arraySize: _sampleSize,
           timeTaken: _sortDuration,
-          totalComparisons: _totalComparisons));
+          totalComparisons: _totalComparisons,
+          sortTrack: _currentAlgoSortRecords));
 
       notifyListeners();
       /*_globalDrawerKey.currentState.showSnackBar(
@@ -188,6 +189,17 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         ),
       );*/
     }
+  }
+
+  // callable from inside function
+  onSortInBTCall({bool tCTU = true, int chkIdx = 0}) async {
+    if (tCTU) {
+      _totalComparisons++;
+    }
+    _chkValueIdx = chkIdx;
+    await Future.delayed(_getDuration(), () {});
+    _streamController.add(_numbers);
+    _currentAlgoSortRecords.add(_numbers);
   }
 
   updateSpeed(double value) {
@@ -211,8 +223,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     return _numbers;
   }
 
-  List<SortHistory> getSortingHistoryList() {
-    return _sortingHistoryList;
+  List<AlgoHistoryTrack> getSortingHistoryList() {
+    return _algoHistoryTrackList;
   }
 
   /// BUBBLE SORT IMPLEMENTATION
@@ -227,12 +239,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         }
 
         if (!isSorting) break mainFlow;
-        playSound();
-        _totalComparisons++;
-        await Future.delayed(_getDuration(), () {});
-
-        _chkValueIdx = j;
-        _streamController.add(_numbers);
+        await onSortInBTCall(chkIdx: j);
       }
     }
   }
@@ -264,7 +271,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _totalComparisons++;
 
         if (!isSorting) return;
-        playSound();
         await Future.delayed(_getDuration(), () {});
         _chkValueIdx = k;
         _streamController.add(_numbers);
@@ -279,7 +285,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _totalComparisons++;
 
         if (!isSorting) return;
-        playSound();
         await Future.delayed(_getDuration(), () {});
         _streamController.add(_numbers);
       }
@@ -291,7 +296,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _totalComparisons++;
 
         if (!isSorting) return;
-        playSound();
         await Future.delayed(_getDuration(), () {});
         _chkValueIdx = k;
         _streamController.add(_numbers);
@@ -305,7 +309,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       await _mergeSort(middleIndex + 1, rightIndex);
 
       if (!isSorting) return;
-      playSound();
       await Future.delayed(_getDuration(), () {});
       _chkValueIdx = middleIndex;
       _totalComparisons++;
@@ -326,7 +329,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       _chkValueIdx = p;
       if (!isSorting) return -1;
-      playSound();
       await Future.delayed(_getDuration(), () {});
       _streamController.add(_numbers);
 
@@ -341,7 +343,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
           _chkValueIdx = i;
           if (!isSorting) return -1;
-          playSound();
           await Future.delayed(_getDuration(), () {});
           _streamController.add(_numbers);
         }
@@ -353,7 +354,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       _chkValueIdx = right;
       if (!isSorting) return -1;
-      playSound();
       await Future.delayed(_getDuration(), () {});
       _streamController.add(_numbers);
 
@@ -392,7 +392,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         }
 
         if (!isSorting) break mainFlow;
-        playSound();
         _totalComparisons++;
         _chkValueIdx = j;
         await Future.delayed(_getDuration());
@@ -412,7 +411,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         j--;
 
         if (!isSorting) break mainFlow;
-        playSound();
         _totalComparisons++;
         _chkValueIdx = j;
         await Future.delayed(_getDuration());
@@ -427,7 +425,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     while (!isArraySorted()) {
       _numbers.shuffle();
       if (!isSorting) break;
-      playSound();
       _totalComparisons++;
       _chkValueIdx = Random().nextInt(_numbers.length);
       await Future.delayed(_getDuration());
@@ -488,7 +485,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         }
 
         if (!isSorting) break mainFlow;
-        playSound();
         _chkValueIdx = pos;
         await Future.delayed(_getDuration());
         _streamController.add(_numbers);
@@ -500,7 +496,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   _radixSort() async {
     Future<int> getMax() async {
       int mx = _numbers[0];
-      for(int i = 0; i < _numbers.length; i++) {
+      for (int i = 0; i < _numbers.length; i++) {
         mx = max(_numbers[i], mx);
       }
       return mx;
