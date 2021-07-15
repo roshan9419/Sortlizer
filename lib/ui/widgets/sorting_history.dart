@@ -68,12 +68,10 @@ class SortHistory {
   int arraySize;
   int timeTaken;
   int totalComparisons;
-  bool completed;
 
   SortHistory(
       {this.algoTitle,
       this.arraySize,
       this.timeTaken,
-      this.totalComparisons,
-      this.completed = true});
+      this.totalComparisons});
 }
