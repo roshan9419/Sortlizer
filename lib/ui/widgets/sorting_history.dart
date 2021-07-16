@@ -36,7 +36,7 @@ class SortingHistoryTable extends StatelessWidget {
                     .copyWith(color: Theme.of(context).primaryColor),
               ),
               TextButton.icon(
-                onPressed: () => onDetailsBtnTap,
+                onPressed: onDetailsBtnTap,
                 icon: Icon(
                   Icons.history,
                   size: 20,
