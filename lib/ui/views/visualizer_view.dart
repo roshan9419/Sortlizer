@@ -238,6 +238,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   SortingHistoryTable(
                     itemsList: model.getSortingHistoryList(),
                     tableName: "Sorting History",
+                    onDetailsBtnTap: model.moveToDetailedSortHistory,
                   ),
                 _buildAlgorithmContent(context, model),
               ],

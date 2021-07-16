@@ -5,8 +5,10 @@ import 'package:sorting_visualization/ui/ui_theme.dart';
 class SortingHistoryTable extends StatelessWidget {
   final List<AlgoHistoryTrack> itemsList;
   final String tableName;
+  final Function onDetailsBtnTap;
 
-  SortingHistoryTable({Key key, @required this.itemsList, this.tableName})
+  SortingHistoryTable(
+      {Key key, @required this.itemsList, this.tableName, this.onDetailsBtnTap})
       : super(key: key);
 
   @override
@@ -23,15 +25,34 @@ class SortingHistoryTable extends StatelessWidget {
       padding: EdgeInsets.all(15.0),
       child: Column(
         children: [
-          if (tableName.isNotEmpty)
-            Text(
-              tableName,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle2
-                  .copyWith(color: Theme.of(context).primaryColor),
-            ),
-          if (tableName.isNotEmpty) SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                tableName,
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2
+                    .copyWith(color: Theme.of(context).primaryColor),
+              ),
+              TextButton.icon(
+                onPressed: () => onDetailsBtnTap,
+                icon: Icon(
+                  Icons.history,
+                  size: 20,
+                  color: lightGrayColor,
+                ),
+                label: Text(
+                  "Detailed History",
+                  style: Theme.of(context)
+                      .textTheme
+                      .caption
+                      .copyWith(color: lightGrayColor),
+                ),
+              )
+            ],
+          ),
+          // SizedBox(height: 10),
           Table(
             border: TableBorder.all(color: Colors.white38),
             children: [
