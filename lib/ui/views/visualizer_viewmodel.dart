@@ -26,7 +26,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   List<int> _numbers = [];
 
   List<AlgoHistoryTrack> _algoHistoryTrackList = [];
-  List<List<int>> _currentAlgoSortRecords = [];
+  List<List<int>> _currentAlgoSortRecords = new List();
 
   GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
 
@@ -125,7 +125,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _streamController.add(_numbers);
     _sortDuration = 0;
     _totalComparisons = 0;
-    _currentAlgoSortRecords.clear();
+    _currentAlgoSortRecords = new List();
     notifyListeners();
   }
 
@@ -200,7 +200,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _chkValueIdx = chkIdx;
     await Future.delayed(_getDuration(), () {});
     _streamController.add(_numbers);
-    _currentAlgoSortRecords.add(_numbers);
+    List<int> tempList = [];
+    _numbers.forEach((num) { tempList.add(num); });
+    _currentAlgoSortRecords.add(tempList);
   }
 
   updateSpeed(double value) {

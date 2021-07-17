@@ -115,34 +115,109 @@ class _StepByStepHistoryList extends StatelessWidget {
 
   const _StepByStepHistoryList({Key key, this.numbersTrack}) : super(key: key);
 
-  List<Widget> _buildCells(List<int> numbers) {
+  List<Widget> _buildCells(
+      {List<int> numbers,
+      bool isIndexes = false,
+      bool isHighlightRow = false}) {
     return List.generate(
       numbers.length,
       (index) => Container(
         alignment: Alignment.center,
-        child: Text(numbers[index].toString(), style: TextStyle(color: Colors.white, fontSize: 10),),
+        width: 30,
+        height: 20,
+        color: isHighlightRow ? Color(0xff25282D) : darkBackgroundStart,
+        child: Text(
+          numbers[index].toString(),
+          style: TextStyle(
+              color: isIndexes ? Colors.deepPurpleAccent : Colors.white,
+              fontSize: 10),
+        ),
       ),
     );
   }
 
-  getTableRow(List<int> numbers, BuildContext context) {
-    return TableRow(
-      children: _buildCells(numbers)
+  List<Widget> _buildRows() {
+    return List.generate(
+      numbersTrack.length,
+          (index) => Row(
+        children: _buildCells(numbers: numbersTrack[index], isHighlightRow: index%2==0),
+      ),
     );
+  }
+
+ /* _buildCells(
+      {List<int> numbers,
+      bool isIndexes = false,
+      bool isHighlightRow = false}) {
+    return ListView.builder(
+      itemCount: numbers.length,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (context, index) {
+        return Container(
+          alignment: Alignment.center,
+          width: 30,
+          height: 20,
+          color: isHighlightRow ? Color(0xff25282D) : darkBackgroundStart,
+          child: Text(
+            numbers[index].toString(),
+            style: TextStyle(
+                color: isIndexes ? Colors.deepPurpleAccent : Colors.white,
+                fontSize: 10),
+          ),
+        );
+      },
+    );
+  }
+
+  _buildRows() {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      itemBuilder: (BuildContext context, int index) {
+        return _buildCells(
+            numbers: numbersTrack[index], isHighlightRow: index % 2 == 0);
+      },
+      itemCount: numbersTrack.length,
+    );
+  }*/
+
+  List<int> getList() {
+    List<int> temp = [];
+    for (int i = 0; i < numbersTrack.length; i++) temp.add(i);
+    return temp;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
-      // constraints: BoxConstraints(maxHeight: 200),
-      child: Table(
-        border: TableBorder.all(color: Colors.white38),
-        children: [
-          for (int i = 0; i < numbersTrack.length; i++)
-            getTableRow(numbersTrack[i], context)
-        ],
-      ),
-    );
+        margin: const EdgeInsets.only(top: 10),
+        // constraints: BoxConstraints(maxHeight: 600),
+        child: SingleChildScrollView(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: _buildCells(
+                    numbers: getList(), isIndexes: true, isHighlightRow: false),
+              ),
+              Flexible(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _buildRows(),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
+
+    // return Container(
+    //     margin: const EdgeInsets.only(top: 10),
+    //     height: 100,
+    //     // constraints: BoxConstraints(maxHeight: 600),
+    //     child: _buildRows()//_buildCells(numbers: getList())
+    // );
   }
 }
