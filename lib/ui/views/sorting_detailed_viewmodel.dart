@@ -7,6 +7,7 @@ class SortingDetailedViewModel extends BaseViewModel {
 
   SortingDetailedViewModel(this.algoTracksList) {
     _isExpanded = List.filled(algoTracksList.length, false);
+    print(algoTracksList[0].sortTrack);
   }
 
   onSeeTrackBtnTap(int index) {

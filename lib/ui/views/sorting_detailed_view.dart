@@ -63,7 +63,7 @@ class _BodyView extends ViewModelWidget<SortingDetailedViewModel> {
           return Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                border: Border.all(color: lightGrayColor)),
+                border: Border.all(color: mediumGrayColor)),
             padding: const EdgeInsets.all(10),
             margin: const EdgeInsets.all(10),
             child: Column(
@@ -95,17 +95,54 @@ class _BodyView extends ViewModelWidget<SortingDetailedViewModel> {
                     child: TextButton(
                       onPressed: () => model.onSeeTrackBtnTap(index),
                       child: Text(
-                          model.isItemExpanded(index)
-                              ? 'Hide Track'
-                              : 'See Track',
+                          model.isItemExpanded(index) ? 'Hide' : 'See Track',
                           style: theme.textTheme.caption
                               .copyWith(color: Colors.white)),
                     ),
                   )
-                ])
+                ]),
+                if (model.isItemExpanded(index))
+                  _StepByStepHistoryList(numbersTrack: item.sortTrack)
               ],
             ),
           );
         });
+  }
+}
+
+class _StepByStepHistoryList extends StatelessWidget {
+  final List<List<int>> numbersTrack;
+
+  const _StepByStepHistoryList({Key key, this.numbersTrack}) : super(key: key);
+
+  List<Widget> _buildCells(List<int> numbers) {
+    return List.generate(
+      numbers.length,
+      (index) => Container(
+        alignment: Alignment.center,
+        child: Text(numbers[index].toString(), style: TextStyle(color: Colors.white, fontSize: 10),),
+      ),
+    );
+  }
+
+  getTableRow(List<int> numbers, BuildContext context) {
+    return TableRow(
+      children: _buildCells(numbers)
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      // constraints: BoxConstraints(maxHeight: 200),
+      child: Table(
+        border: TableBorder.all(color: Colors.white38),
+        children: [
+          for (int i = 0; i < numbersTrack.length; i++)
+            getTableRow(numbersTrack[i], context)
+        ],
+      ),
+    );
   }
 }
