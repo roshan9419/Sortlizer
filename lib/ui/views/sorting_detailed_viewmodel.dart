@@ -3,10 +3,18 @@ import 'package:stacked/stacked.dart';
 
 class SortingDetailedViewModel extends BaseViewModel {
   final List<AlgoHistoryTrack> algoTracksList;
+  List<bool> _isExpanded = [];
 
-  SortingDetailedViewModel(this.algoTracksList);
+  SortingDetailedViewModel(this.algoTracksList) {
+    _isExpanded = List.filled(algoTracksList.length, false);
+  }
 
-  onSeeTrackBtnTap() {
-    print('HO');
+  onSeeTrackBtnTap(int index) {
+    _isExpanded[index] = !_isExpanded[index];
+    notifyListeners();
+  }
+
+  bool isItemExpanded(int index) {
+    return _isExpanded[index];
   }
 }

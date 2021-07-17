@@ -39,10 +39,10 @@ class _BodyView extends ViewModelWidget<SortingDetailedViewModel> {
     var theme = Theme.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(title,
-          style: Theme.of(context)
-              .textTheme
-              .caption
-              .copyWith(color: lightGrayColor, fontFamily: 'Arial', fontWeight: FontWeight.bold)),
+          style: Theme.of(context).textTheme.caption.copyWith(
+              color: lightGrayColor,
+              fontFamily: 'Arial',
+              fontWeight: FontWeight.bold)),
       SizedBox(height: 5),
       Text(value.toString(),
           style: Theme.of(context)
@@ -86,16 +86,20 @@ class _BodyView extends ViewModelWidget<SortingDetailedViewModel> {
                   Spacer(),
                   Container(
                     height: 30,
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                              )
-                          )
-                      ),
-                      onPressed: () => model.onSeeTrackBtnTap(),
-                      child: Text('See Track', style: theme.textTheme.caption.copyWith(color: Colors.white)),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: model.isItemExpanded(index)
+                          ? orangeThemeColor
+                          : theme.primaryColor,
+                    ),
+                    child: TextButton(
+                      onPressed: () => model.onSeeTrackBtnTap(index),
+                      child: Text(
+                          model.isItemExpanded(index)
+                              ? 'Hide Track'
+                              : 'See Track',
+                          style: theme.textTheme.caption
+                              .copyWith(color: Colors.white)),
                     ),
                   )
                 ])
