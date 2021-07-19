@@ -3,18 +3,39 @@ import 'package:stacked/stacked.dart';
 
 class SortingDetailedViewModel extends BaseViewModel {
   final List<AlgoHistoryTrack> algoTracksList;
-  List<bool> _isExpanded = [];
+
+  List<HistoryTrack> historyTrackList = [];
 
   SortingDetailedViewModel(this.algoTracksList) {
-    _isExpanded = List.filled(algoTracksList.length, false);
+    algoTracksList.forEach((element) {
+      historyTrackList.add(HistoryTrack(
+        isExpanded: false,
+        algoTrack: element,
+        currentPageCount: element.sortTrack.length > 10 ? 10 : element.sortTrack.length
+      ));
+    });
   }
 
-  onSeeTrackBtnTap(int index) {
-    _isExpanded[index] = !_isExpanded[index];
+  onSeeTrackBtnTap(HistoryTrack item) {
+    item.isExpanded = !item.isExpanded;
+    item.currentPageCount = item.algoTrack.sortTrack.length > 10 ? 10 : item.algoTrack.sortTrack.length;
     notifyListeners();
   }
 
-  bool isItemExpanded(int index) {
-    return _isExpanded[index];
+  loadMore(HistoryTrack trackItem) {
+    trackItem.currentPageCount += 10;
+    if (trackItem.currentPageCount > trackItem.algoTrack.sortTrack.length) {
+      trackItem.currentPageCount = trackItem.algoTrack.sortTrack.length;
+    }
+    notifyListeners();
+    print('Loaded');
   }
+}
+
+class HistoryTrack {
+  int currentPageCount;
+  bool isExpanded;
+  AlgoHistoryTrack algoTrack;
+
+  HistoryTrack({this.currentPageCount, this.algoTrack, this.isExpanded = false});
 }

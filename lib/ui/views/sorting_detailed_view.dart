@@ -59,7 +59,7 @@ class _BodyView extends ViewModelWidget<SortingDetailedViewModel> {
     return ListView.builder(
         itemCount: model.algoTracksList.length,
         itemBuilder: (child, index) {
-          AlgoHistoryTrack item = model.algoTracksList[index];
+          HistoryTrack item = model.historyTrackList[index];
           return Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -70,7 +70,7 @@ class _BodyView extends ViewModelWidget<SortingDetailedViewModel> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  item.algoTitle,
+                  item.algoTrack.algoTitle,
                   style: theme.textTheme.subtitle1.copyWith(
                       color: Colors.white,
                       fontFamily: 'Arial',
@@ -78,31 +78,31 @@ class _BodyView extends ViewModelWidget<SortingDetailedViewModel> {
                 ),
                 SizedBox(height: 10),
                 Row(children: [
-                  _getItemInfo("Array Size", item.arraySize, context),
+                  _getItemInfo("Array Size", item.algoTrack.arraySize, context),
                   SizedBox(width: 10),
-                  _getItemInfo("Time Taken(ms)", item.timeTaken, context),
+                  _getItemInfo(
+                      "Time Taken(ms)", item.algoTrack.timeTaken, context),
                   SizedBox(width: 10),
-                  _getItemInfo("Comparisons", item.totalComparisons, context),
+                  _getItemInfo(
+                      "Comparisons", item.algoTrack.totalComparisons, context),
                   Spacer(),
                   Container(
                     height: 30,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
-                      color: model.isItemExpanded(index)
+                      color: item.isExpanded
                           ? orangeThemeColor
                           : theme.primaryColor,
                     ),
                     child: TextButton(
-                      onPressed: () => model.onSeeTrackBtnTap(index),
-                      child: Text(
-                          model.isItemExpanded(index) ? 'Hide' : 'See Track',
+                      onPressed: () => model.onSeeTrackBtnTap(item),
+                      child: Text(item.isExpanded ? 'Hide' : 'See Track',
                           style: theme.textTheme.caption
                               .copyWith(color: Colors.white)),
                     ),
                   )
                 ]),
-                if (model.isItemExpanded(index))
-                  _StepByStepHistoryList(numbersTrack: item.sortTrack)
+                if (item.isExpanded) _StepByStepHistoryList(trackItem: item)
               ],
             ),
           );
@@ -110,10 +110,10 @@ class _BodyView extends ViewModelWidget<SortingDetailedViewModel> {
   }
 }
 
-class _StepByStepHistoryList extends StatelessWidget {
-  final List<List<int>> numbersTrack;
+class _StepByStepHistoryList extends ViewModelWidget<SortingDetailedViewModel> {
+  final HistoryTrack trackItem;
 
-  const _StepByStepHistoryList({Key key, this.numbersTrack}) : super(key: key);
+  const _StepByStepHistoryList({Key key, this.trackItem}) : super(key: key);
 
   List<Widget> _buildCells(
       {List<int> numbers,
@@ -129,8 +129,7 @@ class _StepByStepHistoryList extends StatelessWidget {
         child: Text(
           numbers[index].toString(),
           style: TextStyle(
-              color: isIndexes ? Colors.deepPurpleAccent : Colors.white,
-              fontSize: 10),
+              color: isIndexes ? blueThemeColor : Colors.white, fontSize: 10),
         ),
       ),
     );
@@ -138,14 +137,19 @@ class _StepByStepHistoryList extends StatelessWidget {
 
   List<Widget> _buildRows() {
     return List.generate(
-      numbersTrack.length,
-          (index) => Row(
-        children: _buildCells(numbers: numbersTrack[index], isHighlightRow: index%2==0),
-      ),
+      trackItem.currentPageCount, //trackItem.algoTrack.sortTrack.length,
+      (index) {
+        print('Index: $index');
+        return Row(
+          children: _buildCells(
+              numbers: trackItem.algoTrack.sortTrack[index],
+              isHighlightRow: index % 2 == 0),
+        );
+      },
     );
   }
 
- /* _buildCells(
+  /* _buildCells(
       {List<int> numbers,
       bool isIndexes = false,
       bool isHighlightRow = false}) {
@@ -169,55 +173,70 @@ class _StepByStepHistoryList extends StatelessWidget {
     );
   }
 
-  _buildRows() {
+  _buildRows2() {
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      itemBuilder: (BuildContext context, int index) {
-        return _buildCells(
-            numbers: numbersTrack[index], isHighlightRow: index % 2 == 0);
+      shrinkWrap: true,
+      itemCount: trackItem.algoTrack.sortTrack.length,
+      itemBuilder: (context, index) {
+        return Row(
+            children: _buildCells(
+                numbers: trackItem.algoTrack.sortTrack[index],
+                isHighlightRow: index % 2 == 0));
       },
-      itemCount: numbersTrack.length,
     );
   }*/
 
   List<int> getList() {
     List<int> temp = [];
-    for (int i = 0; i < numbersTrack.length; i++) temp.add(i);
+    for (int i = 0; i < trackItem.currentPageCount; i++) temp.add(i);
     return temp;
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, SortingDetailedViewModel model) {
     return Container(
         margin: const EdgeInsets.only(top: 10),
         // constraints: BoxConstraints(maxHeight: 600),
-        child: SingleChildScrollView(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: _buildCells(
-                    numbers: getList(), isIndexes: true, isHighlightRow: false),
-              ),
-              Flexible(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _buildRows(),
-                  ),
-                ),
+        child: trackItem.algoTrack.sortTrack[0].length > 100
+            ? Text(
+                'Array Size is too large to visualize, it should be less than or equal to 100',
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2
+                    .copyWith(color: orangeThemeColor),
               )
-            ],
-          ),
-        ));
-
-    // return Container(
-    //     margin: const EdgeInsets.only(top: 10),
-    //     height: 100,
-    //     // constraints: BoxConstraints(maxHeight: 600),
-    //     child: _buildRows()//_buildCells(numbers: getList())
-    // );
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: _buildCells(
+                              numbers: getList(),
+                              isIndexes: true,
+                              isHighlightRow: false),
+                        ),
+                        Flexible(
+                            child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: _buildRows(),
+                          ),
+                        ))
+                      ],
+                    ),
+                    if (trackItem.currentPageCount <
+                        trackItem.algoTrack.sortTrack.length)
+                      TextButton(
+                          onPressed: () => model.loadMore(trackItem),
+                          child: Text('Load more'))
+                  ],
+                ),
+              ));
   }
 }
