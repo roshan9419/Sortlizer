@@ -84,7 +84,7 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
               end: Alignment.bottomCenter,
               colors: [darkBackgroundStart, darkBackgroundFinish]),
       ),
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(15),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,

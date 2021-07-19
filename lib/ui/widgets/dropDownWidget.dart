@@ -38,7 +38,7 @@ class _DropDownWidgetState extends State<DropDownWidget> {
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         value: _selectedType,
-        iconSize: widget.showDropDownIcon ? 30 : 0,
+        iconSize: widget.showDropDownIcon ? 20 : 0,
         items: widget.menuItemsList.toList().map((String value) {
           return new DropdownMenuItem<String>(
             value: value,

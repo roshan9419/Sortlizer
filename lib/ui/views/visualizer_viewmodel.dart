@@ -487,44 +487,35 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       for (int i = 0; i < _numbers.length; i++) {
         count[_numbers[i] ~/ place % max]++;
         if (!isSorting) return;
-        _chkValueIdx = i;
-        await Future.delayed(_getDuration());
-        _streamController.add(_numbers);
+        // await onSortInBTCall(chkIdx: i, tCTU: false);
       }
 
       for (int i = 1; i < max; i++) {
         count[i] += count[i - 1];
         if (!isSorting) return;
-        _chkValueIdx = i;
-        await Future.delayed(_getDuration());
-        _streamController.add(_numbers);
+        // await onSortInBTCall(chkIdx: i, tCTU: false);
       }
 
       for (int i = _numbers.length - 1; i >= 0; i--) {
         output[count[_numbers[i] ~/ place % max] - 1] = _numbers[i];
         count[_numbers[i] ~/ place % max]--;
         if (!isSorting) return;
-        // _chkValueIdx = i;
-        // await Future.delayed(_getDuration());
-        // _streamController.add(_numbers);
+        // await onSortInBTCall(chkIdx: i, tCTU: false);
       }
 
       for (int i = 0; i < _numbers.length; i++) {
         _numbers[i] = output[i];
         if (!isSorting) return;
-        _chkValueIdx = i;
-        await Future.delayed(_getDuration());
-        _streamController.add(_numbers);
+        await onSortInBTCall(chkIdx: i, tCTU: false);
       }
     }
 
     int _max = await getMax();
     for (int place = 1; _max ~/ place > 0; place *= 10) {
       await countingSort(place);
-      print(place);
+      // print(place);
       if (!isSorting) return;
-      await Future.delayed(_getDuration());
-      _streamController.add(_numbers);
+      await onSortInBTCall(chkIdx: -1, tCTU: false);
     }
   }
 
