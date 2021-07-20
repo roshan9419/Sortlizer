@@ -9,14 +9,16 @@ class NeumorphicButton extends StatefulWidget {
   final double btnSize;
   final String labelText;
   final bool isPressed;
+  final String assetImagePath;
 
   const NeumorphicButton(
       {Key key,
-      @required this.icon,
+      this.icon,
       this.btnColor,
       this.onTap,
       this.btnSize,
       this.labelText,
+      this.assetImagePath,
       this.isPressed = false})
       : super(key: key);
 
@@ -57,15 +59,15 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
                       borderRadius: BorderRadius.circular(btnSize / 2),
                       boxShadow: [
                         BoxShadow(
-                            color: shadowColor1,
-                            offset: Offset(3, 3),
-                            blurRadius: 12),
-                        BoxShadow(
-                            color: Color(0xff3b3a3a),
+                            color: Color(0xff363636),
                             offset: Offset(-3, -3),
                             blurRadius: 12),
+                        BoxShadow(
+                            color: Color(0xff383838),
+                            offset: Offset(3, 3),
+                            blurRadius: 12),
                       ]),
-                  child: widget.icon,
+                  child: (widget.assetImagePath != null) ? Image.asset(widget.assetImagePath) : widget.icon,
                 )
               : Stack(
                   alignment: Alignment.center,

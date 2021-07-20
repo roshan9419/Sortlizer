@@ -43,6 +43,7 @@ dependencies:
 
   animated_text_kit: any
   flutter_highlight: 0.6.0
+  flutter_svg: 0.18.0
 
 dev_dependencies:
   flutter_test:

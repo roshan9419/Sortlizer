@@ -27,19 +27,32 @@ class HomeView extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 10),
-                RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                        text: 'Sorting\n',
-                        style: theme.textTheme.headline5
-                            .copyWith(color: lightGrayColor, letterSpacing: 1),
-                        children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    RichText(
+                        text: TextSpan(
+                            text: 'Sorting\n',
+                            style: theme.textTheme.headline5.copyWith(
+                                color: lightGrayColor, letterSpacing: 1),
+                            children: [
                           TextSpan(
                             text: 'Visualizer',
                             style: theme.textTheme.headline4.copyWith(
                                 color: Colors.white, letterSpacing: 2),
                           )
                         ])),
+                    NeumorphicButton(
+                      icon: Icon(
+                        Icons.emoji_people_outlined,
+                        color: Colors.white,
+                      ),
+                      btnSize: 50,
+                      onTap: model.showAboutApp,
+                    )
+                  ],
+                ),
                 Spacer(),
                 GetProgrammingQuote(),
                 SizedBox(height: 30),
@@ -122,6 +135,9 @@ class GetProgrammingQuote extends StatelessWidget {
   TextSpan _getTextSpan(BuildContext context, String text, Color color) {
     return TextSpan(
         text: text,
-        style: Theme.of(context).textTheme.headline6.copyWith(color: color, fontSize: 25));
+        style: Theme.of(context)
+            .textTheme
+            .headline6
+            .copyWith(color: color, fontSize: 25));
   }
 }
