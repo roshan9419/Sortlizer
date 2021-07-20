@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:sorting_visualization/utils/developer_info.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'dart:html' as html;
+import 'package:url_launcher/url_launcher.dart';
 import '../ui_theme.dart';
 
 class AboutAppDialog extends StatelessWidget {
@@ -112,7 +111,12 @@ class AboutAppDialog extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Color(0xffFF0000),
                         borderRadius: BorderRadius.all(Radius.circular(2))),
-                    child: Center(child: Icon(Icons.play_arrow, color: Colors.white, size: 13,)),
+                    child: Center(
+                        child: Icon(
+                      Icons.play_arrow,
+                      color: Colors.white,
+                      size: 13,
+                    )),
                   ),
                   handleName: "YouTube",
                   handleUrl: youtubeChannelUrl,
@@ -137,7 +141,11 @@ class SocialHandleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () { html.window.open(handleUrl, handleName);},
+      onTap: () async {
+        await canLaunch(handleUrl)
+            ? await launch(handleUrl)
+            : SnackbarService().showSnackbar(message: "Could not load Url");
+      },
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         widget,
         SizedBox(width: 5),
