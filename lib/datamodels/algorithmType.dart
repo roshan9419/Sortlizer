@@ -12,3 +12,8 @@ enum AlgorithmType {
 String getAlgoTypeName(AlgorithmType type) {
   return type.toString().substring(type.toString().indexOf('.') + 1);
 }
+
+AlgorithmType getAlgoTypeFromString(String strType) {
+  print(strType);
+  return AlgorithmType.values.firstWhere((e) => e.toString() == strType);
+}

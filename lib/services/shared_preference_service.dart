@@ -11,6 +11,7 @@ class SharedPreferenceService {
   }
 
   static const String APP_THEME = "appTheme";
+  static const String ALGORITHM_SELECTED = "algorithmSelected";
   static const String SHOW_SORTING_HISTORY = "showSortingHistory";
   static const String SORTING_SLIDER_VALUE = "sortingSliderValue";
   static const String SORTING_ARRAY_SIZE = "sortingArraySize";
@@ -49,5 +50,9 @@ class SharedPreferenceService {
   int get sortingArraySize => _getFromDisk(SORTING_ARRAY_SIZE) ?? 50;
 
   set sortingArraySize(int value) => _saveToDisk(SORTING_ARRAY_SIZE, value);
+
+  String get algorithmSelected => _getFromDisk(ALGORITHM_SELECTED);
+
+  set algorithmSelected(String value) => _saveToDisk(ALGORITHM_SELECTED, value);
 
 }

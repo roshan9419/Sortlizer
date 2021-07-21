@@ -27,7 +27,7 @@ class BarPainter extends CustomPainter {
     paint.strokeWidth = width;
     paint.strokeCap = StrokeCap.round;
 
-    var pt1 = Offset(index * width, maxValue.ceilToDouble());
+    var pt1 = Offset(index * width, maxValue.ceilToDouble() + 10); // Just for UI Purpose
     var pt2 = Offset(index * width, maxValue - value.ceilToDouble());
     var pt3 = Offset(index * width, value.ceilToDouble());
 

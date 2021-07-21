@@ -215,7 +215,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   updateSpeed(double value) {
     // 200ms, 180ms, 160ms, 140ms, 120ms, 100ms, 80ms, 60ms, 40ms, 20ms, 0ms
     _sliderValue = value;
-    _sortingSpeed = 150 - value * 149;
+    _sharedPrefService.sortingSliderValue = _sliderValue;
+    _sortingSpeed = 150 - _sliderValue * 149;
     print('VAL => $value | Speed => $sortingSpeed');
     notifyListeners();
   }
@@ -613,6 +614,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       // _snackBarService.showSnackbar(message: "To change Algorithm Stop Sorting");
     } else {
       _algorithmType = dataContent.getAlgorithmType(value);
+      _sharedPrefService.algorithmSelected = _algorithmType.toString();
     }
     notifyListeners();
   }
@@ -648,6 +650,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   onSwitchAction(bool value) {
     // this.isSoundEnable = value;
     this.isShowHistoryEnable = value;
+    _sharedPrefService.showSortingHistory = value;
     notifyListeners();
   }
 
