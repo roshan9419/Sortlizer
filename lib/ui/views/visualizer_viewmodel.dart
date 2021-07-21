@@ -8,7 +8,7 @@ import 'package:sorting_visualization/app/router.gr.dart';
 import 'package:sorting_visualization/datamodels/algo_history_track.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
-import 'package:sorting_visualization/ui/widgets/sorting_history.dart';
+import 'package:sorting_visualization/services/shared_preference_service.dart';
 import 'package:sorting_visualization/utils/contents.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -17,6 +17,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   final _snackBarService = locator<SnackbarService>();
   final _dialogService = locator<DialogService>();
   final _navigationService = locator<NavigationService>();
+  final _sharedPrefService = locator<SharedPreferenceService>();
   final dataContent = DataContent();
 
   AlgorithmType _algorithmType;
@@ -80,6 +81,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   void onData(StreamController data) async {
     super.onData(data);
     _streamController = data;
+
+    // Initializing last saved settings
+    _sampleSize = _sharedPrefService.sortingArraySize;
+    _sliderValue = _sharedPrefService.sortingSliderValue;
+    isShowHistoryEnable = _sharedPrefService.showSortingHistory;
+
     reset();
     isLoading = false;
     notifyListeners();
@@ -633,6 +640,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         dialogResponse.confirmed &&
         dialogResponse.responseData.toString().isNotEmpty) {
       _sampleSize = int.parse(dialogResponse.responseData.toString());
+      _sharedPrefService.sortingArraySize = _sampleSize;
       reset();
     }
   }

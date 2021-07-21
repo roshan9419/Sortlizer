@@ -36,6 +36,7 @@ dependencies:
   auto_route: ^0.6.9
   stacked_services: ^0.6.0+1
   stacked_themes:
+  shared_preferences: ^0.5.10
 
   # inversion of control
   get_it:
@@ -89,7 +90,7 @@ flutter:
   fonts:
     - family: Montserrat
       fonts:
-      - asset: fonts/montserrat_semibold.ttf
+        - asset: fonts/montserrat_semibold.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

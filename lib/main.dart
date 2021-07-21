@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sorting_visualization/services/shared_preference_service.dart';
 import 'package:sorting_visualization/setup_bottom_sheet.dart';
 import 'package:sorting_visualization/setup_dialogs.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
@@ -14,6 +15,10 @@ Future main() async {
   setupLocator();
   setupDialogUi();
   setupBottomSheetUI();
+
+  final SharedPreferenceService _sharedPrefService = locator<SharedPreferenceService>();
+  await _sharedPrefService.initialise();
+
   runApp(MyApp());
   var style = SystemUiOverlayStyle(systemNavigationBarColor: darkBackgroundFinish);
   SystemChrome.setSystemUIOverlayStyle(style);
