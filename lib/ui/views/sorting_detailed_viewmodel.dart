@@ -6,24 +6,26 @@ class SortingDetailedViewModel extends BaseViewModel {
 
   List<HistoryTrack> historyTrackList = [];
 
+  int step = 20;
+
   SortingDetailedViewModel(this.algoTracksList) {
     algoTracksList.forEach((element) {
       historyTrackList.add(HistoryTrack(
         isExpanded: false,
         algoTrack: element,
-        currentPageCount: element.sortTrack.length > 10 ? 10 : element.sortTrack.length
+        currentPageCount: element.sortTrack.length > step ? step : element.sortTrack.length
       ));
     });
   }
 
   onSeeTrackBtnTap(HistoryTrack item) {
     item.isExpanded = !item.isExpanded;
-    item.currentPageCount = item.algoTrack.sortTrack.length > 10 ? 10 : item.algoTrack.sortTrack.length;
+    item.currentPageCount = item.algoTrack.sortTrack.length > step ? step : item.algoTrack.sortTrack.length;
     notifyListeners();
   }
 
   loadMore(HistoryTrack trackItem) {
-    trackItem.currentPageCount += 10;
+    trackItem.currentPageCount += step;
     if (trackItem.currentPageCount > trackItem.algoTrack.sortTrack.length) {
       trackItem.currentPageCount = trackItem.algoTrack.sortTrack.length;
     }

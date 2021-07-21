@@ -86,6 +86,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _sampleSize = _sharedPrefService.sortingArraySize;
     _sliderValue = _sharedPrefService.sortingSliderValue;
     isShowHistoryEnable = _sharedPrefService.showSortingHistory;
+    updateSpeed(_sliderValue);
 
     reset();
     isLoading = false;
@@ -207,8 +208,14 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _chkValueIdx = chkIdx;
     await Future.delayed(_getDuration(), () {});
     _streamController.add(_numbers);
+  }
+
+  // Saving sortingStep
+  saveCurrentSortingStep() {
     List<int> tempList = [];
-    _numbers.forEach((num) { tempList.add(num); });
+    _numbers.forEach((num) {
+      tempList.add(num);
+    });
     _currentAlgoSortRecords.add(tempList);
   }
 
@@ -242,16 +249,20 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   _bubbleSort() async {
     mainFlow:
     for (int i = 0; i < _numbers.length; ++i) {
+      bool swapped = false;
       for (int j = 0; j < _numbers.length - i - 1; ++j) {
+        saveCurrentSortingStep();
         if (_numbers[j] > _numbers[j + 1]) {
           int temp = _numbers[j];
           _numbers[j] = _numbers[j + 1];
           _numbers[j + 1] = temp;
+          swapped = true;
         }
 
         if (!isSorting) break mainFlow;
         await onSortInBTCall(chkIdx: j);
       }
+      if (!swapped) break;
     }
   }
 
@@ -272,6 +283,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       int k = leftIndex;
 
       while (i < leftSize && j < rightSize) {
+        saveCurrentSortingStep();
+
         if (leftList[i] <= rightList[j]) {
           _numbers[k] = leftList[i];
           i++;
@@ -287,6 +300,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       }
 
       while (i < leftSize) {
+        saveCurrentSortingStep();
         _numbers[k] = leftList[i];
         i++;
         k++;
@@ -296,6 +310,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       }
 
       while (j < rightSize) {
+        saveCurrentSortingStep();
         _numbers[k] = rightList[j];
         j++;
         k++;
@@ -329,6 +344,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       if (!isSorting) return -1;
       await onSortInBTCall(chkIdx: p, tCTU: false);
+      saveCurrentSortingStep();
 
       int cursor = left;
       for (int i = left; i < right; i++) {
@@ -342,6 +358,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           if (!isSorting) return -1;
           await onSortInBTCall(chkIdx: i, tCTU: false);
         }
+        saveCurrentSortingStep();
       }
 
       temp = _numbers[right];
@@ -350,6 +367,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       if (!isSorting) return -1;
       await onSortInBTCall(chkIdx: right, tCTU: false);
+      saveCurrentSortingStep();
 
       return cursor;
     }
@@ -379,6 +397,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     mainFlow:
     for (int i = 0; i < _numbers.length; i++) {
       for (int j = i + 1; j < _numbers.length; j++) {
+        saveCurrentSortingStep();
         if (_numbers[i] > _numbers[j]) {
           int temp = _numbers[i];
           _numbers[i] = _numbers[j];
@@ -398,6 +417,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       int temp = _numbers[i];
       int j = i - 1;
       while (j >= 0 && temp < _numbers[j]) {
+        saveCurrentSortingStep();
         _numbers[j + 1] = _numbers[j];
         j--;
 
@@ -405,15 +425,18 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         await onSortInBTCall(chkIdx: j);
       }
       _numbers[j + 1] = temp;
+      saveCurrentSortingStep();
     }
   }
 
   /// BOGO SORT IMPLEMENTATION
   _bogoSort() async {
+    saveCurrentSortingStep();
     while (!isArraySorted()) {
       _numbers.shuffle();
       if (!isSorting) break;
       await onSortInBTCall(chkIdx: Random().nextInt(_numbers.length));
+      saveCurrentSortingStep();
     }
   }
 
@@ -445,6 +468,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         item = _numbers[pos];
         _numbers[pos] = temp;
         writes++;
+        saveCurrentSortingStep();
       }
 
       while (pos != cs) {
@@ -467,6 +491,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           item = _numbers[pos];
           _numbers[pos] = temp;
           writes++;
+          saveCurrentSortingStep();
         }
 
         if (!isSorting) break mainFlow;
@@ -485,6 +510,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       return mx;
     }
 
+    saveCurrentSortingStep();
     Future<void> countingSort(int place) async {
       int max = 10;
       List<int> output = new List(_numbers.length);
@@ -515,6 +541,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _numbers[i] = output[i];
         if (!isSorting) return;
         await onSortInBTCall(chkIdx: i, tCTU: false);
+        saveCurrentSortingStep();
       }
     }
 
