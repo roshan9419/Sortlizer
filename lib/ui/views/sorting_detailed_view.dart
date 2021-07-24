@@ -123,6 +123,7 @@ class _StepByStepHistoryList extends ViewModelWidget<SortingDetailedViewModel> {
 
   List<Widget> _buildCells({List<int> numbers,
     bool isIndexes = false,
+    Color indexColor = Colors.white,
     bool isHighlightRow = false}) {
     return List.generate(
       numbers.length,
@@ -135,7 +136,7 @@ class _StepByStepHistoryList extends ViewModelWidget<SortingDetailedViewModel> {
             child: Text(
               numbers[index].toString(),
               style: TextStyle(
-                  color: isIndexes ? blueThemeColor : Colors.white,
+                  color: isIndexes ? indexColor : Colors.white,
                   fontSize: 10),
             ),
           ),
@@ -229,6 +230,7 @@ class _StepByStepHistoryList extends ViewModelWidget<SortingDetailedViewModel> {
                     children: _buildCells(
                         numbers: getList(),
                         isIndexes: true,
+                        indexColor: Theme.of(context).primaryColor,
                         isHighlightRow: false),
                   ),
                   Flexible(
@@ -245,7 +247,7 @@ class _StepByStepHistoryList extends ViewModelWidget<SortingDetailedViewModel> {
                   trackItem.algoTrack.sortTrack.length)
                 TextButton(
                     onPressed: () => model.loadMore(trackItem),
-                    child: Text('Load more'))
+                    child: Text('Load more', style: TextStyle(color: Theme.of(context).primaryColor),))
             ],
           ),
         )

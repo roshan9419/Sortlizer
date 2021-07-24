@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         accentColor: Color(0xffB3B3B3),
-        primaryColor: orangeThemeColor,
+        primaryColor: blueThemeColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: 'Montserrat',
         canvasColor: darkBackgroundFinish

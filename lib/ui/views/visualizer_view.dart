@@ -179,6 +179,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   child: Slider(
                       value: model.sliderValue,
                       divisions: 10,
+                      activeColor: Theme.of(context).primaryColor,
                       onChanged: (val) {
                         model.updateSpeed(val);
                       }),
