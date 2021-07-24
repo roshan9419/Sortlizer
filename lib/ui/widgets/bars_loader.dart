@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 class BarsLoader extends StatefulWidget {
   final int duration;
+  final Color color;
+  final double barWidth;
+  final double barHeight;
 
-  BarsLoader({Key key, this.duration}) : super(key: key);
+  BarsLoader({Key key, this.duration, this.color, this.barWidth, this.barHeight}) : super(key: key);
   @override
   _BarsLoaderState createState() => _BarsLoaderState();
 }
@@ -24,7 +27,7 @@ class _BarsLoaderState extends State<BarsLoader>
     final curvedAnimation = CurvedAnimation(
         parent: _animController, curve: Curves.easeOutSine);
 
-    _animation = Tween<double>(begin: 1, end: _height).animate(curvedAnimation)
+    _animation = Tween<double>(begin: 1, end: widget.barHeight ?? _height).animate(curvedAnimation)
       ..addListener(() {
         setState(() {
 
@@ -42,10 +45,10 @@ class _BarsLoaderState extends State<BarsLoader>
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: _width,
+      width: widget.barWidth ?? _width,
       height: _animation.value,
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: widget.color,
           borderRadius: BorderRadius.circular(2)
       ),
     );
@@ -53,16 +56,22 @@ class _BarsLoaderState extends State<BarsLoader>
 }
 
 class MyBarLoader extends StatelessWidget {
+  final Color barColor;
+  final double barWidth;
+  final double barHeight;
+
+  const MyBarLoader({Key key, this.barColor = Colors.white, this.barWidth, this.barHeight}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        BarsLoader(duration: 500),
+        BarsLoader(duration: 500, color: barColor, barWidth: barWidth, barHeight: barHeight),
         SizedBox(width: 3),
-        BarsLoader(duration: 1000),
+        BarsLoader(duration: 1000, color: barColor, barWidth: barWidth, barHeight: barHeight),
         SizedBox(width: 3),
-        BarsLoader(duration: 1500),
+        BarsLoader(duration: 1500, color: barColor, barWidth: barWidth, barHeight: barHeight),
       ],
     );
   }

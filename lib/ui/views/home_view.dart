@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/home_viewmodel.dart';
+import 'package:sorting_visualization/ui/widgets/bars_loader.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_rect_btn.dart';
 import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
 import 'package:stacked/stacked.dart';
@@ -33,22 +34,33 @@ class HomeView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RichText(
-                          text: TextSpan(
-                              text: 'Sorting\n',
-                              style: theme.textTheme.headline5.copyWith(
-                                  color: lightGrayColor, letterSpacing: 1),
-                              children: [
-                            TextSpan(
-                              text: 'Visualizer',
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('Sorting',
+                                  style: theme.textTheme.headline5.copyWith(
+                                      color: lightGrayColor, letterSpacing: 1)),
+                              SizedBox(width: 10),
+                              MyBarLoader(
+                                barColor: theme.primaryColor,
+                                barHeight: 20,
+                                barWidth: 5,
+                              )
+                            ],
+                          ),
+                          Text('Visualizer',
                               style: theme.textTheme.headline4.copyWith(
-                                  color: Colors.white, letterSpacing: 2),
-                            )
-                          ])),
+                                  color: Colors.white, letterSpacing: 2)),
+                        ],
+                      ),
                       ExpandableButtons(),
                     ],
                   ),
-                  Spacer(),
+                  // Spacer(),
                   GetProgrammingQuote(),
                   SizedBox(height: 30),
                   Center(
