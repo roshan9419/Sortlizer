@@ -29,68 +29,28 @@ class HomeView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    // color: Colors.blueGrey,
-                    height: 250,
-                    child: Stack(
-                      fit: StackFit.passthrough,
-                      clipBehavior: Clip.none,
-                      overflow: Overflow.visible,
-                      children: [
-                        RichText(
-                            text: TextSpan(
-                                text: 'Sorting\n',
-                                style: theme.textTheme.headline5.copyWith(
-                                    color: lightGrayColor, letterSpacing: 1),
-                                children: [
-                              TextSpan(
-                                text: 'Visualizer',
-                                style: theme.textTheme.headline4.copyWith(
-                                    color: Colors.white, letterSpacing: 2),
-                              )
-                            ])),
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: Column(
-                            children: [
-                              NeumorphicButton(
-                                icon: Icon(
-                                  model.isMenuOpened ? Icons.close : Icons.menu,
-                                  color: Colors.white,
-                                ),
-                                btnSize: 50,
-                                onTap: model.onMenuBtnClick,
-                              ),
-                              if (model.isMenuOpened)
-                                ActionButton(
-                                    toolTipText: 'About',
-                                    color: theme.primaryColor,
-                                    iconData: Icons.info_outline,
-                                    onTap: model.showAboutApp),
-                              if (model.isMenuOpened)
-                                ActionButton(
-                                    toolTipText: 'Share',
-                                    color: Color(0xff0CAA7F),
-                                    iconData: Icons.share),
-                              if (model.isMenuOpened)
-                                ActionButton(
-                                    toolTipText: 'Rate',
-                                    color: orangeThemeColor,
-                                    iconData: Icons.star),
-                            ],
-                          ),
-                        ),
-                        Positioned(
-                            top: 150,
-                            left: 0,
-                            right: 0,
-                            child: GetProgrammingQuote()),
-                      ],
-                    ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RichText(
+                          text: TextSpan(
+                              text: 'Sorting\n',
+                              style: theme.textTheme.headline5.copyWith(
+                                  color: lightGrayColor, letterSpacing: 1),
+                              children: [
+                            TextSpan(
+                              text: 'Visualizer',
+                              style: theme.textTheme.headline4.copyWith(
+                                  color: Colors.white, letterSpacing: 2),
+                            )
+                          ])),
+                      ExpandableButtons(),
+                    ],
                   ),
                   Spacer(),
-                  // SizedBox(height: 100),
+                  GetProgrammingQuote(),
+                  SizedBox(height: 30),
                   Center(
                     child: NeumorphicButton(
                       onTap: model.moveToVisualizerView,
@@ -143,6 +103,113 @@ class HomeView extends StatelessWidget {
         ),
       ),
       viewModelBuilder: () => HomeViewModel(),
+    );
+  }
+}
+
+class ExpandableButtons extends StatefulWidget {
+  @override
+  _ExpandableButtonsState createState() => _ExpandableButtonsState();
+}
+
+class _ExpandableButtonsState extends State<ExpandableButtons>
+    with SingleTickerProviderStateMixin {
+  bool isOpened = false;
+  AnimationController _animationController;
+  Animation<Color> _btnColor;
+  Animation<double> _animationIcon;
+  Animation<double> _translateBtn;
+  double _fabHeight = 55.0;
+
+  @override
+  void initState() {
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+          ..addListener(() {
+            setState(() {});
+          });
+    _animationIcon =
+        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+    _btnColor = ColorTween(begin: Colors.blue, end: Colors.deepOrange).animate(
+        CurvedAnimation(
+            parent: _animationController,
+            curve: Interval(0.0, 1.0, curve: Curves.linear)));
+    _translateBtn = Tween<double>(begin: _fabHeight, end: 0).animate(
+        CurvedAnimation(
+            parent: _animationController,
+            curve: Interval(0.0, 0.75, curve: Curves.easeOut)));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void animate() {
+    isOpened ? _animationController.reverse() : _animationController.forward();
+    isOpened = !isOpened;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // color: Colors.blueGrey,
+      height: 220,
+      child: Stack(
+        overflow: Overflow.visible,
+        // mainAxisSize: MainAxisSize.min,
+        children: [
+          Transform(
+            transform:
+                Matrix4.translationValues(0.0, _translateBtn.value * 1.0, 0.0),
+            child: ActionButton(
+              color: Colors.deepOrange,
+              toolTipText: 'About',
+              iconData: Icons.info_outline,
+            ),
+          ),
+          Transform(
+            transform:
+                Matrix4.translationValues(0.0, _translateBtn.value * 2.0, 0.0),
+            child: ActionButton(
+              color: Colors.green,
+              toolTipText: 'Share',
+              iconData: Icons.share,
+            ),
+          ),
+          Transform(
+            transform:
+                Matrix4.translationValues(0.0, _translateBtn.value * 3.0, 0.0),
+            child: ActionButton(
+              color: Colors.deepPurpleAccent,
+              toolTipText: 'Star',
+              iconData: Icons.star_border_rounded,
+            ),
+          ),
+          Container(
+            width: 55,
+            height: 55,
+            padding: const EdgeInsets.only(top: 8.0),
+            child: FittedBox(
+              child: FloatingActionButton(
+                onPressed: () {
+                  animate();
+                },
+                heroTag: 'Menu',
+                backgroundColor: darkGrayColor,
+                child: AnimatedIcon(
+                  icon: AnimatedIcons.close_menu,
+                  progress: _animationIcon,
+                  color: Colors.white,
+                ),
+                tooltip: 'Menu',
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
