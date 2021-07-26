@@ -35,7 +35,7 @@ class HomeViewModel extends BaseViewModel {
   void showAboutApp() async {
     var desc = "Use this Sorting Visualizer to understand and visualize different sorting algorithms like, Bubble Sort, Merge Sort, Quick Sort, Radix Sort and many more...\n\n" +
         "Visualize your own custom input array, see the step-by-step sorting history of the algorithm.\n\n" +
-        "It is an open-source project, find the repository from my GitHub account.";
+        "Easily understand how the sorting algorithms differ in terms of size, space and time";
 
     await _dialogService.showCustomDialog(
         variant: DialogType.ABOUT_APP,

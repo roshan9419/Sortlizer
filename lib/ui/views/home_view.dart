@@ -38,8 +38,10 @@ class HomeView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          SizedBox(height: 5),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text('Sorting',
                                   style: theme.textTheme.headline5.copyWith(
@@ -65,7 +67,9 @@ class HomeView extends StatelessWidget {
                     ],
                   ),
                   // Spacer(),
-                  GetProgrammingQuote(),
+                  Transform(
+                      transform: Matrix4.translationValues(0, -20, 0),
+                      child: GetProgrammingQuote()),
                   SizedBox(height: 30),
                   Center(
                     child: NeumorphicButton(
