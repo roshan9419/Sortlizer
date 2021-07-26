@@ -6,7 +6,8 @@ enum AlgorithmType {
   QUICK_SORT,
   CYCLE_SORT,
   BOGO_SORT,
-  RADIX_SORT
+  RADIX_SORT,
+  COCKTAIL_SORT
 }
 
 String getAlgoTypeName(AlgorithmType type) {

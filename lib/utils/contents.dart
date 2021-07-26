@@ -9,7 +9,8 @@ class DataContent {
     AlgorithmType.QUICK_SORT: "Quick Sort",
     AlgorithmType.CYCLE_SORT: "Cycle Sort",
     AlgorithmType.BOGO_SORT: "Bogo Sort",
-    AlgorithmType.RADIX_SORT: "Radix Sort"
+    AlgorithmType.RADIX_SORT: "Radix Sort",
+    AlgorithmType.COCKTAIL_SORT: "Cocktail Sort"
   };
 
   String getAlgorithmTitle(AlgorithmType type) {
@@ -43,7 +44,9 @@ class DataContent {
       AlgorithmType.BOGO_SORT:
           "BogoSort also known as permutation sort, stupid sort, slow sort, shotgun sort or monkey sort is a particularly ineffective algorithm based on generate and test paradigm. The algorithm successively generates permutations of its input until it finds one that is sorted.",
       AlgorithmType.RADIX_SORT:
-          "Radix sort is a sorting algorithm that sorts the elements by first grouping the individual digits of the same place value. Then, sort the elements according to their increasing/decreasing order."
+          "Radix sort is a sorting algorithm that sorts the elements by first grouping the individual digits of the same place value. Then, sort the elements according to their increasing/decreasing order.",
+      AlgorithmType.COCKTAIL_SORT:
+          "Cocktail Sort is a variation of Bubble sort. The Bubble sort algorithm always traverses elements from left and moves the largest element to its correct position in first iteration and second largest in second iteration and so on. Cocktail Sort traverses through a given array in both directions alternatively."
     };
 
     return algoDesc.containsKey(type) ? algoDesc[type] : "N.A";
@@ -60,6 +63,7 @@ class DataContent {
       AlgorithmType.CYCLE_SORT: ["O(n²)", "O(n²)", "O(n²)"],
       AlgorithmType.BOGO_SORT: ["O(∞)", "O(n*n!)", "O(n)"],
       AlgorithmType.RADIX_SORT: ["O(n+k)", "O(n+k)", "O(n+k)"],
+      AlgorithmType.COCKTAIL_SORT: ["O(n²)", "O(n²)", "O(n)"],
     };
     return complexities.containsKey(type)
         ? complexities[type]
@@ -88,6 +92,8 @@ class DataContent {
         return cycleSortCode();
       case AlgorithmType.RADIX_SORT:
         return radixSortCode();
+      case AlgorithmType.COCKTAIL_SORT:
+        return cocktailSortCode();
       default:
         return "";
     }
@@ -466,6 +472,62 @@ int main() {
   for (int place = 1; _max / place > 0; place *= 10) {
     countingSort(arr, n, place);
   }
+  
+  cout << "\\nAfter Sorting: ";
+  print(arr, n);
+  
+  return 0;
+}
+    """;
+  }
+
+  String cocktailSortCode() {
+    return """
+#include <bits/stdc++.h>
+using namespace std;
+
+void cocktailSort(int arr[], int n) {
+  bool isSwapped = true;
+  int start = 0;
+  int end = n;
+  
+  while (isSwapped) {
+    isSwapped = false;
+    for (int i = start; i < end - 1; i++) {
+      if (_numbers[i] > _numbers[i + 1]) {
+        swap(arr[i], arr[i+1]);
+        isSwapped = true;
+      }
+    }
+    
+    if (!isSwapped) break;
+    
+    isSwapped = false;
+    end = end - 1;
+    
+    for (int i = end - 1; i >= start; i--) {
+      if (arr[i] > arr[i + 1]) {
+        swap(arr[i], arr[i+1]);
+        isSwapped = true;
+      }
+    }
+    start = start + 1;
+  }
+}
+  
+void print(int arr[], int n) {
+  for (int i = 0; i < n; i++)
+    cout << arr[i] << " ";
+}
+
+int main() {
+  int arr[] = {10, 20, 10, 90, 30, 80, 70, 45};
+  int n = sizeof(arr) / sizeof(arr[0]);
+  
+  cout << "Before Sorting: ";
+  print(arr, n);
+  
+  cocktailSort(arr, n);
   
   cout << "\\nAfter Sorting: ";
   print(arr, n);

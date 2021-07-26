@@ -176,6 +176,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         case AlgorithmType.RADIX_SORT:
           await _radixSort();
           break;
+        case AlgorithmType.COCKTAIL_SORT:
+          await _cocktailSort();
+          break;
       }
 
       _stopWatch.stop();
@@ -551,6 +554,49 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       // print(place);
       if (!isSorting) return;
       await onSortInBTCall(chkIdx: -1, tCTU: false);
+    }
+  }
+
+  /// COCKTAIL SORT IMPLEMENTATION
+  _cocktailSort() async {
+    bool isSwapped = true;
+    int start = 0;
+    int end = _numbers.length;
+
+    while (isSwapped) {
+      isSwapped = false;
+
+      for (int i = start; i < end - 1; i++) {
+        if (_numbers[i] > _numbers[i + 1]) {
+          int temp = _numbers[i];
+          _numbers[i] = _numbers[i + 1];
+          _numbers[i + 1] = temp;
+          isSwapped = true;
+        }
+
+        if (!isSorting) return;
+        await onSortInBTCall(chkIdx: i);
+        saveCurrentSortingStep();
+      }
+
+      if (!isSwapped) break;
+
+      isSwapped = false;
+      end = end - 1;
+      for (int i = end - 1; i >= start; i--) {
+        if (_numbers[i] > _numbers[i + 1]) {
+          int temp = _numbers[i];
+          _numbers[i] = _numbers[i + 1];
+          _numbers[i + 1] = temp;
+          isSwapped = true;
+        }
+
+        if (!isSorting) return;
+        await onSortInBTCall(chkIdx: i);
+        saveCurrentSortingStep();
+      }
+
+      start = start + 1;
     }
   }
 
