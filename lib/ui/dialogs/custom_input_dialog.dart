@@ -69,98 +69,102 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return SingleChildScrollView(
-      child: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [darkBackgroundStart, darkBackgroundFinish])),
-        padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              widget.dialogRequest.title,
-              style: theme.textTheme.subtitle2.copyWith(color: lightGrayColor),
-            ),
-            SizedBox(height: 10),
-            Text(
-              widget.dialogRequest.description,
-              style: theme.textTheme.caption
-                  .copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
-            ),
-            SizedBox(height: 10),
-            Wrap(
-                children: List.generate(
-              resultsList.length,
-              (index) {
-                return NumberBox(number: resultsList[index]);
-              },
-            )),
-            SizedBox(height: 10),
-            if (showError)
-              Text(errorMessage,
-                  style: theme.textTheme.caption
-                      .copyWith(color: Colors.redAccent)),
-            if (showError) SizedBox(height: 5),
-            Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                    color: darkBackgroundFinish,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    border: Border.all(color: Color(0xffafafaf))),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        maxLines: 1,
-                        keyboardType: TextInputType.number,
-                        controller: _controller,
-                        style: theme.textTheme.subtitle2
-                            .copyWith(color: lightGrayColor),
-                        decoration: InputDecoration(
-                            hintText: 'Eg., $egNum',
-                            hintStyle: theme.textTheme.caption
-                                .copyWith(color: Color(0xff9B9B9B)),
-                            focusedBorder: InputBorder.none,
-                            border: InputBorder.none,
-                            enabledBorder: InputBorder.none),
-                        onChanged: (value) {
-                          validateField(value);
-                        },
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [darkBackgroundStart, darkBackgroundFinish])),
+          padding: EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                widget.dialogRequest.title,
+                style:
+                    theme.textTheme.subtitle2.copyWith(color: lightGrayColor),
+              ),
+              SizedBox(height: 10),
+              Text(
+                widget.dialogRequest.description,
+                style: theme.textTheme.caption
+                    .copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
+              ),
+              SizedBox(height: 10),
+              Wrap(
+                  children: List.generate(
+                resultsList.length,
+                (index) {
+                  return NumberBox(number: resultsList[index]);
+                },
+              )),
+              SizedBox(height: 10),
+              if (showError)
+                Text(errorMessage,
+                    style: theme.textTheme.caption
+                        .copyWith(color: Colors.redAccent)),
+              if (showError) SizedBox(height: 5),
+              Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                      color: darkBackgroundFinish,
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      border: Border.all(color: Color(0xffafafaf))),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          maxLines: 1,
+                          keyboardType: TextInputType.number,
+                          controller: _controller,
+                          style: theme.textTheme.subtitle2
+                              .copyWith(color: lightGrayColor),
+                          decoration: InputDecoration(
+                              hintText: 'Eg., $egNum',
+                              hintStyle: theme.textTheme.caption
+                                  .copyWith(color: Color(0xff9B9B9B)),
+                              focusedBorder: InputBorder.none,
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none),
+                          onChanged: (value) {
+                            validateField(value);
+                          },
+                        ),
                       ),
+                      TextButton(
+                        onPressed: () {
+                          addNumber();
+                        },
+                        child: Text('Add +'),
+                      )
+                    ],
+                  )),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: NeumorphicRectButton(
+                      labelText: widget.dialogRequest.secondaryButtonTitle,
+                      onTap: dismissDialog,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        addNumber();
-                      },
-                      child: Text('Add +'),
-                    )
-                  ],
-                )),
-            SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: NeumorphicRectButton(
-                    labelText: widget.dialogRequest.secondaryButtonTitle,
-                    onTap: dismissDialog,
                   ),
-                ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: NeumorphicRectButton(
-                    labelText: widget.dialogRequest.mainButtonTitle,
-                    btnColor: theme.primaryColor,
-                    onTap: onSubmit,
-                  ),
-                )
-              ],
-            )
-          ],
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: NeumorphicRectButton(
+                      labelText: widget.dialogRequest.mainButtonTitle,
+                      btnColor: theme.primaryColor,
+                      onTap: onSubmit,
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

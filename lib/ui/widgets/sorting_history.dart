@@ -35,19 +35,24 @@ class SortingHistoryTable extends StatelessWidget {
                     .subtitle2
                     .copyWith(color: Theme.of(context).primaryColor),
               ),
-              TextButton.icon(
+              TextButton(
                 onPressed: onDetailsBtnTap,
-                icon: Icon(
-                  Icons.history,
-                  size: 20,
-                  color: lightGrayColor,
-                ),
-                label: Text(
-                  "View Detailed Track",
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption
-                      .copyWith(color: lightGrayColor),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "View Detailed Track",
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          .copyWith(color: lightGrayColor),
+                    ),
+                    Icon(
+                      Icons.double_arrow,
+                      size: 15,
+                      color: lightGrayColor,
+                    )
+                  ],
                 ),
               )
             ],

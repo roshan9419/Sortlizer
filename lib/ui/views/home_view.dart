@@ -192,6 +192,7 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
               color: Color(0xff257FEA),
               toolTipText: 'About',
               iconData: Icons.info_outline,
+              btnElevation: isOpened ? 5 : 0,
               onTap: () {
                 widget.onAboutBtnTap();
                 animate();
@@ -205,6 +206,7 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
               color: Color(0xff0CAA7F),
               toolTipText: 'Share',
               iconData: Icons.share,
+              btnElevation: isOpened ? 5 : 0,
               onTap: () {
                 widget.onShareBtnTap();
                 animate();
@@ -218,6 +220,7 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
               color: Color(0xffEA5912),
               toolTipText: 'Review',
               iconData: Icons.star_border_rounded,
+              btnElevation: isOpened ? 5 : 0,
               onTap: () {
                 widget.onReviewBtnTap();
                 animate();
@@ -256,6 +259,7 @@ class ActionButton extends StatelessWidget {
   final IconData iconData;
   final Function onTap;
   final double btnSize;
+  final double btnElevation;
 
   const ActionButton(
       {Key key,
@@ -263,7 +267,8 @@ class ActionButton extends StatelessWidget {
       this.color,
       this.iconData,
       this.onTap,
-      this.btnSize = 55})
+      this.btnSize = 55,
+      this.btnElevation})
       : super(key: key);
 
   @override
@@ -279,6 +284,7 @@ class ActionButton extends StatelessWidget {
             if (onTap != null) onTap();
           },
           heroTag: toolTipText,
+          elevation: btnElevation ?? 5,
           backgroundColor: color,
           child: Icon(
             iconData,

@@ -53,7 +53,8 @@ class HomeViewModel extends BaseViewModel {
 
   void onReviewBtnTap() async {
     try {
-      launch("market://details?id=" + packageName);
+      // launch("market://details?id=" + packageName);
+      launch("https://play.google.com/store/apps/details?id=" + packageName);
     } on PlatformException catch(e) {
       launch("https://play.google.com/store/apps/details?id=" + packageName);
     } finally {
