@@ -14,7 +14,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.40.6"
+    version: "0.40.7"
   animated_text_kit:
     dependency: "direct main"
     description:
@@ -555,6 +555,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.25.0"
+  share:
+    dependency: "direct main"
+    description:
+      name: share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.5+4"
   shared_preferences:
     dependency: "direct main"
     description:

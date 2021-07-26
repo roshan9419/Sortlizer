@@ -46,6 +46,7 @@ dependencies:
   flutter_highlight: 0.6.0
   flutter_svg: 0.18.0
   url_launcher: 5.7.0
+  share: 0.6.5+4
 
 dev_dependencies:
   flutter_test:

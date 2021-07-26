@@ -57,7 +57,11 @@ class HomeView extends StatelessWidget {
                                   color: Colors.white, letterSpacing: 2)),
                         ],
                       ),
-                      ExpandableButtons(),
+                      ExpandableButtons(
+                        onAboutBtnTap: model.showAboutApp,
+                        onShareBtnTap: model.onShareBtnTap,
+                        onReviewBtnTap: model.onReviewBtnTap,
+                      ),
                     ],
                   ),
                   // Spacer(),
@@ -120,6 +124,14 @@ class HomeView extends StatelessWidget {
 }
 
 class ExpandableButtons extends StatefulWidget {
+  final Function onAboutBtnTap;
+  final Function onShareBtnTap;
+  final Function onReviewBtnTap;
+
+  const ExpandableButtons(
+      {Key key, this.onAboutBtnTap, this.onShareBtnTap, this.onReviewBtnTap})
+      : super(key: key);
+
   @override
   _ExpandableButtonsState createState() => _ExpandableButtonsState();
 }
@@ -146,7 +158,7 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
         CurvedAnimation(
             parent: _animationController,
             curve: Interval(0.0, 1.0, curve: Curves.linear)));
-    _translateBtn = Tween<double>(begin: _fabHeight, end: 0).animate(
+    _translateBtn = Tween<double>(begin: 0, end: _fabHeight).animate(
         CurvedAnimation(
             parent: _animationController,
             curve: Interval(0.0, 0.75, curve: Curves.easeOut)));
@@ -177,27 +189,39 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
             transform:
                 Matrix4.translationValues(0.0, _translateBtn.value * 1.0, 0.0),
             child: ActionButton(
-              color: Colors.deepOrange,
+              color: Color(0xff257FEA),
               toolTipText: 'About',
               iconData: Icons.info_outline,
+              onTap: () {
+                widget.onAboutBtnTap();
+                animate();
+              },
             ),
           ),
           Transform(
             transform:
                 Matrix4.translationValues(0.0, _translateBtn.value * 2.0, 0.0),
             child: ActionButton(
-              color: Colors.green,
+              color: Color(0xff0CAA7F),
               toolTipText: 'Share',
               iconData: Icons.share,
+              onTap: () {
+                widget.onShareBtnTap();
+                animate();
+              },
             ),
           ),
           Transform(
             transform:
                 Matrix4.translationValues(0.0, _translateBtn.value * 3.0, 0.0),
             child: ActionButton(
-              color: Colors.deepPurpleAccent,
-              toolTipText: 'Star',
+              color: Color(0xffEA5912),
+              toolTipText: 'Review',
               iconData: Icons.star_border_rounded,
+              onTap: () {
+                widget.onReviewBtnTap();
+                animate();
+              },
             ),
           ),
           Container(
@@ -212,7 +236,7 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
                 heroTag: 'Menu',
                 backgroundColor: darkGrayColor,
                 child: AnimatedIcon(
-                  icon: AnimatedIcons.close_menu,
+                  icon: AnimatedIcons.menu_close,
                   progress: _animationIcon,
                   color: Colors.white,
                 ),
