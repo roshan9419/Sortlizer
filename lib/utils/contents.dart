@@ -10,7 +10,9 @@ class DataContent {
     AlgorithmType.CYCLE_SORT: "Cycle Sort",
     AlgorithmType.BOGO_SORT: "Bogo Sort",
     AlgorithmType.RADIX_SORT: "Radix Sort",
-    AlgorithmType.COCKTAIL_SORT: "Cocktail Sort"
+    AlgorithmType.COCKTAIL_SORT: "Cocktail Sort",
+    AlgorithmType.ODD_EVEN_SORT: "Odd Even Sort",
+    AlgorithmType.HEAP_SORT: "Heap Sort"
   };
 
   String getAlgorithmTitle(AlgorithmType type) {
@@ -46,7 +48,11 @@ class DataContent {
       AlgorithmType.RADIX_SORT:
           "Radix sort is a sorting algorithm that sorts the elements by first grouping the individual digits of the same place value. Then, sort the elements according to their increasing/decreasing order.",
       AlgorithmType.COCKTAIL_SORT:
-          "Cocktail Sort is a variation of Bubble sort. The Bubble sort algorithm always traverses elements from left and moves the largest element to its correct position in first iteration and second largest in second iteration and so on. Cocktail Sort traverses through a given array in both directions alternatively."
+          "Cocktail Sort is a variation of Bubble sort. The Bubble sort algorithm always traverses elements from left and moves the largest element to its correct position in first iteration and second largest in second iteration and so on. Cocktail Sort traverses through a given array in both directions alternatively.",
+      AlgorithmType.ODD_EVEN_SORT:
+          "This algorithm is divided into two phases- Odd and Even Phase. The algorithm runs until the array elements are sorted and in each iteration two phases occurs- Odd and Even Phases. In the odd phase, we perform a bubble sort on odd indexed elements and in the even phase, we perform a bubble sort on even indexed elements.",
+      AlgorithmType.HEAP_SORT:
+          "Heap sort is a comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the minimum element and place the minimum element at the beginning. We repeat the same process for the remaining elements."
     };
 
     return algoDesc.containsKey(type) ? algoDesc[type] : "N.A";
@@ -64,6 +70,8 @@ class DataContent {
       AlgorithmType.BOGO_SORT: ["O(∞)", "O(n*n!)", "O(n)"],
       AlgorithmType.RADIX_SORT: ["O(n+k)", "O(n+k)", "O(n+k)"],
       AlgorithmType.COCKTAIL_SORT: ["O(n²)", "O(n²)", "O(n)"],
+      AlgorithmType.ODD_EVEN_SORT: ["O(n²)", "O(n²)", "O(n)"],
+      AlgorithmType.HEAP_SORT: ["O(nlogn)", "O(nlogn)", "O(nlogn)"],
     };
     return complexities.containsKey(type)
         ? complexities[type]
@@ -94,6 +102,10 @@ class DataContent {
         return radixSortCode();
       case AlgorithmType.COCKTAIL_SORT:
         return cocktailSortCode();
+      case AlgorithmType.ODD_EVEN_SORT:
+        return oddEvenSortCode();
+      case AlgorithmType.HEAP_SORT:
+        return heapSortCode();
       default:
         return "";
     }
@@ -535,5 +547,59 @@ int main() {
   return 0;
 }
     """;
+  }
+
+  String oddEvenSortCode() {
+    return """
+#include <bits/stdc++.h>
+using namespace std;
+
+void oddEvenSort(int arr[], int n) {
+  bool isSorted = false;
+  
+  while (!isSorted) {
+    isSorted = true;
+    
+    for (int i = 1; i <= n - 2; i += 2) {
+      if (arr[i] > arr[i + 1]) {
+        swap(arr[i], arr[i+1]);
+        isSorted = false;
+      }
+    }
+    
+    for (int i = 0; i <= n - 2; i += 2) {
+      if (arr[i] > arr[i + 1]) {
+        swap(arr[i], arr[i+1]);
+        isSorted = false;
+      }
+    }
+  }
+}
+
+void print(int arr[], int n) {
+  for (int i = 0; i < n; i++)
+    cout << arr[i] << " ";
+}
+
+int main() {
+  int arr[] = {10, 20, 10, 90, 30, 80, 70, 45};
+  int n = sizeof(arr) / sizeof(arr[0]);
+  
+  cout << "Before Sorting: ";
+  print(arr, n);
+  
+  oddEvenSort(arr, n);
+  
+  cout << "\\nAfter Sorting: ";
+  print(arr, n);
+  
+  return 0;
+}    
+}    
+    """;
+  }
+
+  String heapSortCode() {
+    return """""";
   }
 }

@@ -179,6 +179,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         case AlgorithmType.COCKTAIL_SORT:
           await _cocktailSort();
           break;
+        case AlgorithmType.ODD_EVEN_SORT:
+          await _oddEvenSort();
+          break;
+        case AlgorithmType.HEAP_SORT:
+          await _heapSort();
+          break;
       }
 
       _stopWatch.stop();
@@ -600,11 +606,88 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
+  /// ODD EVEN SORT IMPLEMENTATION
+  _oddEvenSort() async {
+    bool isSorted = false;
+
+    while (!isSorted) {
+      isSorted = true;
+
+      for (int i = 1; i <= _numbers.length - 2; i += 2) {
+        if (_numbers[i] > _numbers[i + 1]) {
+          int temp = _numbers[i];
+          _numbers[i] = _numbers[i + 1];
+          _numbers[i + 1] = temp;
+          isSorted = false;
+        }
+        if (!isSorting) return;
+        await onSortInBTCall(chkIdx: i);
+        saveCurrentSortingStep();
+      }
+
+      for (int i = 0; i <= _numbers.length - 2; i += 2) {
+        if (_numbers[i] > _numbers[i + 1]) {
+          int temp = _numbers[i];
+          _numbers[i] = _numbers[i + 1];
+          _numbers[i + 1] = temp;
+          isSorted = false;
+        }
+
+        if (!isSorting) return;
+        await onSortInBTCall(chkIdx: i);
+        saveCurrentSortingStep();
+      }
+    }
+  }
+
+  /// HEAP SORT IMPLEMENTATION
+  _heapSort() async {
+    for (int i = _numbers.length ~/ 2; i >= 0; i--) {
+      if (!isSorting) return;
+      await heapify(_numbers, _numbers.length, i);
+    }
+    for (int i = _numbers.length - 1; i >= 0; i--) {
+      int temp = _numbers[0];
+      _numbers[0] = _numbers[i];
+      _numbers[i] = temp;
+      if (!isSorting) return;
+      await heapify(_numbers, i, 0);
+    }
+  }
+
+  heapify(List<int> arr, int n, int i) async {
+
+    int largest = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+
+    if (l < n && arr[l] > arr[largest]) largest = l;
+    _totalComparisons++;
+    if (r < n && arr[r] > arr[largest]) largest = r;
+    _totalComparisons++;
+
+    if (largest != i) {
+      int temp = _numbers[i];
+      _numbers[i] = _numbers[largest];
+      _numbers[largest] = temp;
+      heapify(arr, n, largest);
+    }
+
+    await onSortInBTCall(chkIdx: i);
+    saveCurrentSortingStep();
+  }
+
   bool isArraySorted() {
     for (int i = 1; i < _numbers.length; i++) {
       if (_numbers[i - 1] > _numbers[i]) return false;
     }
     return true;
+  }
+
+  void swap(int a, int b) {
+    int t = a;
+    a = b;
+    b = t;
   }
 
   String getTitle() {
