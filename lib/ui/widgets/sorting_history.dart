@@ -43,7 +43,7 @@ class SortingHistoryTable extends StatelessWidget {
                   color: lightGrayColor,
                 ),
                 label: Text(
-                  "Detailed History",
+                  "View Detailed Track",
                   style: Theme.of(context)
                       .textTheme
                       .caption

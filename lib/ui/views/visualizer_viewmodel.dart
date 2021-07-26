@@ -595,34 +595,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
     if (dialogResponse != null &&
         dialogResponse.confirmed &&
-        dialogResponse.responseData.toString().isNotEmpty) {
-      List<String> responseArray =
-          dialogResponse.responseData.toString().split(",");
-      List<int> inputArray = [];
-      bool flag = true;
+        dialogResponse.responseData != null) {
+      List<int> responseArray = dialogResponse.responseData.toList();
 
-      responseArray.forEach((element) {
-        try {
-          var num = int.parse(element.trim());
-          if (num > _maxNumber)
-            flag = false;
-          else
-            inputArray.add(num);
-        } catch (e) {
-          flag = false;
-        }
-      });
-
-      !flag
-          ? _snackBarService.showSnackbar(
-              message: "Your Array: $inputArray",
-              title: "Elements greater than $_maxNumber are not added",
-              duration: Duration(milliseconds: 3000))
-          : _snackBarService.showSnackbar(message: "Your Array: $inputArray");
-
-      if (inputArray.isNotEmpty) {
-        _sampleSize = inputArray.length;
-        reset(customNumbers: inputArray);
+      if (responseArray.isNotEmpty) {
+        _sampleSize = responseArray.length;
+        reset(customNumbers: responseArray);
         notifyListeners();
       }
     }
