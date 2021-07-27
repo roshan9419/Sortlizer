@@ -1,4 +1,4 @@
-package com.programmingtech.sorting_visualization
+package com.programmingtech.sortlizer
 
 import io.flutter.embedding.android.FlutterActivity
 
