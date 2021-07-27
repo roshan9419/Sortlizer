@@ -185,6 +185,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         case AlgorithmType.HEAP_SORT:
           await _heapSort();
           break;
+        case AlgorithmType.SHELL_SORT:
+          await _shellSort();
+          break;
       }
 
       _stopWatch.stop();
@@ -675,6 +678,24 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
     await onSortInBTCall(chkIdx: i);
     saveCurrentSortingStep();
+  }
+
+  /// SHELL SORT IMPLEMENTATION
+  _shellSort() async {
+    mainFlow: for (int gap = _numbers.length ~/ 2; gap > 0; gap ~/= 2) {
+      for (int i = gap; i < _numbers.length; i++) {
+        int temp = _numbers[i];
+        int j;
+        for (j = i; j >= gap && _numbers[j - gap] > temp; j -= gap) {
+          _numbers[j] = _numbers[j - gap];
+          _totalComparisons++;
+        }
+
+        _numbers[j] = temp;
+        if (!isSorting) break mainFlow;
+        await onSortInBTCall(chkIdx: j, tCTU: false);
+      }
+    }
   }
 
   bool isArraySorted() {

@@ -12,7 +12,8 @@ class DataContent {
     AlgorithmType.RADIX_SORT: "Radix Sort",
     AlgorithmType.COCKTAIL_SORT: "Cocktail Sort",
     AlgorithmType.ODD_EVEN_SORT: "Odd Even Sort",
-    AlgorithmType.HEAP_SORT: "Heap Sort"
+    AlgorithmType.HEAP_SORT: "Heap Sort",
+    AlgorithmType.SHELL_SORT: "Shell Sort"
   };
 
   String getAlgorithmTitle(AlgorithmType type) {
@@ -52,7 +53,9 @@ class DataContent {
       AlgorithmType.ODD_EVEN_SORT:
           "This algorithm is divided into two phases- Odd and Even Phase. The algorithm runs until the array elements are sorted and in each iteration two phases occurs- Odd and Even Phases. In the odd phase, we perform a bubble sort on odd indexed elements and in the even phase, we perform a bubble sort on even indexed elements.",
       AlgorithmType.HEAP_SORT:
-          "Heap sort is a comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the minimum element and place the minimum element at the beginning. We repeat the same process for the remaining elements."
+          "Heap sort is a comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the minimum element and place the minimum element at the beginning. We repeat the same process for the remaining elements.",
+      AlgorithmType.SHELL_SORT:
+          "The idea of shellSort is to allow exchange of far items. In shellSort, we make the array h-sorted for a large value of h. We keep reducing the value of h until it becomes 1. An array is said to be h-sorted if all sublists of every h’th element is sorted."
     };
 
     return algoDesc.containsKey(type) ? algoDesc[type] : "N.A";
@@ -72,6 +75,7 @@ class DataContent {
       AlgorithmType.COCKTAIL_SORT: ["O(n²)", "O(n²)", "O(n)"],
       AlgorithmType.ODD_EVEN_SORT: ["O(n²)", "O(n²)", "O(n)"],
       AlgorithmType.HEAP_SORT: ["O(nlogn)", "O(nlogn)", "O(nlogn)"],
+      AlgorithmType.SHELL_SORT: ["O(n²)", "O(nlogn)", "O(nlogn)"],
     };
     return complexities.containsKey(type)
         ? complexities[type]
@@ -106,6 +110,8 @@ class DataContent {
         return oddEvenSortCode();
       case AlgorithmType.HEAP_SORT:
         return heapSortCode();
+      case AlgorithmType.SHELL_SORT:
+        return shellSortCode();
       default:
         return "";
     }
@@ -151,15 +157,17 @@ int main() {
 using namespace std;
 
 void insertionSort(int arr[], int n) {
-    for(int i = 0; i < n; ++i) {
-    	int temp = arr[i];
-    	int j = i;
-    	while(j > 0 && temp < arr[j-1]) {
-    		arr[j] = arr[j-1];
-    		j--;	
-		  }
-		  arr[j] = temp;
-	  }
+  for(int i = 0; i < n; ++i) {
+    int temp = arr[i];
+    int j = i;
+    
+    while(j > 0 && temp < arr[j-1]) {
+      arr[j] = arr[j-1];
+      j--;	
+    }
+    
+    arr[j] = temp;
+  }
 }
 
 void print(int arr[], int n) {
@@ -168,18 +176,18 @@ void print(int arr[], int n) {
 }
 
 int main() {
-    int arr[] = {34, 8, 64, 51, 32, 21};
-    int n = sizeof(arr) / sizeof(arr[0]);
+  int arr[] = {34, 8, 64, 51, 32, 21};
+  int n = sizeof(arr) / sizeof(arr[0]);
 
-    cout << "Before Sorting: ";
-    print(arr, n);
-    
-    insertionSort(arr, n);
-    
-    cout << "\\nAfter Sorting: ";
-    print(arr, n);
-	  
-	  return 0;
+  cout << "Before Sorting: ";
+  print(arr, n);
+  
+  insertionSort(arr, n);
+  
+  cout << "\\nAfter Sorting: ";
+  print(arr, n);
+  
+  return 0;
 }
     """;
   }
@@ -648,6 +656,46 @@ int main() {
   
   return 0;
 }
+    """;
+  }
+
+  String shellSortCode() {
+    return """
+#include<bits/stdc++.h>
+using namespace std;
+
+void shellSort(int arr[], int n) {
+  for (int gap = n / 2; gap > 0; gap /= 2) {
+    for (int i = gap; i < n; i++) {
+      int temp = arr[i];
+      int j;
+      for (j = i; j >= gap && arr[j - gap] > temp; j -= gap)
+        arr[j] = arr[j - gap];
+        
+      arr[j] = temp;
+    }
+  }
+}
+
+void print(int arr[], int n) {
+  for (int i = 0; i < n; i++)
+    cout << arr[i] << " ";
+}
+
+int main() {
+  int arr[] = {34, 8, 64, 51, 32, 21};
+  int n = sizeof(arr) / sizeof(arr[0]);
+  
+  cout << "Before Sorting: ";
+  print(arr, n);
+  
+  shellSort(arr, n);
+  
+  cout << "\\nAfter Sorting: ";
+  print(arr, n);
+  
+  return 0;
+} 
     """;
   }
 }

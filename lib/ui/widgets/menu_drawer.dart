@@ -41,9 +41,8 @@ class MenuDrawer extends StatelessWidget {
                         await Future.delayed(Duration(milliseconds: 50), () {});
                         Navigator.pop(context);
                       },
-                      tileColor: selectedValue == value
-                          ? Theme.of(context).primaryColor
-                          : Colors.transparent,
+                      selected: selectedValue == value,
+                      selectedTileColor: Theme.of(context).primaryColor,
                       title: Text(
                         value,
                         style: Theme.of(context).textTheme.subtitle2.copyWith(
@@ -69,11 +68,10 @@ class MenuDrawer extends StatelessWidget {
                   ),
                 ),
                 Switch(
-                  value: this.isSwitchEnable,
-                  onChanged: (val) => this.onSwitchAction(val),
-                  activeColor: Theme.of(context).primaryColor,
-                  inactiveTrackColor: Colors.grey[800]
-                ),
+                    value: this.isSwitchEnable,
+                    onChanged: (val) => this.onSwitchAction(val),
+                    activeColor: Theme.of(context).primaryColor,
+                    inactiveTrackColor: Colors.grey[800]),
               ],
             )
           ],
