@@ -41,9 +41,9 @@ class NeumorphicRectButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(btnRadius ?? 5),
             boxShadow: [
               BoxShadow(
-                  color: shadowColor1, offset: Offset(4, 4), blurRadius: 12),
+                  color: Color(0xff2f2f2f), offset: Offset(4, 4), blurRadius: 10),
               BoxShadow(
-                  color: Color(0xff3e3e40),
+                  color: Color(0xff2f2f2f),
                   offset: Offset(-4, -4),
                   blurRadius: 10),
             ]),

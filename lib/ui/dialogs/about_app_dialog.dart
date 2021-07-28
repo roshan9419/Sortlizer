@@ -95,7 +95,7 @@ class AboutAppDialog extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 0),
+            SizedBox(height: 10),
             Text("Connect with me:",
                 style:
                     theme.textTheme.subtitle2.copyWith(color: Colors.white70)),
