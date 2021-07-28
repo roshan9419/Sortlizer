@@ -13,7 +13,9 @@ class DataContent {
     AlgorithmType.COCKTAIL_SORT: "Cocktail Sort",
     AlgorithmType.ODD_EVEN_SORT: "Odd Even Sort",
     AlgorithmType.HEAP_SORT: "Heap Sort",
-    AlgorithmType.SHELL_SORT: "Shell Sort"
+    AlgorithmType.SHELL_SORT: "Shell Sort",
+    AlgorithmType.BEAD_SORT: "Bead Sort",
+    AlgorithmType.GNOME_SORT: "Gnome Sort"
   };
 
   String getAlgorithmTitle(AlgorithmType type) {
@@ -55,7 +57,11 @@ class DataContent {
       AlgorithmType.HEAP_SORT:
           "Heap sort is a comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the minimum element and place the minimum element at the beginning. We repeat the same process for the remaining elements.",
       AlgorithmType.SHELL_SORT:
-          "The idea of shellSort is to allow exchange of far items. In shellSort, we make the array h-sorted for a large value of h. We keep reducing the value of h until it becomes 1. An array is said to be h-sorted if all sublists of every h’th element is sorted."
+          "The idea of shellSort is to allow exchange of far items. In shellSort, we make the array h-sorted for a large value of h. We keep reducing the value of h until it becomes 1. An array is said to be h-sorted if all sublists of every h’th element is sorted.",
+      AlgorithmType.BEAD_SORT:
+          "Also known as Gravity sort, this algorithm was inspired from natural phenomenons and was designed keeping in mind objects(or beads) falling under the influence of gravity.",
+      AlgorithmType.GNOME_SORT:
+          "Gnome Sort also called Stupid sort is based on the concept of a Garden Gnome sorting his flower pots."
     };
 
     return algoDesc.containsKey(type) ? algoDesc[type] : "N.A";
@@ -76,6 +82,8 @@ class DataContent {
       AlgorithmType.ODD_EVEN_SORT: ["O(n²)", "O(n²)", "O(n)"],
       AlgorithmType.HEAP_SORT: ["O(nlogn)", "O(nlogn)", "O(nlogn)"],
       AlgorithmType.SHELL_SORT: ["O(n²)", "O(nlogn)", "O(nlogn)"],
+      AlgorithmType.BEAD_SORT: ["O(S)", "O(root n)", "O(1)"],
+      AlgorithmType.GNOME_SORT: ["O(n²)", "O(n²)", "O(n)"],
     };
     return complexities.containsKey(type)
         ? complexities[type]
@@ -112,6 +120,10 @@ class DataContent {
         return heapSortCode();
       case AlgorithmType.SHELL_SORT:
         return shellSortCode();
+      case AlgorithmType.BEAD_SORT:
+        return beadSortCode();
+      case AlgorithmType.GNOME_SORT:
+        return gnomeSortCode();
       default:
         return "";
     }
@@ -696,6 +708,104 @@ int main() {
   
   return 0;
 } 
+    """;
+  }
+
+  String beadSortCode() {
+    return """
+#include<bits/stdc++.h>
+using namespace std;
+
+void beadSort(int arr[], int n) {
+  int _max = arr[0];
+  for (int i = 0; i < n; i++) {
+    _max = max(arr[i], _max);
+  }
+  
+  int grid[n][_max];
+  int levelCount[_max];
+  
+  for (int i = 0; i < _max; i++) {
+    levelCount[i] = 0;
+    for (int j = 0; j < n; j++) {
+      grid[j][i] = 0; // Not Marked
+    }
+  }
+  
+  for (int i = 0; i < n; i++) {
+    int num = arr[i];
+    for (int j = 0; num > 0; j++, num--) {
+      grid[levelCount[j]++][j] = 1; // Marked
+    }
+  }
+  
+  for (int i = 0; i < n; i++) {
+    int putt = 0;
+    for (int j = 0; j < _max && grid[n - 1 - i][j] == 1; j++) {
+      putt++;
+    }    
+    arr[i] = putt;
+  }
+}
+
+void print(int arr[], int n) {
+  for (int i = 0; i < n; i++)
+    cout << arr[i] << " ";
+}
+
+int main() {
+  int arr[] = {34, 8, 64, 51, 32, 21};
+  int n = sizeof(arr) / sizeof(arr[0]);
+  
+  cout << "Before Sorting: ";
+  print(arr, n);
+  
+  beadSort(arr, n);
+  
+  cout << "\\nAfter Sorting: ";
+  print(arr, n);
+  
+  return 0;
+}
+    """;
+  }
+
+  String gnomeSortCode() {
+    return """
+#include<bits/stdc++.h>
+using namespace std;
+
+void gnomeSort(int arr[], int n) {
+  int index = 0;
+  while (index < n) {
+    if (index == 0) index++;
+    if (arr[index] >= arr[index - 1]) index++;
+    else {
+      swap(arr[index], arr[index-1]);
+      index--;
+    }
+  }
+}
+
+void print(int arr[], int n) {
+  for (int i = 0; i < n; i++)
+    cout << arr[i] << " ";
+}
+
+int main() {
+  int arr[] = {34, 8, 64, 51, 32, 21};
+  int n = sizeof(arr) / sizeof(arr[0]);
+  
+  cout << "Before Sorting: ";
+  print(arr, n);
+  
+  gnomeSort(arr, n);
+  
+  cout << "\\nAfter Sorting: ";
+  print(arr, n);
+  
+  return 0;
+}
     """;
   }
 }

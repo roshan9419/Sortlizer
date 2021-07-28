@@ -10,7 +10,9 @@ enum AlgorithmType {
   COCKTAIL_SORT,
   ODD_EVEN_SORT,
   HEAP_SORT,
-  SHELL_SORT
+  SHELL_SORT,
+  BEAD_SORT,
+  GNOME_SORT
 }
 
 String getAlgoTypeName(AlgorithmType type) {

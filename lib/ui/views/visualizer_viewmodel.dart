@@ -188,6 +188,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         case AlgorithmType.SHELL_SORT:
           await _shellSort();
           break;
+        case AlgorithmType.BEAD_SORT:
+          await _beadSort();
+          break;
+        case AlgorithmType.GNOME_SORT:
+          await _gnomeSort();
+          break;
       }
 
       _stopWatch.stop();
@@ -659,7 +665,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   heapify(List<int> arr, int n, int i) async {
-
     int largest = i;
     int l = 2 * i + 1;
     int r = 2 * i + 2;
@@ -682,7 +687,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   /// SHELL SORT IMPLEMENTATION
   _shellSort() async {
-    mainFlow: for (int gap = _numbers.length ~/ 2; gap > 0; gap ~/= 2) {
+    mainFlow:
+    for (int gap = _numbers.length ~/ 2; gap > 0; gap ~/= 2) {
       for (int i = gap; i < _numbers.length; i++) {
         int temp = _numbers[i];
         int j;
@@ -698,17 +704,70 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
+  /// BEAD SORT IMPLEMENTATION
+  _beadSort() async {
+    int _max = _numbers[0];
+    for (int i = 0; i < _numbers.length; i++) {
+      _max = max(_numbers[i], _max);
+    }
+
+    // setting the abacus
+    List grid = List.generate(_numbers.length, (index) => new List.filled(_max, BeadStatus.NULL),
+        growable: false);
+
+    List<int> levelCount = [];
+    for (int i = 0; i < _max; i++) {
+      levelCount.add(0);
+      for (int j = 0; j < _numbers.length; j++) {
+        grid[j][i] = BeadStatus.NOT_MARKED;
+      }
+    }
+
+    for (int i = 0; i < _numbers.length; i++) {
+      var num = _numbers[i];
+      for (int j = 0; num > 0; j++, num--) {
+        grid[levelCount[j]++][j] = BeadStatus.MARKED;
+      }
+    }
+
+    for (int i = 0; i < _numbers.length; i++) {
+      int putt = 0;
+      for (int j = 0;
+          j < _max && grid[_numbers.length - 1 - i][j] == BeadStatus.MARKED;
+          j++) {
+        putt++;
+        _totalComparisons++;
+      }
+      _numbers[i] = putt;
+      if (!isSorting) return;
+      await onSortInBTCall(chkIdx: i, tCTU: false);
+    }
+  }
+
+  /// GNOME SORT IMPLEMENTATION
+  _gnomeSort() async {
+    int index = 0;
+    while (index < _numbers.length) {
+      if (index == 0) index++;
+      if (_numbers[index] >= _numbers[index - 1])
+        index++;
+      else {
+        int temp = _numbers[index];
+        _numbers[index] = _numbers[index - 1];
+        _numbers[index - 1] = temp;
+
+        index--;
+      }
+      if (!isSorting) return;
+      await onSortInBTCall(chkIdx: index);
+    }
+  }
+
   bool isArraySorted() {
     for (int i = 1; i < _numbers.length; i++) {
       if (_numbers[i - 1] > _numbers[i]) return false;
     }
     return true;
-  }
-
-  void swap(int a, int b) {
-    int t = a;
-    a = b;
-    b = t;
   }
 
   String getTitle() {
@@ -815,3 +874,5 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
             SortingDetailedViewArguments(algoTracks: _algoHistoryTrackList));
   }
 }
+
+enum BeadStatus { MARKED, NOT_MARKED, NULL }
