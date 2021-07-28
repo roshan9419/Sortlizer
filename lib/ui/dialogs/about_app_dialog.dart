@@ -5,6 +5,7 @@ import 'package:sorting_visualization/utils/app_info.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../ui_theme.dart';
+import '../../utils/app_info.dart';
 
 class AboutAppDialog extends StatelessWidget {
   final DialogRequest dialogRequest;
@@ -70,7 +71,31 @@ class AboutAppDialog extends StatelessWidget {
             Text(dialogRequest.description,
                 style:
                     theme.textTheme.subtitle2.copyWith(color: Colors.white70)),
-            SizedBox(height: 30),
+            SizedBox(height: 0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () async {
+                    await canLaunch(readMeLink)
+                        ? await launch(readMeLink)
+                        : SnackbarService().showSnackbar(message: "Could not load Url");
+                  },
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Read More',
+                        style: theme.textTheme.subtitle2
+                            .copyWith(color: theme.primaryColor),
+                      ),
+                      Icon(Icons.double_arrow_sharp, size: 20,)
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 0),
             Text("Connect with me:",
                 style:
                     theme.textTheme.subtitle2.copyWith(color: Colors.white70)),
@@ -122,7 +147,7 @@ class AboutAppDialog extends StatelessWidget {
                   handleUrl: youtubeChannelUrl,
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

@@ -67,7 +67,7 @@ flutter_icons:
 
 flutter_native_splash:
   image: assets/images/transparent_logo.png
-  color: "#292D32"
+  color: "#1F2222"
   android: true
   ios: true
 

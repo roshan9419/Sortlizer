@@ -3,3 +3,4 @@ const String linkedInProfileUrl = "https://www.linkedin.com/in/roshan-kumar-a18b
 const String githubProfileUrl = "https://www.github.com/roshan9419";
 const String youtubeChannelUrl = "https://www.youtube.com/channel/UCEH77m_42j2-HHyfhprAMKA";
 const String packageName = "com.programmingtech.sorting_visualization";
+const String readMeLink = "https://github.com/roshan9419/SortingVisualizer/blob/master/README.md";
