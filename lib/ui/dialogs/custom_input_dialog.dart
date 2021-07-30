@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
-import 'package:sorting_visualization/ui/widgets/neumorphic_rect_btn.dart';
+import 'package:sorting_visualization/ui/widgets/custom_rect_btn.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class CustomInputDialog extends StatefulWidget {
@@ -148,14 +148,14 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
               Row(
                 children: [
                   Expanded(
-                    child: NeumorphicRectButton(
+                    child: CustomRectButton(
                       labelText: widget.dialogRequest.secondaryButtonTitle,
                       onTap: dismissDialog,
                     ),
                   ),
                   SizedBox(width: 10),
                   Expanded(
-                    child: NeumorphicRectButton(
+                    child: CustomRectButton(
                       labelText: widget.dialogRequest.mainButtonTitle,
                       btnColor: theme.primaryColor,
                       onTap: onSubmit,

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 
-class NeumorphicButton extends StatefulWidget {
+class CustomRoundButton extends StatefulWidget {
   final Icon icon;
   final Color btnColor;
   final Function onTap;
@@ -11,7 +11,7 @@ class NeumorphicButton extends StatefulWidget {
   final bool isPressed;
   final String assetImagePath;
 
-  const NeumorphicButton(
+  const CustomRoundButton(
       {Key key,
       this.icon,
       this.btnColor,
@@ -23,14 +23,14 @@ class NeumorphicButton extends StatefulWidget {
       : super(key: key);
 
   @override
-  _NeumorphicButtonState createState() =>
-      _NeumorphicButtonState(btnSize: btnSize ?? 40);
+  _CustomRoundButtonState createState() =>
+      _CustomRoundButtonState(btnSize: btnSize ?? 40);
 }
 
-class _NeumorphicButtonState extends State<NeumorphicButton> {
+class _CustomRoundButtonState extends State<CustomRoundButton> {
   double btnSize;
 
-  _NeumorphicButtonState({this.btnSize});
+  _CustomRoundButtonState({this.btnSize});
 
   @override
   Widget build(BuildContext context) {
@@ -53,21 +53,14 @@ class _NeumorphicButtonState extends State<NeumorphicButton> {
               ? Container(
                   width: btnSize,
                   height: btnSize,
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                      color: widget.btnColor ?? darkBtnColor1,
-                      borderRadius: BorderRadius.circular(btnSize / 2),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Color(0xff363636),
-                            offset: Offset(-3, -3),
-                            blurRadius: 12),
-                        BoxShadow(
-                            color: Color(0xff383838),
-                            offset: Offset(3, 3),
-                            blurRadius: 12),
-                      ]),
-                  child: (widget.assetImagePath != null) ? Image.asset(widget.assetImagePath) : widget.icon,
+                  child: FloatingActionButton(
+                    onPressed: widget.onTap,
+                    heroTag: widget.labelText,
+                    child: (widget.assetImagePath != null)
+                        ? Image.asset(widget.assetImagePath)
+                        : widget.icon,
+                    backgroundColor: widget.btnColor ?? darkBtnColor1,
+                  ),
                 )
               : Stack(
                   alignment: Alignment.center,

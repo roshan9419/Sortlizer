@@ -9,7 +9,7 @@ import 'package:sorting_visualization/ui/widgets/bar_painter.dart';
 import 'package:sorting_visualization/ui/widgets/bars_loader.dart';
 import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
 import 'package:sorting_visualization/ui/widgets/menu_drawer.dart';
-import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
+import 'package:sorting_visualization/ui/widgets/custom_round_btn.dart';
 import 'package:sorting_visualization/ui/widgets/sorting_history.dart';
 import 'package:stacked/stacked.dart';
 
@@ -63,7 +63,7 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                NeumorphicButton(
+                CustomRoundButton(
                   icon: Icon(
                     Icons.arrow_back,
                     color: lightGrayColor,
@@ -77,7 +77,7 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                   style: theme.textTheme.subtitle2
                       .copyWith(color: Colors.white, fontSize: 15),
                 ),
-                NeumorphicButton(
+                CustomRoundButton(
                   icon: Icon(
                     Icons.menu,
                     color: lightGrayColor,
@@ -188,33 +188,33 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    NeumorphicButton(
+                    CustomRoundButton(
                         icon: Icon(
                           Icons.edit_road_rounded,
                           color: lightGrayColor,
                         ),
-                        btnSize: 46,
+                        btnSize: 50,
                         labelText: "Custom",
                         onTap: model.onCustomBtnClick),
-                    NeumorphicButton(
+                    CustomRoundButton(
                       icon: Icon(
                         Icons.bar_chart_sharp,
                         color: lightGrayColor,
                       ),
-                      btnSize: 46,
+                      btnSize: 50,
                       labelText: "Size",
                       onTap: model.changeArraySize,
                     ),
-                    NeumorphicButton(
+                    CustomRoundButton(
                       icon: Icon(
                         Icons.refresh,
                         color: lightGrayColor,
                       ),
-                      btnSize: 46,
+                      btnSize: 50,
                       labelText: "Reset",
                       onTap: model.reset,
                     ),
-                    NeumorphicButton(
+                    CustomRoundButton(
                       icon: model.isSorting
                           ? Icon(
                               Icons.stop,
@@ -224,7 +224,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                               Icons.play_arrow_rounded,
                               color: Colors.white,
                             ),
-                      btnSize: 46,
+                      btnSize: 50,
                       labelText: model.isSorting ? "Stop" : "Start",
                       btnColor: model.isSorting
                           ? Colors.red

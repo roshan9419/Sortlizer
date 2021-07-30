@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/home_viewmodel.dart';
 import 'package:sorting_visualization/ui/widgets/bars_loader.dart';
-import 'package:sorting_visualization/ui/widgets/neumorphic_rect_btn.dart';
-import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
+import 'package:sorting_visualization/ui/widgets/custom_rect_btn.dart';
+import 'package:sorting_visualization/ui/widgets/custom_round_btn.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeView extends StatelessWidget {
@@ -72,7 +72,7 @@ class HomeView extends StatelessWidget {
                       child: GetProgrammingQuote()),
                   SizedBox(height: 30),
                   Center(
-                    child: NeumorphicButton(
+                    child: CustomRoundButton(
                       onTap: model.moveToVisualizerView,
                       icon: Icon(
                         Icons.play_arrow_rounded,
@@ -101,8 +101,12 @@ class HomeView extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  NeumorphicRectButton(
-                    btnWidth: 300,
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Color(0xff242424),
+                      borderRadius: BorderRadius.circular(5.0)
+                    ),
                     child: TyperAnimatedTextKit(
                       text: model.getAlgorithmsList(),
                       textAlign: TextAlign.center,

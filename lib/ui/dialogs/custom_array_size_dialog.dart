@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/widgets/dropDownWidget.dart';
-import 'package:sorting_visualization/ui/widgets/neumorphic_rect_btn.dart';
+import 'package:sorting_visualization/ui/widgets/custom_rect_btn.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class CustomArraySizeDialog extends StatefulWidget {
@@ -155,14 +155,14 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
           Row(
             children: [
               Expanded(
-                child: NeumorphicRectButton(
+                child: CustomRectButton(
                   labelText: widget.dialogRequest.secondaryButtonTitle,
                   onTap: dismissDialog,
                 ),
               ),
               SizedBox(width: 10),
               Expanded(
-                child: NeumorphicRectButton(
+                child: CustomRectButton(
                   labelText: widget.dialogRequest.mainButtonTitle,
                   btnColor: isDisabled
                       ? theme.primaryColor.withOpacity(0.5)

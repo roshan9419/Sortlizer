@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
-import 'package:sorting_visualization/ui/widgets/neumorphic_round_btn.dart';
+import 'package:sorting_visualization/ui/widgets/custom_round_btn.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 class CustomArrayBottomSheet extends StatefulWidget {
@@ -38,7 +38,7 @@ class _CustomArrayBottomSheetState extends State<CustomArrayBottomSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          NeumorphicButton(icon: Icon(Icons.check, size: 35, color: Colors.white,),
+          CustomRoundButton(icon: Icon(Icons.check, size: 35, color: Colors.white,),
             onTap: onBtnPressed, btnSize: 50, btnColor: theme.primaryColor,),
           SizedBox(height: 10),
           Column(

@@ -2,17 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 
-class NeumorphicRectButton extends StatelessWidget {
+class CustomRectButton extends StatelessWidget {
   final String labelText;
   final Color labelTextColor;
   final Color btnColor;
+  final Color btnBorderColor;
   final double btnWidth;
   final double btnHeight;
   final double btnRadius;
   final Widget child;
   final Function onTap;
 
-  const NeumorphicRectButton(
+  const CustomRectButton(
       {Key key,
       this.labelText,
       this.labelTextColor,
@@ -21,32 +22,19 @@ class NeumorphicRectButton extends StatelessWidget {
       this.btnHeight,
       this.btnRadius,
       this.child,
-      this.onTap})
+      this.onTap, this.btnBorderColor})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(btnRadius ?? 5),
-      child: Container(
-        width: btnWidth == null
-            ? (labelText != null && labelText.isNotEmpty)
-                ? labelText.length * 20.0
-                : 50.0
-            : btnWidth,
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: btnColor ?? darkBtnColor2,
-            borderRadius: BorderRadius.circular(btnRadius ?? 5),
-            boxShadow: [
-              BoxShadow(
-                  color: Color(0xff2f2f2f), offset: Offset(4, 4), blurRadius: 10),
-              BoxShadow(
-                  color: Color(0xff2f2f2f),
-                  offset: Offset(-4, -4),
-                  blurRadius: 10),
-            ]),
+    return Container(
+      width: btnWidth == null
+          ? (labelText != null && labelText.isNotEmpty)
+              ? labelText.length * 20.0
+              : 50.0
+          : btnWidth,
+      child: ElevatedButton(
+        onPressed: onTap,
         child: child == null
             ? Text(
                 (labelText != null && labelText.isNotEmpty) ? labelText : "",
@@ -57,6 +45,18 @@ class NeumorphicRectButton extends StatelessWidget {
                 textAlign: TextAlign.center,
               )
             : child,
+        style: ElevatedButton.styleFrom(
+            elevation: 10,
+            primary: btnColor ?? darkBtnColor2,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5))),
+            // onPrimary: Theme.of(context).primaryColor,
+            side: BorderSide(
+              color: btnBorderColor ?? Colors.transparent,
+            ),
+            textStyle: Theme.of(context).textTheme.caption.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor)),
       ),
     );
   }
