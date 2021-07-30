@@ -210,12 +210,13 @@ int main() {
 using namespace std;
 
 void selectionSort(int arr[], int n) {
-  for (int i = 0; i < n; i++) {
-    int minE = arr[i];
+  for (int i = 0; i < n - 1; i++) {
+    int minIdx = i;
     for (int j = i + 1; j < n; j++) {
-      minE = min(arr[j], minE);
+      if(arr[j] < arr[minIdx])
+        minIdx = j;
     }
-    swap(arr[i], minE);
+    swap(arr[i], arr[minIdx]);
   }
 }
 
@@ -276,7 +277,7 @@ void print(int arr[], int n) {
 }
 
 int main() {
-	int arr[10] = {12, 42, 32, 4, 2, 55, 32, 56, 23};
+	int arr[] = {12, 42, 32, 4, 2, 55, 32, 56, 23};
 	int n = sizeof(arr) / sizeof(arr[0]);
 	
 	cout << "Before Sorting: ";
@@ -313,8 +314,8 @@ int partition(int a[], int start, int end) {
 void quickSort(int arr[], int start, int end) {
 	if(start < end) {
 		int pIndex = partition(arr, start, end);
-		QuickSort(arr, start, pIndex-1);
-		QuickSort(arr, pIndex+1, end);
+		quickSort(arr, start, pIndex-1);
+		quickSort(arr, pIndex+1, end);
 	}
 }
 
@@ -324,13 +325,13 @@ void print(int a[], int n) {
 }
 
 int main() {
-	int a[10] = {2, 10, 9, 3, 5, 8, 6, 7, 1, 4};
+	int arr[] = {2, 10, 9, 3, 5, 8, 6, 7, 1, 4};
 	int n = sizeof(arr) / sizeof(arr[0]);
 	
 	cout << "Before Sorting: ";
 	print(arr, n);
 	
-	quickSort(arr, 0, n);
+	quickSort(arr, 0, n-1);
 	
 	cout << "\\nAfter Sorting: ";
 	print(arr, n);
@@ -345,7 +346,7 @@ int main() {
 #include <bits/stdc++.h>
 using namespace std;
 
-void shuffleArray(int arr[]) {
+void shuffleArray(int arr[], int n) {
   for (int i=0; i<n; i++)
     swap(arr[i], arr[rand() % n]);
 }
@@ -372,7 +373,7 @@ int main() {
   print(arr, n);
   
   while (!isArraySorted(arr, n)) {
-    shuffleArray(arr);
+    shuffleArray(arr, n);
   }
   
   cout << "\\nAfter Sorting: ";
@@ -417,7 +418,7 @@ int cycleSort(int arr[], int n) {
       
       while (item == arr[pos]) pos++;
       
-      if (pos != cs) {
+      if (item != arr[pos]) {
         swap(item, arr[pos]);
         writes++;
       }
@@ -526,7 +527,7 @@ void cocktailSort(int arr[], int n) {
   while (isSwapped) {
     isSwapped = false;
     for (int i = start; i < end - 1; i++) {
-      if (_numbers[i] > _numbers[i + 1]) {
+      if (arr[i] > arr[i + 1]) {
         swap(arr[i], arr[i+1]);
         isSwapped = true;
       }
@@ -623,19 +624,7 @@ int main() {
 #include <bits/stdc++.h>
 using namespace std;
 
-void heapSort(int arr[], int n) {
-  for (int i = n / 2; i >= 0; i--) {
-    heapify(arr, n, i);
-  }
-  
-  for (int i = n - 1; i >= 0; i--) {
-    swap(arr[0], arr[i]);
-    heapify(arr, i, 0);
-  }
-}
-
 void heapify(int arr[], int n, int i) {
-  
   int largest = i;
   int l = 2 * i + 1;
   int r = 2 * i + 2;
@@ -646,6 +635,17 @@ void heapify(int arr[], int n, int i) {
   if (largest != i) {
     swap(arr[i], arr[largest]);
     heapify(arr, n, largest);
+  }
+}
+
+void heapSort(int arr[], int n) {
+  for (int i = n / 2; i >= 0; i--) {
+    heapify(arr, n, i);
+  }
+  
+  for (int i = n - 1; i >= 0; i--) {
+    swap(arr[0], arr[i]);
+    heapify(arr, i, 0);
   }
 }
   
