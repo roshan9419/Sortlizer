@@ -235,7 +235,8 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   ],
                 ),
                 SizedBox(height: 30),
-                if (model.getSortingHistoryList().isNotEmpty && model.isShowHistoryEnable)
+                if (model.getSortingHistoryList().isNotEmpty &&
+                    model.isShowHistoryEnable)
                   SortingHistoryTable(
                     itemsList: model.getSortingHistoryList(),
                     tableName: "Sorting History",
@@ -270,57 +271,94 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                 .copyWith(color: lightGrayColor, fontFamily: 'Arial'),
           ),
           SizedBox(height: 25),
-          Text(
-            "Time Complexity:",
-            style: theme.textTheme.caption.copyWith(color: mediumGrayColor),
-          ),
-          SizedBox(height: 10),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Worst Case:\t",
-                style: theme.textTheme.subtitle2.copyWith(
-                    fontFamily: 'Arial',
-                    fontWeight: FontWeight.normal,
-                    color: Colors.white70),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Time Complexity:",
+                    style: theme.textTheme.caption.copyWith(color: mediumGrayColor),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Text(
+                        "Worst Case:\t",
+                        style: theme.textTheme.subtitle2.copyWith(
+                            fontFamily: 'Arial',
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white70),
+                      ),
+                      Text(model.getTC(0),
+                          style: theme.textTheme.subtitle2.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 1)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Average Case:\t",
+                        style: theme.textTheme.subtitle2.copyWith(
+                            fontFamily: 'Arial',
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white70),
+                      ),
+                      Text(model.getTC(1),
+                          style: theme.textTheme.subtitle2.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 1)),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "Best Case:\t",
+                        style: theme.textTheme.subtitle2.copyWith(
+                            fontFamily: 'Arial',
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white70),
+                      ),
+                      Text(model.getTC(2),
+                          style: theme.textTheme.subtitle2.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 1)),
+                    ],
+                  ),
+                ],
               ),
-              Text(model.getTC(0),
-                  style: theme.textTheme.subtitle2.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1)),
-            ],
-          ),
-          Row(
-            children: [
-              Text(
-                "Average Case:\t",
-                style: theme.textTheme.subtitle2.copyWith(
-                    fontFamily: 'Arial',
-                    fontWeight: FontWeight.normal,
-                    color: Colors.white70),
-              ),
-              Text(model.getTC(1),
-                  style: theme.textTheme.subtitle2.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1)),
-            ],
-          ),
-          Row(
-            children: [
-              Text(
-                "Best Case:\t",
-                style: theme.textTheme.subtitle2.copyWith(
-                    fontFamily: 'Arial',
-                    fontWeight: FontWeight.normal,
-                    color: Colors.white70),
-              ),
-              Text(model.getTC(2),
-                  style: theme.textTheme.subtitle2.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 1)),
+              SizedBox(width: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Space Complexity:",
+                    style: theme.textTheme.caption.copyWith(color: mediumGrayColor),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Text(
+                        "Worst Case:\t",
+                        style: theme.textTheme.subtitle2.copyWith(
+                            fontFamily: 'Arial',
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white70),
+                      ),
+                      Text(model.getSC(),
+                          style: theme.textTheme.subtitle2.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 1)),
+                    ],
+                  ),
+                ],
+              )
             ],
           ),
           SizedBox(height: 20),

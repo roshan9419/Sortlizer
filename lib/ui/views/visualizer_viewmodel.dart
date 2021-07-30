@@ -782,6 +782,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     return dataContent.getTimeComplexities(_algorithmType)[idx];
   }
 
+  String getSC() {
+    return dataContent.getSpaceComplexity(_algorithmType);
+  }
+
   String getAlgorithmCode() {
     return dataContent.getAlgorithmCode(_algorithmType);
   }

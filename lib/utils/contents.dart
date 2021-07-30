@@ -91,7 +91,23 @@ class DataContent {
   }
 
   String getSpaceComplexity(AlgorithmType type) {
-    return "O(1)";
+    var complexities = {
+      AlgorithmType.BUBBLE_SORT: "O(1)",
+      AlgorithmType.INSERTION_SORT: "O(1)",
+      AlgorithmType.SELECTION_SORT: "O(1)",
+      AlgorithmType.MERGE_SORT: "O(n)",
+      AlgorithmType.QUICK_SORT: "O(logn)",
+      AlgorithmType.CYCLE_SORT: "O(1)",
+      AlgorithmType.BOGO_SORT: "O(1)",
+      AlgorithmType.RADIX_SORT: "O(n+k)",
+      AlgorithmType.COCKTAIL_SORT: "O(1)",
+      AlgorithmType.ODD_EVEN_SORT: "O(1)",
+      AlgorithmType.HEAP_SORT: "O(1)",
+      AlgorithmType.SHELL_SORT: "O(1)",
+      AlgorithmType.BEAD_SORT: "O(n²)",
+      AlgorithmType.GNOME_SORT: "O(1)",
+    };
+    return complexities.containsKey(type) ? complexities[type] : "N.A";
   }
 
   String getAlgorithmCode(AlgorithmType type) {
