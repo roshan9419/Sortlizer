@@ -695,9 +695,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         for (j = i; j >= gap && _numbers[j - gap] > temp; j -= gap) {
           _numbers[j] = _numbers[j - gap];
           _totalComparisons++;
+          saveCurrentSortingStep();
         }
 
         _numbers[j] = temp;
+        saveCurrentSortingStep();
         if (!isSorting) break mainFlow;
         await onSortInBTCall(chkIdx: j, tCTU: false);
       }
@@ -740,6 +742,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _totalComparisons++;
       }
       _numbers[i] = putt;
+      saveCurrentSortingStep();
       if (!isSorting) return;
       await onSortInBTCall(chkIdx: i, tCTU: false);
     }
@@ -759,6 +762,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
         index--;
       }
+      saveCurrentSortingStep();
       if (!isSorting) return;
       await onSortInBTCall(chkIdx: index);
     }
