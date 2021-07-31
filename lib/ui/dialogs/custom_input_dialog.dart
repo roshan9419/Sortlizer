@@ -57,6 +57,12 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
     });
   }
 
+  removeNumber(int index) {
+    setState(() {
+      resultsList.removeAt(index);
+    });
+  }
+
   onSubmit() {
     widget.onDialogTap(
         DialogResponse(confirmed: true, responseData: resultsList));
@@ -99,9 +105,20 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
                   children: List.generate(
                 resultsList.length,
                 (index) {
-                  return NumberBox(number: resultsList[index]);
+                  return NumberBox(
+                    index: index,
+                    number: resultsList[index],
+                    onTap: removeNumber,
+                  );
                 },
               )),
+              if (resultsList.isNotEmpty) SizedBox(height: 5),
+              if (resultsList.isNotEmpty)
+                Text(
+                  '(Tap to remove)',
+                  style: theme.textTheme.overline
+                      .copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
+                ),
               SizedBox(height: 10),
               if (showError)
                 Text(errorMessage,
@@ -172,27 +189,35 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
 }
 
 class NumberBox extends StatelessWidget {
+  final int index;
   final int number;
+  final Function onTap;
 
-  const NumberBox({Key key, this.number}) : super(key: key);
+  const NumberBox({Key key, this.number, this.onTap, this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: 50,
-        padding: const EdgeInsets.all(5),
-        margin: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(3.0),
-          color: Theme.of(context).primaryColor,
-        ),
-        child: Center(
-            child: Text(
-          number.toString(),
-          style: Theme.of(context)
-              .textTheme
-              .overline
-              .copyWith(color: Colors.white, fontFamily: 'Arial'),
-        )));
+    return InkWell(
+      onTap: () {
+        onTap(index);
+      },
+      child: Container(
+          width: 50,
+          padding: const EdgeInsets.all(5),
+          margin: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(3.0),
+            color: Theme.of(context).primaryColor,
+          ),
+          child: Center(
+              child: Text(
+            number.toString(),
+            style: Theme.of(context)
+                .textTheme
+                .overline
+                .copyWith(color: Colors.white, fontFamily: 'Arial'),
+          ))),
+    );
   }
 }

@@ -712,7 +712,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
 
     // setting the abacus
-    List grid = List.generate(_numbers.length, (index) => new List.filled(_max, BeadStatus.NULL),
+    List grid = List.generate(
+        _numbers.length, (index) => new List.filled(_max, BeadStatus.NULL),
         growable: false);
 
     List<int> levelCount = [];
@@ -801,7 +802,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     var dialogResponse = await _dialogService.showCustomDialog(
         variant: DialogType.CUSTOM_INPUT,
         title: "Provide elements of the Array",
-        description: "Example: 23, 45, 98, 67 (Max - $_maxNumber)",
+        description:
+            "Example: ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)} (Max - $_maxNumber)",
         mainButtonTitle: "Submit",
         secondaryButtonTitle: "Cancel",
         barrierDismissible: false);

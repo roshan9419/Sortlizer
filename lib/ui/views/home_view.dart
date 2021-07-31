@@ -99,7 +99,7 @@ class HomeView extends StatelessWidget {
                         .copyWith(color: darkGrayColor, letterSpacing: 0.5),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
