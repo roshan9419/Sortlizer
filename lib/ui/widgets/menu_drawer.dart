@@ -17,17 +17,25 @@ class MenuDrawer extends StatelessWidget {
       this.isSwitchEnable})
       : super(key: key);
 
+  // final _controller = ScrollController();
+
+  // _animateToIndex(i) => _controller.animateTo(50.0 * i,
+  //     duration: Duration(milliseconds: 900), curve: Curves.fastOutSlowIn);
+
   @override
   Widget build(BuildContext context) {
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //     (_) => _animateToIndex(menuItemsList.indexOf(selectedValue)));
+
     return SafeArea(
       child: Container(
         width: 250,
-        decoration: BoxDecoration(
-            gradient: darkGradient),
+        decoration: BoxDecoration(gradient: darkGradient),
         child: Column(
           children: [
             Expanded(
               child: ListView.builder(
+                  // controller: _controller,
                   itemCount: menuItemsList.length,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
@@ -76,4 +84,6 @@ class MenuDrawer extends StatelessWidget {
       ),
     );
   }
+// _animateToIndex(menuItemsList.indexOf(selectedValue));
+
 }
