@@ -79,10 +79,7 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
     var theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [darkBackgroundStart, darkBackgroundFinish]),
+          gradient: darkGradient,
       ),
       padding: EdgeInsets.all(15),
       child: Column(

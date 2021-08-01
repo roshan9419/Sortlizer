@@ -17,11 +17,7 @@ class SortingDetailedView extends StatelessWidget {
         builder: (context, model, child) =>
             Container(
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      tileMode: TileMode.clamp,
-                      colors: [darkBackgroundStart, darkBackgroundFinish])),
+                  gradient: darkGradient),
               child: SafeArea(
                 child: Scaffold(
                   backgroundColor: Colors.transparent,

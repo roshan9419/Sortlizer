@@ -80,10 +80,7 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
       child: SingleChildScrollView(
         child: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [darkBackgroundStart, darkBackgroundFinish])),
+              gradient: darkGradient),
           padding: EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,

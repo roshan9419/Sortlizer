@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 const darkBackgroundStart = Color(0xff34393F);
 const darkBackgroundFinish = Color(0xff16171B);
 
@@ -14,3 +16,9 @@ const orangeThemeColor = Color(0xffe84a1d);
 const lightGrayColor = Color(0xffB3B3B3);
 const mediumGrayColor = Color(0xff868686);
 const darkGrayColor = Color(0xff505358);
+
+const darkGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    tileMode: TileMode.clamp,
+    colors: [darkBackgroundStart, darkBackgroundFinish]);

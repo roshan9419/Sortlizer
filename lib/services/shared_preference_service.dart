@@ -15,6 +15,7 @@ class SharedPreferenceService {
   static const String SHOW_SORTING_HISTORY = "showSortingHistory";
   static const String SORTING_SLIDER_VALUE = "sortingSliderValue";
   static const String SORTING_ARRAY_SIZE = "sortingArraySize";
+  static const String HOME_VISIBLE = "homeVisible";
 
   // handles all types of values
   void _saveToDisk<T>(String key, T content) {
@@ -38,6 +39,10 @@ class SharedPreferenceService {
   dynamic _getFromDisk(String key) {
     return _preferences.get(key);
   }
+
+  bool get homeVisible => _getFromDisk(HOME_VISIBLE) ?? false;
+
+  set homeVisible(bool value) => _saveToDisk(HOME_VISIBLE, value);
 
   bool get showSortingHistory => _getFromDisk(SHOW_SORTING_HISTORY) ?? true;
 

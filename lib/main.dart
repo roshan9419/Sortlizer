@@ -6,6 +6,7 @@ import 'package:sorting_visualization/setup_dialogs.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/home_view.dart';
 import 'package:sorting_visualization/app/router.gr.dart' as auto_router;
+import 'package:sorting_visualization/ui/views/onboarding_view.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import 'app/locator.dart';
@@ -26,10 +27,12 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final _sharedPrefService = locator<SharedPreferenceService>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sorting Visualizer',
+      title: 'Sortlizer',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         accentColor: Color(0xffB3B3B3),
@@ -40,8 +43,16 @@ class MyApp extends StatelessWidget {
       ),
       onGenerateRoute: auto_router.Router().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
-      home: HomeView(),
+      home: _getStartupScreen(),
       debugShowCheckedModeBanner: false,
     );
+  }
+
+  Widget _getStartupScreen() {
+    if (!_sharedPrefService.homeVisible) {
+      return OnBoardingView();
+    } else {
+      return HomeView();
+    }
   }
 }

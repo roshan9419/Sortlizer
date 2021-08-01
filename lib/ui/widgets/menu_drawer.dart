@@ -23,10 +23,7 @@ class MenuDrawer extends StatelessWidget {
       child: Container(
         width: 250,
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [darkBackgroundStart, darkBackgroundFinish])),
+            gradient: darkGradient),
         child: Column(
           children: [
             Expanded(

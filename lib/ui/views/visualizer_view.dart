@@ -23,11 +23,7 @@ class VisualizerView extends StatelessWidget {
     return ViewModelBuilder<VisualizerViewModel>.reactive(
       builder: (context, model, child) => Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                tileMode: TileMode.clamp,
-                colors: [darkBackgroundStart, darkBackgroundFinish])),
+            gradient: darkGradient),
         child: Scaffold(
           key: model.getGlobalKey(),
           resizeToAvoidBottomPadding: false,

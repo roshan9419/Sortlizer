@@ -22,10 +22,7 @@ class AboutAppDialog extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           // borderRadius: new BorderRadius.all(new Radius.circular(0.0)),
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [darkBackgroundStart, darkBackgroundFinish]),
+          gradient: darkGradient,
         ),
         padding: EdgeInsets.all(15),
         child: Column(
