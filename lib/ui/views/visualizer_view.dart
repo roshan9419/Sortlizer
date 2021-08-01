@@ -35,11 +35,14 @@ class VisualizerView extends StatelessWidget {
               onSwitchAction: model.onSwitchAction),
           backgroundColor: Colors.transparent,
           body: Stack(
-            children: [_VisualizerScreen(), BuildBottomDraggableSheet()],
+            children: [
+              _VisualizerScreen(),
+              BuildBottomDraggableSheet()
+            ],
           ),
         ),
       ),
-      viewModelBuilder: () => VisualizerViewModel(algorithmType),
+      viewModelBuilder: () => VisualizerViewModel(algorithmType, MediaQuery.of(context).size),
     );
   }
 }
@@ -126,8 +129,8 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
   Widget _buildBottomCommandCenter(
       BuildContext context, VisualizerViewModel model) {
     return DraggableScrollableSheet(
-      initialChildSize: !model.isContentExpanded ? 0.22 : 0.9,
-      minChildSize: 0.22,
+      initialChildSize: 0.22,//0.22,
+      minChildSize: 0.22,//0.22,
       expand: true,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(

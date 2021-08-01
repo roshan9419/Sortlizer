@@ -22,7 +22,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   AlgorithmType _algorithmType;
 
-  VisualizerViewModel(this._algorithmType);
+  VisualizerViewModel(this._algorithmType, Size size) {
+    _maxNumber = ((size.height - 250) ~/ 50) * 50;
+    print(_maxNumber);
+  }
 
   List<int> _numbers = [];
 
@@ -39,7 +42,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   int get sampleSize => _sampleSize;
 
-  int _maxNumber = 400;
+  int _maxNumber;
 
   int get maxNumber => _maxNumber;
 
@@ -125,7 +128,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     } else {
       for (int i = 0; i < _sampleSize; ++i) {
         int rndNum = Random().nextInt(_maxNumber.toInt());
-        if (rndNum < 10) rndNum += 20; // Just for UI Purpose
+        if (rndNum < 10) rndNum += 50; // Just for UI Purpose
         _numbers.add(rndNum);
       }
     }
@@ -201,6 +204,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       _sortDuration = _stopWatch.elapsed.inMilliseconds;
       _chkValueIdx = -1;
 
+      saveCurrentSortingStep();
       _algoHistoryTrackList.add(AlgoHistoryTrack(
           algoTitle: dataContent.getAlgorithmTitle(_algorithmType),
           arraySize: _sampleSize,
@@ -810,6 +814,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
             "Example: ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)} (Max - $_maxNumber)",
         mainButtonTitle: "Submit",
         secondaryButtonTitle: "Cancel",
+        customData: _maxNumber,
         barrierDismissible: false);
 
     if (dialogResponse != null &&

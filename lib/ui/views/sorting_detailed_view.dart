@@ -204,9 +204,9 @@ class _StepByStepHistoryList extends ViewModelWidget<SortingDetailedViewModel> {
         margin: const EdgeInsets.only(top: 10),
         // constraints: BoxConstraints(maxHeight: 600),
         child: trackItem.algoTrack.sortTrack.isNotEmpty &&
-            trackItem.algoTrack.arraySize > 100
+            trackItem.algoTrack.arraySize > 200
             ? Text(
-          'Array Size is too large to visualize, it should be less than or equal to 100',
+          'Array Size is too large to visualize. Use array size of 200 or less.',
           style: Theme
               .of(context)
               .textTheme

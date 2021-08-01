@@ -13,7 +13,7 @@ class CustomInputDialog extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CustomInputDialogState createState() => _CustomInputDialogState();
+  _CustomInputDialogState createState() => _CustomInputDialogState(dialogRequest.customData as int);
 }
 
 class _CustomInputDialogState extends State<CustomInputDialog> {
@@ -22,8 +22,10 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
   String errorMessage = "Invalid Input";
   bool showError = false;
   List<int> resultsList = [];
-  int maxNumber = 400;
   int egNum = Random().nextInt(400);
+
+  final int maxNumber;
+  _CustomInputDialogState(this.maxNumber);
 
   validateField(String value) {
     showError = false;

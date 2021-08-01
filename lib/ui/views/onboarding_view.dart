@@ -68,6 +68,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               ],
             ),
           ),
+          SizedBox(height: 30),
           Expanded(
             child: IntroductionScreen(
               globalBackgroundColor: Colors.transparent,
@@ -91,7 +92,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     title: 'Easily Compare',
                     body:
                         'Compare different sorting algorithms in real-time on different parameters',
-                    decoration: _pageDecoration(context),
+                    decoration: _pageDecoration(context, imagePadding: 30),
                     image: buildImage(
                       'assets/images/onboard/onboard_compare.png',
                     )),
@@ -99,14 +100,14 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     title: 'Hand free Code',
                     body:
                         'Know more about algorithm, its complexities and code to understand its working',
-                    decoration: _pageDecoration(context),
+                    decoration: _pageDecoration(context, imagePadding: 25),
                     image: buildImage(
                       'assets/images/onboard/onboard_code.png',
                     )),
                 PageViewModel(
                     title: 'Sorting Steps',
                     body: 'Visualize how the array is changing on each step',
-                    decoration: _pageDecoration(context),
+                    decoration: _pageDecoration(context, imagePadding: 25),
                     image: buildImage(
                       'assets/images/onboard/onboard_stepbystep.png',
                     )),
@@ -132,7 +133,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return Center(child: Image.asset(path));
   }
 
-  PageDecoration _pageDecoration(BuildContext context) => PageDecoration(
+  PageDecoration _pageDecoration(BuildContext context, {double imagePadding = 60}) => PageDecoration(
         titleTextStyle: Theme.of(context)
             .textTheme
             .headline5
@@ -142,7 +143,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             letterSpacing: 0.5,
             fontFamily: 'Arial',
             fontSize: 14.0),
-        imagePadding: EdgeInsets.all(60),
+        imagePadding: EdgeInsets.all(imagePadding),
         titlePadding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
         descriptionPadding: EdgeInsets.only(left: 40, right: 40),
       );
