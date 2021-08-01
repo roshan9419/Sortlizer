@@ -76,14 +76,14 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 PageViewModel(
                     title: 'Visualize',
                     body:
-                        'Easily visualize and compare different sorting algorithm',
+                        'Easily visualize and compare different sorting algorithms',
                     decoration: _pageDecoration(context),
                     image: buildImage(
                       'assets/images/onboard/onboard_visualize.png',
                     )),
                 PageViewModel(
                     title: 'Custom Input Array',
-                    body: 'Visualize your own custom input array of any size',
+                    body: 'Visualize your custom input array of any size with any algorithm',
                     decoration: _pageDecoration(context),
                     image: buildImage(
                       'assets/images/onboard/onboard_custom.png',
@@ -91,28 +91,28 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 PageViewModel(
                     title: 'Easily Compare',
                     body:
-                        'Compare different sorting algorithms in real-time on different parameters',
+                        'Compare different sorting algorithms in real-time on parameters like size, total comparisons, & time taken',
                     decoration: _pageDecoration(context, imagePadding: 30),
                     image: buildImage(
                       'assets/images/onboard/onboard_compare.png',
                     )),
                 PageViewModel(
-                    title: 'Hand free Code',
+                    title: 'Code',
                     body:
-                        'Know more about algorithm, its complexities and code to understand its working',
+                        'Know more about the algorithm, its complexities, & code to understand its functionality & working',
                     decoration: _pageDecoration(context, imagePadding: 25),
                     image: buildImage(
                       'assets/images/onboard/onboard_code.png',
                     )),
                 PageViewModel(
                     title: 'Sorting Steps',
-                    body: 'Visualize how the array is changing on each step',
+                    body: 'Visualize how the sorted array is formed on every sorting step',
                     decoration: _pageDecoration(context, imagePadding: 25),
                     image: buildImage(
                       'assets/images/onboard/onboard_stepbystep.png',
                     )),
               ],
-              done: SizedBox.shrink(),
+              done: SizedBox(width: 5),
               onDone: () {},
               onChange: (index) {
                 setState(() {
@@ -149,8 +149,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
       );
 
   DotsDecorator _dotsDecorator() => DotsDecorator(
-      size: Size(10, 10),
-      activeSize: Size(20, 10),
+      size: Size(8, 8),
+      activeSize: Size(15, 8),
       activeShape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)));
 }

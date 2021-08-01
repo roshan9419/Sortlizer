@@ -26,6 +26,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     double x = size.height * 0.22; // bottomSheetHeight
     double y = 100;//header height
     _maxNumber = (size.height - x - y).toInt();
+    if (_maxNumber > 500) {
+      _maxNumber = 500;
+    }
     print(_maxNumber);
   }
 
