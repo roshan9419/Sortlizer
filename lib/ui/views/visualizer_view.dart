@@ -22,8 +22,7 @@ class VisualizerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<VisualizerViewModel>.reactive(
       builder: (context, model, child) => Container(
-        decoration: BoxDecoration(
-            gradient: darkGradient),
+        decoration: BoxDecoration(gradient: darkGradient),
         child: Scaffold(
           key: model.getGlobalKey(),
           resizeToAvoidBottomPadding: false,
@@ -36,19 +35,25 @@ class VisualizerView extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [
-              _VisualizerScreen(),
+              _HeaderView(),
+              !model.isLoading
+                  ? Positioned(
+                      bottom: MediaQuery.of(context).size.height * 0.22 - 10,
+                      child: _VisualizerContainerWidget())
+                  : SizedBox.shrink(),
               BuildBottomDraggableSheet()
             ],
           ),
         ),
       ),
-      viewModelBuilder: () => VisualizerViewModel(algorithmType, MediaQuery.of(context).size),
+      viewModelBuilder: () =>
+          VisualizerViewModel(algorithmType, MediaQuery.of(context).size),
     );
   }
 }
 
-class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
-  _VisualizerScreen({Key key}) : super(key: key, reactive: true);
+class _HeaderView extends ViewModelWidget<VisualizerViewModel> {
+  _HeaderView({Key key}) : super(key: key, reactive: true);
 
   @override
   Widget build(BuildContext context, VisualizerViewModel model) {
@@ -109,11 +114,11 @@ class _VisualizerScreen extends ViewModelWidget<VisualizerViewModel> {
                 // )
               ],
             ),
-          Spacer(),
-          !model.isLoading ? _VisualizerContainerWidget() : SizedBox.shrink(),
-          SizedBox(
-            height: 150,
-          )
+          // Spacer(),
+          // !model.isLoading ? _VisualizerContainerWidget() : SizedBox.shrink(),
+          // SizedBox(
+          //   height: 200,
+          // )
         ],
       ),
     );
@@ -129,8 +134,8 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
   Widget _buildBottomCommandCenter(
       BuildContext context, VisualizerViewModel model) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.22,//0.22,
-      minChildSize: 0.22,//0.22,
+      initialChildSize: 0.22,
+      minChildSize: 0.22,
       expand: true,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
@@ -278,7 +283,8 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                 children: [
                   Text(
                     "Time Complexity:",
-                    style: theme.textTheme.caption.copyWith(color: mediumGrayColor),
+                    style: theme.textTheme.caption
+                        .copyWith(color: mediumGrayColor),
                   ),
                   SizedBox(height: 10),
                   Row(
@@ -337,7 +343,8 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                 children: [
                   Text(
                     "Space Complexity:",
-                    style: theme.textTheme.caption.copyWith(color: mediumGrayColor),
+                    style: theme.textTheme.caption
+                        .copyWith(color: mediumGrayColor),
                   ),
                   SizedBox(height: 10),
                   Row(

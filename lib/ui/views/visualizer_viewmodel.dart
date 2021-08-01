@@ -23,7 +23,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   AlgorithmType _algorithmType;
 
   VisualizerViewModel(this._algorithmType, Size size) {
-    _maxNumber = ((size.height - 250) ~/ 50) * 50;
+    double x = size.height * 0.22; // bottomSheetHeight
+    double y = 100;//header height
+    _maxNumber = (size.height - x - y).toInt();
     print(_maxNumber);
   }
 
@@ -811,10 +813,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         variant: DialogType.CUSTOM_INPUT,
         title: "Provide elements of the Array",
         description:
-            "Example: ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)} (Max - $_maxNumber)",
+            "Example: ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)} (Max - ${(_maxNumber ~/ 10) * 10})",
         mainButtonTitle: "Submit",
         secondaryButtonTitle: "Cancel",
-        customData: _maxNumber,
+        customData: (_maxNumber ~/ 10) * 10,
         barrierDismissible: false);
 
     if (dialogResponse != null &&
