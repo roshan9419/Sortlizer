@@ -55,6 +55,7 @@ class _CustomRoundButtonState extends State<CustomRoundButton> {
                   height: btnSize,
                   child: FloatingActionButton(
                     onPressed: widget.onTap,
+                    elevation: 3,
                     heroTag: widget.labelText,
                     child: (widget.assetImagePath != null)
                         ? Image.asset(widget.assetImagePath)
