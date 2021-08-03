@@ -368,6 +368,15 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
             ],
           ),
           SizedBox(height: 20),
+          if (model.getExtraInfo().isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: Text(
+                model.getExtraInfo(),
+                style: theme.textTheme.subtitle2
+                    .copyWith(color: lightGrayColor, fontFamily: 'Arial'),
+              ),
+            ),
           if (model.getAlgorithmCode().isNotEmpty)
             CodeViewer(
               codeContent: model.getAlgorithmCode(),

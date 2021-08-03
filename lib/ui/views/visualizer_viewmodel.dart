@@ -800,6 +800,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     return dataContent.getSpaceComplexity(_algorithmType);
   }
 
+  String getExtraInfo() {
+    return dataContent.algoExtraInfo(_algorithmType);
+  }
+
   String getAlgorithmCode() {
     return dataContent.getAlgorithmCode(_algorithmType);
   }

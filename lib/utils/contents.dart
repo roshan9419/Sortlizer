@@ -35,33 +35,35 @@ class DataContent {
   String getDescription(AlgorithmType type) {
     var algoDesc = {
       AlgorithmType.BUBBLE_SORT:
-          "Bubble Sort is the simplest sorting algorithm that works by repeated swapping the adjacent elements if they are in wrong order.",
+          "Bubble Sort is the simplest sorting algorithm that works by repeatedly swapping the adjacent elements of the array if they are in the wrong order.\n\n" +
+              "Eg., arr[2] = 12 & arr[3] = 5\n" +
+              "Now, arr[2] > arr[3], so swap: arr[2] = 5 & arr[3] = 12",
       AlgorithmType.INSERTION_SORT:
-          "Insertion sort is a simple sorting algorithm that works similar to the way you sort playing cards in your hands. The array is virtually split into a sorted and an unsorted part. Values from the unsorted part are picked and placed at the correct position in the sorted part.",
+          "Insertion Sort is a simple sorting algorithm that builds the sorted array one element at a time. The elements from the unsorted part are picked and placed at the correct position in the sorted part.",
       AlgorithmType.SELECTION_SORT:
-          "The selection sort algorithm sorts an array by repeatedly finding the minimum element (considering ascending order) from unsorted part and putting it at the beginning.",
+          "The selection sort algorithm sorts an array by repeatedly finding the minimum element from the unsorted part and putting it at the beginning of the array.",
       AlgorithmType.MERGE_SORT:
-          "Merge Sort is a Divide and Conquer algorithm. It divides the input array into two halves, calls itself for the two halves, and then merges the two sorted halves. The merge() function is used for merging two halves. The merge(arr, l, m, r) is a key process that assumes that arr[l..m] and arr[m+1..r] are sorted and merges the two sorted sub-arrays into one.",
+          "Merge Sort is a divide and conquer algorithm. Which first divides the given input array into two halves, calling itself for the two halves, and then merging the two sorted halves.",
       AlgorithmType.QUICK_SORT:
-          "QuickSort is a Divide and Conquer algorithm. It picks an element as pivot and partitions the given array around the picked pivot.",
+          "QuickSort is a divide and conquer algorithm, which picks an element from the given array as a pivot and partitions the given array around the chosen pivot.",
       AlgorithmType.CYCLE_SORT:
-          "Cycle sort is an in-place sorting Algorithm, unstable sorting algorithm, a comparison sort that is theoretically optimal in terms of the total number of writes to the original array.",
+          "Cycle sort is an in-place sorting algorithm, unstable sorting algorithm, a comparison sort that is theoretically optimal in terms of the total number of writes to the original array, unlike any other in-place sorting algorithm.",
       AlgorithmType.BOGO_SORT:
-          "BogoSort also known as permutation sort, stupid sort, slow sort, shotgun sort or monkey sort is a particularly ineffective algorithm based on generate and test paradigm. The algorithm successively generates permutations of its input until it finds one that is sorted.",
+          "BogoSort is also known as permutation sort, stupid sort, slow sort, shotgun sort or monkey sort is a particularly ineffective algorithm based on generating and test paradigm. The algorithm successively generates permutations of its input until it finds one that is sorted. It is not useful for sorting but may be used for educational purposes, it is used as a kind of joke.",
       AlgorithmType.RADIX_SORT:
-          "Radix sort is a sorting algorithm that sorts the elements by first grouping the individual digits of the same place value. Then, sort the elements according to their increasing/decreasing order.",
+          "Radix sort is a sorting algorithm that avoids comparison and sorts the elements by first grouping or creating buckets of the individual digits of the same place value. Then, sorting the elements according to their increasing/decreasing order.",
       AlgorithmType.COCKTAIL_SORT:
-          "Cocktail Sort is a variation of Bubble sort. The Bubble sort algorithm always traverses elements from left and moves the largest element to its correct position in first iteration and second largest in second iteration and so on. Cocktail Sort traverses through a given array in both directions alternatively.",
+          "Cocktail Sort is a variation of Bubble sort. The Bubble sort algorithm always traverses elements from left and moves the largest element to its correct position in the first iteration and second-largest in the second iteration and so on. Cocktail Sort traverses through a given array in both directions alternatively.",
       AlgorithmType.ODD_EVEN_SORT:
-          "This algorithm is divided into two phases- Odd and Even Phase. The algorithm runs until the array elements are sorted and in each iteration two phases occurs- Odd and Even Phases. In the odd phase, we perform a bubble sort on odd indexed elements and in the even phase, we perform a bubble sort on even indexed elements.",
+          "Odd-Even sort algorithm is divided into two phases - Odd and the Even Phase. The algorithm runs until the array elements are sorted and in each iteration, two phases occur- Odd and Even Phases. In the odd phase, we perform a bubble sort on odd indexed elements, and in the even phase, we perform a bubble sort on even indexed elements.",
       AlgorithmType.HEAP_SORT:
-          "Heap sort is a comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the minimum element and place the minimum element at the beginning. We repeat the same process for the remaining elements.",
+          "Heap Sort is a comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort but much improved where it maintains the unsorted region in a heap data structure to more quickly find the largest element in each step and place the element at the end.",
       AlgorithmType.SHELL_SORT:
-          "The idea of shellSort is to allow exchange of far items. In shellSort, we make the array h-sorted for a large value of h. We keep reducing the value of h until it becomes 1. An array is said to be h-sorted if all sublists of every h’th element is sorted.",
+          "Shell sort is a generalized version of the insertion sort algorithm. It first sorts elements that are far apart from each other and successively reduces the interval between the elements to be sorted.",
       AlgorithmType.BEAD_SORT:
-          "Also known as Gravity sort, this algorithm was inspired from natural phenomenons and was designed keeping in mind objects(or beads) falling under the influence of gravity.",
+          "Also known as Gravity sort, this algorithm was inspired by natural phenomenons and was designed keeping in mind-objects (or beads) falling under the influence of gravity. Both digital and analog hardware implementations of bead sort can achieve a sorting time of O(n); however, the implementation of this algorithm tends to be significantly slower in software and can only be used to sort lists of positive integers.",
       AlgorithmType.GNOME_SORT:
-          "Gnome Sort also called Stupid sort is based on the concept of a Garden Gnome sorting his flower pots."
+          "Gnome Sort is a sorting algorithm that is similar to Insertion sort in that it works with one item at a time but gets the item to the proper place by a series of swaps, similar to a Bubble sort."
     };
 
     return algoDesc.containsKey(type) ? algoDesc[type] : "N.A";
@@ -82,15 +84,16 @@ class DataContent {
       AlgorithmType.ODD_EVEN_SORT: ["O(n²)", "O(n²)", "O(n)"],
       AlgorithmType.HEAP_SORT: ["O(nlogn)", "O(nlogn)", "O(nlogn)"],
       AlgorithmType.SHELL_SORT: ["O(n²)", "O(nlogn)", "O(nlogn)"],
-      AlgorithmType.BEAD_SORT: ["O(S)", "O(root n)", "O(1)"],
+      // AlgorithmType.BEAD_SORT: ["O(S)", "O(√n)", "O(1)"],
       AlgorithmType.GNOME_SORT: ["O(n²)", "O(n²)", "O(n)"],
     };
     return complexities.containsKey(type)
         ? complexities[type]
-        : ["N.A", "N.A", "N.A"];
+        : ["N.A.", "N.A.", "N.A."];
   }
 
   String getSpaceComplexity(AlgorithmType type) {
+    // Worst Cases
     var complexities = {
       AlgorithmType.BUBBLE_SORT: "O(1)",
       AlgorithmType.INSERTION_SORT: "O(1)",
@@ -108,6 +111,17 @@ class DataContent {
       AlgorithmType.GNOME_SORT: "O(1)",
     };
     return complexities.containsKey(type) ? complexities[type] : "N.A";
+  }
+
+  String algoExtraInfo(AlgorithmType type) {
+    if (type == AlgorithmType.BEAD_SORT) {
+      return "4 general levels of complexity:\n\n" +
+          "1. O(1): Beads moved simultaneously as a single operation. This complexity cannot be implemented in practice.\n" +
+          "2. O(√n): In a realistic physical model that uses gravity, the time it takes to let the beads fall is proportional to the square root of the maximum height, which is proportional to n.\n" +
+          "3. O(n): Dropping the row of beads in the frame (representing a number) as a distinct operation since the number of rows is equal to n.\n" +
+          "4. O(S): S is the sum of all the beads. Each bead is moved separately.";
+    }
+    return "";
   }
 
   String getAlgorithmCode(AlgorithmType type) {
