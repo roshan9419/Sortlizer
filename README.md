@@ -5,7 +5,7 @@
 
 *An App to visualize sorting algorithms.....*  
 
-![alt text](thumbnail.jpg)
+![alt text](thumbnail.png)
 
 ## Features / Tasks it can perform:  
 1. Empty
