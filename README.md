@@ -3,17 +3,79 @@
 [![Made By](https://img.shields.io/badge/Made%20by-Roshan-blue.svg)](https://github.com/roshan9419) [![Made With Love](https://img.shields.io/badge/Made%20With-Love-orange.svg)](https://github.com/roshan9419) [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/roshan9419) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/roshan9419) [![Stars](https://img.shields.io/github/stars/roshan9419/Sortlizer.svg?style=flat&color=orange)](https://github.com/roshan9419) [![Top Language](https://img.shields.io/github/languages/top/roshan9419/Sortlizer.svg?style=flat&color=informational)](https://github.com/roshan9419) [![Issues](https://img.shields.io/github/issues/roshan9419/Sortlizer.svg)](https://github.com/roshan9419) [![PR](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://github.com/roshan9419)
 <br>
 
-*An App to visualize sorting algorithms.....*  
+*An App to visualize various sorting algorithms...*  
 
 ![alt text](readme_assets/thumbnail.png)
 
-## Features / Tasks it can perform:  
-1. Empty
-2. Empty 
+## Sorting Algorithms Included
+
+```
+1. Bubble Sort
+2. Insertion Sort
+3. Selection Sort
+4. Merge Sort
+5. Quick Sort
+6. Cycle Sort
+7. Bogo Sort
+8. Radix Sort
+9. Cocktail Sort
+10. Odd Even Sort
+11. Heap Sort
+12. Shell Sort
+13. Bead Sort
+14. Gnome Sort
+```
+
+## Dependencies / Packages:  
+```
+# State Management
+stacked: ^1.7.6
+stacked_hooks: ^0.1.3+1
+
+# Navigation
+auto_route: ^0.6.9
+stacked_services: ^0.6.0+1
+stacked_themes:
+
+# Inversion of control
+get_it:
+injectable:
+
+shared_preferences: ^0.5.10
+
+animated_text_kit: any
+flutter_highlight: 0.6.0
+flutter_svg: 0.18.0
+
+introduction_screen: 1.0.9
+
+url_launcher: ^5.7.0
+share: 0.6.5+4
+```
+```
+build_runner:
+auto_route_generator:
+injectable_generator:
+
+flutter_launcher_icons: ^0.8.1
+flutter_native_splash: 0.3.2
+```
 
 ## Getting Started
 
-use following command for code generation, when needed.  Its usually needed if
- you are adding a new route or dependency injection for new services or new model with json annotations.
+Use following command for code generation, when needed. Its usually needed if you are adding a new route or dependency injection for new services or new model with json annotations.
 
     flutter pub run build_runner build --delete-conflicting-outputs
+
+
+## Watch the demo here 👇👇👇
+https://www.youtube.com/watch?v=tbw7VyBGSw0  
+
+
+## Author
+
+Roshan Kumar (**roshan9419**)  
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
