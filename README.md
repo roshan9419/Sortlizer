@@ -26,7 +26,16 @@
 14. Gnome Sort
 ```
 
+## Features
+
+1. Provide your custom array to visualize with any algorithm.
+2. Change array size, sorting speed.
+3. Info on Algorithm (Including their complexities and code)
+4. Saves the sorting history for in the form of table for current session for comparison of algorithms.
+5. See the step-by-step formation of sorted array.
+
 ## Dependencies / Packages:  
+
 ```
 # State Management
 stacked: ^1.7.6
