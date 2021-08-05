@@ -36,16 +36,18 @@
 
 ## Screenshots
 
-<kbd><img src="readme_assets/home.png" alt="Home" width="400"/></kbd>
-<kbd><img src="readme_assets/sorting.png" alt="Sorting" width="400"/></kbd>
-<kbd><img src="readme_assets/drawer.png" alt="Drawer" width="400"/></kbd>
-<kbd><img src="readme_assets/algo_info.png" alt="Algorithm Info" width="400"/></kbd>
-<kbd><img src="readme_assets/algo_code.png" alt="Algorithm Code" width="400"/></kbd>
-<kbd><img src="readme_assets/cutom_input.png" alt="Custom Input Array" width="400"/></kbd>
-<kbd><img src="readme_assets/custom_size.png" alt="Custom Size" width="400"/></kbd>
-<kbd><img src="readme_assets/sorting_history.png" alt="Sorting History" width="400"/></kbd>
-<kbd><img src="readme_assets/sort_tracks.png" alt="Sorting Tracks" width="400"/></kbd>
-<kbd><img src="readme_assets/sorting_track.png" alt="Sorting Track" width="400"/></kbd>
+<p float="left">
+    <img src="readme_assets/home.png" alt="Home" width="400"/>
+    <img src="readme_assets/sorting.png" alt="Sorting" width="400"/>
+    <img src="readme_assets/drawer.png" alt="Drawer" width="400"/>
+    <img src="readme_assets/algo_info.png" alt="Algorithm Info" width="400"/>
+    <img src="readme_assets/algo_code.png" alt="Algorithm Code" width="400"/>
+    <img src="readme_assets/cutom_input.png" alt="Custom Input Array" width="400"/>
+    <img src="readme_assets/custom_size.png" alt="Custom Size" width="400"/>
+    <img src="readme_assets/sorting_history.png" alt="Sorting History" width="400"/>
+    <img src="readme_assets/sort_tracks.png" alt="Sorting Tracks" width="400"/>
+    <img src="readme_assets/sorting_track.png" alt="Sorting Track" width="400"/>
+</p>
 
 ## Dependencies / Packages  
 
