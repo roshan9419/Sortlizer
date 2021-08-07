@@ -3,9 +3,15 @@
 [![Made By](https://img.shields.io/badge/Made%20by-Roshan-blue.svg)](https://github.com/roshan9419) [![Made With Love](https://img.shields.io/badge/Made%20With-Love-orange.svg)](https://github.com/roshan9419) [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/roshan9419) [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/roshan9419) [![Stars](https://img.shields.io/github/stars/roshan9419/Sortlizer.svg?style=flat&color=orange)](https://github.com/roshan9419) [![Top Language](https://img.shields.io/github/languages/top/roshan9419/Sortlizer.svg?style=flat&color=informational)](https://github.com/roshan9419) [![Issues](https://img.shields.io/github/issues/roshan9419/Sortlizer.svg)](https://github.com/roshan9419)
 <br>
 
-*An App to visualize various sorting algorithms...*  
+*An App to visualize various sorting algorithms...Developed using Flutter, followed MVVM pattern, and used stacked services.*  
 
 ![alt text](readme_assets/thumbnail.png)
+
+## Play Store Link
+https://play.google.com/store/apps/details?id=com.programmingtech.sortlizer
+
+## Watch the demo here 👇👇👇
+https://www.youtube.com/watch?v=g108TmmvwY0  
 
 ## Sorting Algorithms Included
 
@@ -90,10 +96,6 @@ flutter_native_splash: 0.3.2
 Use following command for code generation, when needed. Its usually needed if you are adding a new route or dependency injection for new services or new model with json annotations.
 
     flutter pub run build_runner build --delete-conflicting-outputs
-
-
-## Watch the demo here 👇👇👇
-https://www.youtube.com/watch?v=tbw7VyBGSw0  
 
 
 ## Author
