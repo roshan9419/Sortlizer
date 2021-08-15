@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/visualizer_viewmodel.dart';
+import 'package:sorting_visualization/ui/widgets/ashok_chakra.dart';
 import 'package:sorting_visualization/ui/widgets/bar_painter.dart';
 import 'package:sorting_visualization/ui/widgets/bars_loader.dart';
 import 'package:sorting_visualization/ui/widgets/code_viewer.dart';
@@ -31,7 +32,9 @@ class VisualizerView extends StatelessWidget {
               selectedValue: model.getTitle(),
               onTap: model.onMenuItemClick,
               isSwitchEnable: model.isShowHistoryEnable,
-              onSwitchAction: model.onSwitchAction),
+              flagMode: model.flagMode,
+              onSwitchAction: model.onShowHistorySwitchAction,
+              onShowFlagSwitchAction: model.onShowFlagSwitchAction),
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [
@@ -41,6 +44,7 @@ class VisualizerView extends StatelessWidget {
                       bottom: MediaQuery.of(context).size.height * 0.22 - 10,
                       child: _VisualizerContainerWidget())
                   : SizedBox.shrink(),
+              if (!model.hideChakra && model.flagMode) Center(child: AshokChakra()),
               BuildBottomDraggableSheet()
             ],
           ),
@@ -416,7 +420,9 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                             maxValue: model.maxNumber,
                             checkingValueIdx: model.checkingValueIdx,
                             width: division * 0.5,
-                            barColor: Theme.of(context).primaryColor)),
+                            barColor: Theme.of(context).primaryColor,
+                            arraySize: model.sampleSize,
+                            flagMode: model.flagMode)),
                   ),
                 );
               }).toList(),

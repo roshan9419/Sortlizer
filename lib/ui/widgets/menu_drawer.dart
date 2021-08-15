@@ -6,7 +6,9 @@ class MenuDrawer extends StatelessWidget {
   final String selectedValue;
   final Function(String) onTap;
   final Function(bool) onSwitchAction;
+  final Function(bool) onShowFlagSwitchAction;
   final bool isSwitchEnable;
+  final bool flagMode;
 
   const MenuDrawer(
       {Key key,
@@ -14,7 +16,9 @@ class MenuDrawer extends StatelessWidget {
       this.selectedValue,
       this.onTap,
       this.onSwitchAction,
-      this.isSwitchEnable})
+      this.onShowFlagSwitchAction,
+      this.isSwitchEnable,
+      this.flagMode = false})
       : super(key: key);
 
   // final _controller = ScrollController();
@@ -58,6 +62,26 @@ class MenuDrawer extends StatelessWidget {
                       ),
                     );
                   }),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0, right: 10),
+                  child: Text(
+                    'View Indian Flag',
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        .copyWith(color: Colors.white),
+                  ),
+                ),
+                Switch(
+                    value: this.flagMode,
+                    onChanged: (val) => this.onShowFlagSwitchAction(val),
+                    activeColor: Theme.of(context).primaryColor,
+                    inactiveTrackColor: Colors.grey[800]),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

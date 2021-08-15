@@ -24,7 +24,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   VisualizerViewModel(this._algorithmType, Size size) {
     double x = size.height * 0.22; // bottomSheetHeight
-    double y = 100;//header height
+    double y = 100; //header height
     _maxNumber = (size.height - x - y).toInt();
     if (_maxNumber > 500) {
       _maxNumber = 500;
@@ -73,6 +73,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isFirstTime = true;
   bool isSoundEnable = false;
   bool isShowHistoryEnable = true;
+  bool flagMode = true;
+  bool hideChakra = true;
 
   StreamController<List<int>> _streamController;
 
@@ -125,6 +127,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       return;
     }
     _numbers = [];
+    hideChakra = true;
 
     if (customNumbers != null && customNumbers.isNotEmpty) {
       customNumbers.forEach((num) {
@@ -134,8 +137,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       for (int i = 0; i < _sampleSize; ++i) {
         int rndNum = Random().nextInt(_maxNumber.toInt());
         if (rndNum < 10) rndNum += 50; // Just for UI Purpose
-        _numbers.add(rndNum);
+        _numbers.add(flagMode ? i : rndNum);
       }
+      if (flagMode) _numbers.shuffle();
     }
 
     _streamController.add(_numbers);
@@ -152,7 +156,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       return;
     }
     if (isSorting) {
+      print('FORCED STOP');
       isSorting = false;
+      hideChakra = true;
       notifyListeners();
     } else {
       Stopwatch _stopWatch = new Stopwatch()..start();
@@ -206,6 +212,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       _stopWatch.stop();
       isSorting = false;
+      hideChakra = !isArraySorted();
       _sortDuration = _stopWatch.elapsed.inMilliseconds;
       _chkValueIdx = -1;
 
@@ -885,10 +892,18 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
-  onSwitchAction(bool value) {
+  onShowHistorySwitchAction(bool value) {
     // this.isSoundEnable = value;
     this.isShowHistoryEnable = value;
     _sharedPrefService.showSortingHistory = value;
+    notifyListeners();
+  }
+
+  onShowFlagSwitchAction(bool value) {
+    if (!isSorting) {
+      this.flagMode = value;
+    }
+    reset();
     notifyListeners();
   }
 
