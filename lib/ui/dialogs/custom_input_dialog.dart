@@ -9,11 +9,13 @@ class CustomInputDialog extends StatefulWidget {
   final DialogRequest dialogRequest;
   final Function(DialogResponse) onDialogTap;
 
-  const CustomInputDialog({Key key, this.dialogRequest, this.onDialogTap})
+  const CustomInputDialog(
+      {Key? key, required this.dialogRequest, required this.onDialogTap})
       : super(key: key);
 
   @override
-  _CustomInputDialogState createState() => _CustomInputDialogState(dialogRequest.customData as int);
+  _CustomInputDialogState createState() =>
+      _CustomInputDialogState(dialogRequest.data as int);
 }
 
 class _CustomInputDialogState extends State<CustomInputDialog> {
@@ -25,6 +27,7 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
   int egNum = Random().nextInt(400);
 
   final int maxNumber;
+
   _CustomInputDialogState(this.maxNumber);
 
   validateField(String value) {
@@ -66,8 +69,7 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
   }
 
   onSubmit() {
-    widget.onDialogTap(
-        DialogResponse(confirmed: true, responseData: resultsList));
+    widget.onDialogTap(DialogResponse(confirmed: true, data: resultsList));
   }
 
   dismissDialog() {
@@ -81,23 +83,22 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
       onWillPop: () async => false,
       child: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
-              gradient: darkGradient),
+          decoration: BoxDecoration(gradient: darkGradient),
           padding: EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                widget.dialogRequest.title,
+                widget.dialogRequest.title!,
                 style:
-                    theme.textTheme.subtitle2.copyWith(color: lightGrayColor),
+                    theme.textTheme.subtitle2?.copyWith(color: lightGrayColor),
               ),
               SizedBox(height: 10),
               Text(
-                widget.dialogRequest.description,
+                widget.dialogRequest.description!,
                 style: theme.textTheme.caption
-                    .copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
+                    ?.copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
               ),
               SizedBox(height: 10),
               Wrap(
@@ -116,13 +117,13 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
                 Text(
                   '(Tap to remove)',
                   style: theme.textTheme.overline
-                      .copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
+                      ?.copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
                 ),
               SizedBox(height: 10),
               if (showError)
                 Text(errorMessage,
                     style: theme.textTheme.caption
-                        .copyWith(color: Colors.redAccent)),
+                        ?.copyWith(color: Colors.redAccent)),
               if (showError) SizedBox(height: 5),
               Container(
                   width: double.infinity,
@@ -139,11 +140,11 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
                           keyboardType: TextInputType.number,
                           controller: _controller,
                           style: theme.textTheme.subtitle2
-                              .copyWith(color: lightGrayColor),
+                              ?.copyWith(color: lightGrayColor),
                           decoration: InputDecoration(
                               hintText: 'Eg., $egNum',
                               hintStyle: theme.textTheme.caption
-                                  .copyWith(color: Color(0xff9B9B9B)),
+                                  ?.copyWith(color: Color(0xff9B9B9B)),
                               focusedBorder: InputBorder.none,
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none),
@@ -165,14 +166,14 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
                 children: [
                   Expanded(
                     child: CustomRectButton(
-                      labelText: widget.dialogRequest.secondaryButtonTitle,
+                      labelText: widget.dialogRequest.secondaryButtonTitle!,
                       onTap: dismissDialog,
                     ),
                   ),
                   SizedBox(width: 10),
                   Expanded(
                     child: CustomRectButton(
-                      labelText: widget.dialogRequest.mainButtonTitle,
+                      labelText: widget.dialogRequest.mainButtonTitle!,
                       btnColor: theme.primaryColor,
                       onTap: onSubmit,
                     ),
@@ -192,7 +193,11 @@ class NumberBox extends StatelessWidget {
   final int number;
   final Function onTap;
 
-  const NumberBox({Key key, this.number, this.onTap, this.index})
+  const NumberBox(
+      {Key? key,
+      required this.number,
+      required this.onTap,
+      required this.index})
       : super(key: key);
 
   @override
@@ -215,7 +220,7 @@ class NumberBox extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .overline
-                .copyWith(color: Colors.white, fontFamily: 'Arial'),
+                ?.copyWith(color: Colors.white, fontFamily: 'Arial'),
           ))),
     );
   }

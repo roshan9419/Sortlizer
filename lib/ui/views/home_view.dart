@@ -1,23 +1,20 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/ui/views/home_viewmodel.dart';
 import 'package:sorting_visualization/ui/widgets/bars_loader.dart';
-import 'package:sorting_visualization/ui/widgets/custom_rect_btn.dart';
 import 'package:sorting_visualization/ui/widgets/custom_round_btn.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({Key key}) : super(key: key);
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return ViewModelBuilder<HomeViewModel>.reactive(
       builder: (context, model, child) => Container(
-        decoration: BoxDecoration(
-            gradient: darkGradient),
+        decoration: BoxDecoration(gradient: darkGradient),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: SafeArea(
@@ -40,7 +37,7 @@ class HomeView extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text('Sorting',
-                                  style: theme.textTheme.headline5.copyWith(
+                                  style: theme.textTheme.headline5?.copyWith(
                                       color: lightGrayColor, letterSpacing: 1)),
                               SizedBox(width: 10),
                               MyBarLoader(
@@ -51,7 +48,7 @@ class HomeView extends StatelessWidget {
                             ],
                           ),
                           Text('Visualizer',
-                              style: theme.textTheme.headline4.copyWith(
+                              style: theme.textTheme.headline4?.copyWith(
                                   color: Colors.white, letterSpacing: 2)),
                         ],
                       ),
@@ -84,15 +81,15 @@ class HomeView extends StatelessWidget {
                   Text(
                     'Tap to Start',
                     textAlign: TextAlign.center,
-                    style:
-                        theme.textTheme.subtitle2.copyWith(color: Colors.white),
+                    style: theme.textTheme.subtitle2
+                        ?.copyWith(color: Colors.white),
                   ),
                   Spacer(),
                   Text(
                     "Visualize different Sorting Algorithms",
                     textAlign: TextAlign.center,
                     style: theme.textTheme.subtitle2
-                        .copyWith(color: darkGrayColor, letterSpacing: 0.5),
+                        ?.copyWith(color: darkGrayColor, letterSpacing: 0.5),
                   ),
                   SizedBox(
                     height: 10,
@@ -100,21 +97,20 @@ class HomeView extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
-                      color: Color(0xff242424),
-                      borderRadius: BorderRadius.circular(5.0)
-                    ),
+                        color: Color(0xff242424),
+                        borderRadius: BorderRadius.circular(5.0)),
                     child: TyperAnimatedTextKit(
                       text: model.getAlgorithmsList(),
                       textAlign: TextAlign.center,
                       repeatForever: true,
                       isRepeatingAnimation: true,
                       textStyle: theme.textTheme.subtitle1
-                          .copyWith(color: Colors.white, letterSpacing: 1),
+                          ?.copyWith(color: Colors.white, letterSpacing: 1),
                       speed: Duration(milliseconds: 50),
                     ),
                   ),
                   // SizedBox(height: 20),
-                  // Text(model.getAppVersion(), style: theme.textTheme.overline.copyWith(color: lightGrayColor)),
+                  // Text(model.getAppVersion(), style: theme.textTheme.overline?.copyWith(color: lightGrayColor)),
                   // SizedBox(height: 20),
                 ],
               ),
@@ -133,7 +129,10 @@ class ExpandableButtons extends StatefulWidget {
   final Function onReviewBtnTap;
 
   const ExpandableButtons(
-      {Key key, this.onAboutBtnTap, this.onShareBtnTap, this.onReviewBtnTap})
+      {Key? key,
+      required this.onAboutBtnTap,
+      required this.onShareBtnTap,
+      required this.onReviewBtnTap})
       : super(key: key);
 
   @override
@@ -143,10 +142,10 @@ class ExpandableButtons extends StatefulWidget {
 class _ExpandableButtonsState extends State<ExpandableButtons>
     with SingleTickerProviderStateMixin {
   bool isOpened = false;
-  AnimationController _animationController;
-  Animation<Color> _btnColor;
-  Animation<double> _animationIcon;
-  Animation<double> _translateBtn;
+  late AnimationController _animationController;
+  late Animation<Color?> _btnColor;
+  late Animation<double> _animationIcon;
+  late Animation<double> _translateBtn;
   double _fabHeight = 55.0;
 
   @override
@@ -186,7 +185,7 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
       // color: Colors.blueGrey,
       height: 220,
       child: Stack(
-        overflow: Overflow.visible,
+        clipBehavior: Clip.none,
         // mainAxisSize: MainAxisSize.min,
         children: [
           Transform(
@@ -258,15 +257,15 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
 }
 
 class ActionButton extends StatelessWidget {
-  final String toolTipText;
-  final Color color;
-  final IconData iconData;
-  final Function onTap;
+  final String? toolTipText;
+  final Color? color;
+  final IconData? iconData;
+  final Function? onTap;
   final double btnSize;
-  final double btnElevation;
+  final double? btnElevation;
 
   const ActionButton(
-      {Key key,
+      {Key? key,
       this.toolTipText,
       this.color,
       this.iconData,
@@ -285,7 +284,7 @@ class ActionButton extends StatelessWidget {
         child: FloatingActionButton(
           onPressed: () {
             print('Clicked');
-            if (onTap != null) onTap();
+            if (onTap != null) onTap!();
           },
           heroTag: toolTipText,
           elevation: btnElevation ?? 5,
@@ -311,7 +310,7 @@ class GetProgrammingQuote extends StatelessWidget {
           textAlign: TextAlign.start,
           text: TextSpan(
               text: "// life motto\n",
-              style: theme.textTheme.headline6.copyWith(color: darkGrayColor),
+              style: theme.textTheme.headline6?.copyWith(color: darkGrayColor),
               children: [
                 _getTextSpan(context, 'if', theme.primaryColor),
                 _getTextSpan(context, ' (', Colors.white),
@@ -319,9 +318,9 @@ class GetProgrammingQuote extends StatelessWidget {
                 _getTextSpan(context, ' == ', Colors.deepOrange),
                 _getTextSpan(context, 'true', Colors.white),
                 _getTextSpan(context, ') {\n', Colors.white),
-                _getTextSpan(context, '\t\t\t\tsad', theme.primaryColor),
+                _getTextSpan(context, '     sad', theme.primaryColor),
                 _getTextSpan(context, '.stop();\n', Colors.white),
-                _getTextSpan(context, '\t\t\t\tbeAwesome();\n', Colors.white),
+                _getTextSpan(context, '     beAwesome();\n', Colors.white),
                 _getTextSpan(context, '}', Colors.white),
               ])),
     );
@@ -333,6 +332,6 @@ class GetProgrammingQuote extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .headline6
-            .copyWith(color: color, fontSize: 25));
+            ?.copyWith(color: color, fontSize: 25));
   }
 }

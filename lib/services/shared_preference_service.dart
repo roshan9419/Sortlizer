@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
 class SharedPreferenceService {
-  SharedPreferences _preferences;
+  late SharedPreferences _preferences;
 
   Future<void> initialise() async {
     _preferences = await SharedPreferences.getInstance();
@@ -46,18 +46,20 @@ class SharedPreferenceService {
 
   bool get showSortingHistory => _getFromDisk(SHOW_SORTING_HISTORY) ?? true;
 
-  set showSortingHistory(bool value) => _saveToDisk(SHOW_SORTING_HISTORY, value);
+  set showSortingHistory(bool value) =>
+      _saveToDisk(SHOW_SORTING_HISTORY, value);
 
   double get sortingSliderValue => _getFromDisk(SORTING_SLIDER_VALUE) ?? 0.0;
 
-  set sortingSliderValue(double value) => _saveToDisk(SORTING_SLIDER_VALUE, value);
+  set sortingSliderValue(double value) =>
+      _saveToDisk(SORTING_SLIDER_VALUE, value);
 
   int get sortingArraySize => _getFromDisk(SORTING_ARRAY_SIZE) ?? 50;
 
   set sortingArraySize(int value) => _saveToDisk(SORTING_ARRAY_SIZE, value);
 
-  String get algorithmSelected => _getFromDisk(ALGORITHM_SELECTED);
+  String? get algorithmSelected => _getFromDisk(ALGORITHM_SELECTED);
 
-  set algorithmSelected(String value) => _saveToDisk(ALGORITHM_SELECTED, value);
-
+  set algorithmSelected(String? value) =>
+      _saveToDisk(ALGORITHM_SELECTED, value);
 }

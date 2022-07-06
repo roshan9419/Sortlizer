@@ -32,7 +32,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -43,12 +43,20 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.programmingtech.sortlizer"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+    }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86_64', 'armeabi-v7a', 'armeabi'
+            universalApk true
+        }
     }
 
     signingConfigs {
@@ -61,6 +69,7 @@ android {
     }
     buildTypes {
         release {
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
     }

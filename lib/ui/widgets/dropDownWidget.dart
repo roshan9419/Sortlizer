@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 
@@ -9,7 +8,11 @@ class DropDownWidget extends StatefulWidget {
   final bool showDropDownIcon;
 
   const DropDownWidget(
-      {Key key, this.selectedType, this.menuItemsList, this.onTap, this.showDropDownIcon = true})
+      {Key? key,
+      required this.selectedType,
+      required this.menuItemsList,
+      required this.onTap,
+      this.showDropDownIcon = true})
       : super(key: key);
 
   @override
@@ -17,7 +20,7 @@ class DropDownWidget extends StatefulWidget {
 }
 
 class _DropDownWidgetState extends State<DropDownWidget> {
-  String _selectedType;
+  late String _selectedType;
 
   _onTap(val) {
     widget.onTap(val);
@@ -44,11 +47,12 @@ class _DropDownWidgetState extends State<DropDownWidget> {
             value: value,
             child: Container(
               child: Text(value,
-                  style: theme.textTheme.subtitle2.copyWith(
+                  style: theme.textTheme.subtitle2?.copyWith(
                       fontWeight: value == _selectedType
                           ? FontWeight.bold
                           : FontWeight.normal,
-                      color: value == _selectedType ? Colors.blue : lightGrayColor,
+                      color:
+                          value == _selectedType ? Colors.blue : lightGrayColor,
                       letterSpacing: 1),
                   maxLines: 1,
                   softWrap: true),

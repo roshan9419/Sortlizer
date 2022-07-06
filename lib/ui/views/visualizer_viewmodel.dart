@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/app/locator.dart';
-import 'package:sorting_visualization/app/router.gr.dart';
+import 'package:sorting_visualization/app/router.router.dart';
 import 'package:sorting_visualization/datamodels/algo_history_track.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
@@ -35,7 +34,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   List<int> _numbers = [];
 
   List<AlgoHistoryTrack> _algoHistoryTrackList = [];
-  List<List<int>> _currentAlgoSortRecords = new List();
+  List<List<int>> _currentAlgoSortRecords = [];
 
   GlobalKey<ScaffoldState> _globalDrawerKey = GlobalKey();
 
@@ -47,7 +46,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   int get sampleSize => _sampleSize;
 
-  int _maxNumber;
+  late int _maxNumber;
 
   int get maxNumber => _maxNumber;
 
@@ -73,10 +72,10 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isFirstTime = true;
   bool isSoundEnable = false;
   bool isShowHistoryEnable = true;
-  bool flagMode = true;
+  bool flagMode = false;
   bool hideChakra = true;
 
-  StreamController<List<int>> _streamController;
+  late StreamController<List<int>> _streamController;
 
   // Soundpool _soundpool;
   // int _soundId;
@@ -88,8 +87,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   @override
-  void onData(StreamController data) async {
+  void onData(StreamController<List<int>>? data) async {
     super.onData(data);
+    if (data == null) return;
     _streamController = data;
 
     // Initializing last saved settings
@@ -115,11 +115,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     super.dispose();
   }
 
-  StreamController getStreamController() {
+  StreamController<List<int>> getStreamController() {
     return _streamController;
   }
 
-  reset({List<int> customNumbers}) {
+  reset({List<int>? customNumbers}) {
     if (isSorting) {
       _snackBarService.showSnackbar(
           message: "Sorting in Progress...",
@@ -145,7 +145,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _streamController.add(_numbers);
     _sortDuration = 0;
     _totalComparisons = 0;
-    _currentAlgoSortRecords = new List();
+    _currentAlgoSortRecords = [];
     notifyListeners();
   }
 
@@ -216,13 +216,12 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       _sortDuration = _stopWatch.elapsed.inMilliseconds;
       _chkValueIdx = -1;
 
-      saveCurrentSortingStep();
       _algoHistoryTrackList.add(AlgoHistoryTrack(
-          algoTitle: dataContent.getAlgorithmTitle(_algorithmType),
-          arraySize: _sampleSize,
-          timeTaken: _sortDuration,
-          totalComparisons: _totalComparisons,
-          sortTrack: _currentAlgoSortRecords));
+          dataContent.getAlgorithmTitle(_algorithmType),
+          _sampleSize,
+          _sortDuration,
+          _totalComparisons,
+          _currentAlgoSortRecords));
 
       notifyListeners();
       /*_globalDrawerKey.currentState.showSnackBar(
@@ -306,8 +305,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       int leftSize = middleIndex - leftIndex + 1;
       int rightSize = rightIndex - middleIndex;
 
-      List leftList = new List(leftSize);
-      List rightList = new List(rightSize);
+      List leftList = new List.filled(leftSize, null, growable: false);
+      List rightList = new List.filled(rightSize, null, growable: false);
 
       for (int i = 0; i < leftSize; i++) leftList[i] = _numbers[leftIndex + i];
       for (int j = 0; j < rightSize; j++)
@@ -547,8 +546,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     saveCurrentSortingStep();
     Future<void> countingSort(int place) async {
       int max = 10;
-      List<int> output = new List(_numbers.length);
-      List<int> count = new List(max);
+      List<int> output = List.filled(_numbers.length, 0, growable: false);
+      List<int> count = List.filled(max, 0, growable: false);
 
       for (int i = 0; i < max; i++) count[i] = 0;
 
@@ -830,7 +829,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
             "Example: ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)}, ${Random().nextInt(100)} (Max - ${(_maxNumber ~/ 10) * 10})",
         mainButtonTitle: "Submit",
         secondaryButtonTitle: "Cancel",
-        customData: (_maxNumber ~/ 10) * 10,
+        data: (_maxNumber ~/ 10) * 10,
         barrierDismissible: false);
 
     if (dialogResponse != null &&
@@ -865,7 +864,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   openMenuDrawer() {
-    _globalDrawerKey.currentState.openEndDrawer();
+    _globalDrawerKey.currentState?.openEndDrawer();
   }
 
   changeArraySize() async {

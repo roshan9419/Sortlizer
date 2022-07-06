@@ -15,10 +15,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.16
+version: 1.0.17
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -29,36 +29,35 @@ dependencies:
   cupertino_icons: ^1.0.0
 
   # state management
-  stacked: ^1.7.6
-  stacked_hooks: ^0.1.3+1
+  stacked: ^2.3.6
+  stacked_hooks: ^0.2.1
 
   # navigation
-  auto_route: ^0.6.9
-  stacked_services: ^0.6.0+1
-  stacked_themes:
-  shared_preferences: ^0.5.10
+  stacked_services: ^0.8.24
+  stacked_themes: ^0.3.8+1
+  shared_preferences: ^2.0.6
 
   # inversion of control
   get_it:
   injectable:
 
-  animated_text_kit: any
-  flutter_highlight: 0.6.0
-  flutter_svg: 0.18.0
-  url_launcher: ^5.7.0
-  share: 0.6.5+4
-  introduction_screen: 1.0.9
+  animated_text_kit: ^4.2.2
+  flutter_highlight: ^0.7.0
+  flutter_svg: ^0.23.0
+  url_launcher: ^6.1.2
+  share: ^2.0.4
+  introduction_screen: ^3.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner:
-  auto_route_generator:
+  build_runner: ^2.1.5
+  stacked_generator: ^0.5.6
   injectable_generator:
 
-  flutter_launcher_icons: ^0.8.1
-  flutter_native_splash: 0.3.2
+  flutter_launcher_icons: ^0.9.3
+  flutter_native_splash: ^2.2.0
 
 flutter_icons:
   android: true

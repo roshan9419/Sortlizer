@@ -8,7 +8,7 @@ class AshokChakra extends StatefulWidget {
 
 class _AshokChakraState extends State<AshokChakra>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   double size = 0.0;
 
@@ -42,7 +42,7 @@ class _AshokChakraState extends State<AshokChakra>
           height: size,
           width: size,
         ),
-        builder: (BuildContext context, Widget _widget) {
+        builder: (BuildContext context, Widget? _widget) {
           return Transform.rotate(
             angle: _controller.value * 300,
             child: _widget,

@@ -1,27 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/a11y-dark.dart';
-import 'package:flutter_highlight/themes/atelier-forest-dark.dart';
-import 'package:flutter_highlight/themes/atom-one-dark-reasonable.dart';
 import 'package:flutter_highlight/themes/atom-one-dark.dart';
-import 'package:flutter_highlight/themes/dark.dart';
-import 'package:flutter_highlight/themes/github.dart';
-import 'package:flutter_highlight/themes/kimbie.dark.dart';
 import 'package:flutter_highlight/themes/mono-blue.dart';
-import 'package:flutter_highlight/themes/solarized-dark.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 
 class CodeViewer extends StatefulWidget {
   final String codeContent;
-  final String titleLabel;
-  final String sourceLabel;
+  final String? titleLabel;
+  final String? sourceLabel;
   final bool showCopyBtn;
 
   const CodeViewer(
-      {Key key,
-      this.codeContent,
+      {Key? key,
+      required this.codeContent,
       this.titleLabel,
       this.sourceLabel,
       this.showCopyBtn = true})
@@ -49,15 +41,15 @@ class _CodeViewerState extends State<CodeViewer> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.titleLabel != null && widget.titleLabel.isNotEmpty)
+        if (widget.titleLabel != null && widget.titleLabel!.isNotEmpty)
           Padding(
             padding: EdgeInsets.only(bottom: 8.0),
             child: Text(
-              widget.titleLabel,
+              widget.titleLabel!,
               style: Theme.of(context)
                   .textTheme
                   .subtitle2
-                  .copyWith(color: Theme.of(context).primaryColor),
+                  ?.copyWith(color: Theme.of(context).primaryColor),
             ),
           ),
         Container(
@@ -65,8 +57,8 @@ class _CodeViewerState extends State<CodeViewer> {
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: isDark
-                  ? atomOneDarkTheme['root'].backgroundColor
-                  : monoBlueTheme['root'].backgroundColor,
+                  ? atomOneDarkTheme['root']?.backgroundColor
+                  : monoBlueTheme['root']?.backgroundColor,
               border: Border.all(color: Colors.grey),
               boxShadow: [
                 BoxShadow(
@@ -131,8 +123,8 @@ class _CodeViewerState extends State<CodeViewer> {
                           onPressed: () {
                             Clipboard.setData(
                                     ClipboardData(text: widget.codeContent))
-                                .then((value) =>
-                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                .then((value) => ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
                                       content: Text('Code Copied'),
                                     )));
                           },
@@ -148,16 +140,16 @@ class _CodeViewerState extends State<CodeViewer> {
             ],
           ),
         ),
-        if (widget.sourceLabel != null && widget.sourceLabel.isNotEmpty)
+        if (widget.sourceLabel != null && widget.sourceLabel!.isNotEmpty)
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
                 padding: EdgeInsets.only(top: 8.0),
                 child: Text(
-                  widget.sourceLabel,
+                  widget.sourceLabel!,
                   textAlign: TextAlign.end,
-                  style: Theme.of(context).textTheme.caption.copyWith(
+                  style: Theme.of(context).textTheme.caption?.copyWith(
                       fontStyle: FontStyle.italic, color: lightGrayColor),
                 ),
               ),

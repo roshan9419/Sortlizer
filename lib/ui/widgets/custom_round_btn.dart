@@ -1,19 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 
 class CustomRoundButton extends StatefulWidget {
   final Icon icon;
-  final Color btnColor;
-  final Function onTap;
-  final double btnSize;
-  final String labelText;
+  final Color? btnColor;
+  final Function()? onTap;
+  final double? btnSize;
+  final String? labelText;
   final bool isPressed;
-  final String assetImagePath;
+  final String? assetImagePath;
 
   const CustomRoundButton(
-      {Key key,
-      this.icon,
+      {Key? key,
+      required this.icon,
       this.btnColor,
       this.onTap,
       this.btnSize,
@@ -30,7 +29,7 @@ class CustomRoundButton extends StatefulWidget {
 class _CustomRoundButtonState extends State<CustomRoundButton> {
   double btnSize;
 
-  _CustomRoundButtonState({this.btnSize});
+  _CustomRoundButtonState({required this.btnSize});
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +40,13 @@ class _CustomRoundButtonState extends State<CustomRoundButton> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          if (widget.labelText != null && widget.labelText.isNotEmpty)
-            Text(widget.labelText,
+          if (widget.labelText != null && widget.labelText!.isNotEmpty)
+            Text(widget.labelText!,
                 style: Theme.of(context)
                     .textTheme
                     .overline
-                    .copyWith(color: mediumGrayColor, fontFamily: 'Arial')),
-          if (widget.labelText != null && widget.labelText.isNotEmpty)
+                    ?.copyWith(color: mediumGrayColor, fontFamily: 'Arial')),
+          if (widget.labelText != null && widget.labelText!.isNotEmpty)
             SizedBox(height: 15),
           !widget.isPressed
               ? Container(
@@ -58,7 +57,7 @@ class _CustomRoundButtonState extends State<CustomRoundButton> {
                     elevation: 3,
                     heroTag: widget.labelText,
                     child: (widget.assetImagePath != null)
-                        ? Image.asset(widget.assetImagePath)
+                        ? Image.asset(widget.assetImagePath!)
                         : widget.icon,
                     backgroundColor: widget.btnColor ?? darkBtnColor1,
                   ),
@@ -94,7 +93,7 @@ class _CustomRoundButtonState extends State<CustomRoundButton> {
                               tileMode: TileMode.clamp,
                               colors: [
                                 darkGrayColor.withOpacity(0.4),
-                                widget.btnColor.withOpacity(0) ??
+                                widget.btnColor?.withOpacity(0) ??
                                     darkBtnColor1.withOpacity(0)
                               ]),
                           borderRadius: BorderRadius.circular(btnSize / 2)),

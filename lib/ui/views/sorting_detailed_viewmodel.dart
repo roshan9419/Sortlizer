@@ -11,16 +11,19 @@ class SortingDetailedViewModel extends BaseViewModel {
   SortingDetailedViewModel(this.algoTracksList) {
     algoTracksList.forEach((element) {
       historyTrackList.add(HistoryTrack(
-        isExpanded: false,
-        algoTrack: element,
-        currentPageCount: element.sortTrack.length > step ? step : element.sortTrack.length
-      ));
+          isExpanded: false,
+          algoTrack: element,
+          currentPageCount: element.sortTrack.length > step
+              ? step
+              : element.sortTrack.length));
     });
   }
 
   onSeeTrackBtnTap(HistoryTrack item) {
     item.isExpanded = !item.isExpanded;
-    item.currentPageCount = item.algoTrack.sortTrack.length > step ? step : item.algoTrack.sortTrack.length;
+    item.currentPageCount = item.algoTrack.sortTrack.length > step
+        ? step
+        : item.algoTrack.sortTrack.length;
     notifyListeners();
   }
 
@@ -39,5 +42,8 @@ class HistoryTrack {
   bool isExpanded;
   AlgoHistoryTrack algoTrack;
 
-  HistoryTrack({this.currentPageCount, this.algoTrack, this.isExpanded = false});
+  HistoryTrack(
+      {required this.currentPageCount,
+      required this.algoTrack,
+      this.isExpanded = false});
 }

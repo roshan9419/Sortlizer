@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:share/share.dart';
 import 'package:sorting_visualization/app/locator.dart';
-import 'package:sorting_visualization/app/router.gr.dart';
+import 'package:sorting_visualization/app/router.router.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
 import 'package:sorting_visualization/services/shared_preference_service.dart';
@@ -26,7 +24,7 @@ class HomeViewModel extends BaseViewModel {
 
   moveToVisualizerView() async {
     AlgorithmType _algoType = _sharedPrefService.algorithmSelected != null
-        ? getAlgoTypeFromString(_sharedPrefService.algorithmSelected)
+        ? getAlgoTypeFromString(_sharedPrefService.algorithmSelected!)
         : AlgorithmType.BUBBLE_SORT;
     await _navigationService.navigateTo(Routes.visualizerView,
         arguments: VisualizerViewArguments(algorithmType: _algoType));
@@ -46,19 +44,23 @@ class HomeViewModel extends BaseViewModel {
 
   void onShareBtnTap() async {
     var appUrl = "https://play.google.com/store/apps/details?id=" + packageName;
-    var message = "Try out this amazing Sorting Visualizer app on PlayStore!\n\n$appUrl";
-    
+    var message =
+        "Try out this amazing Sorting Visualizer app on PlayStore!\n\n$appUrl";
+
     Share.share(message, subject: "Share to");
   }
 
   void onReviewBtnTap() async {
     try {
       // launch("market://details?id=" + packageName);
-      launch("https://play.google.com/store/apps/details?id=" + packageName);
-    } on PlatformException catch(e) {
-      launch("https://play.google.com/store/apps/details?id=" + packageName);
+      launchUrl(Uri.parse(
+          "https://play.google.com/store/apps/details?id=" + packageName));
+    } on PlatformException catch (e) {
+      launchUrl(Uri.parse(
+          "https://play.google.com/store/apps/details?id=" + packageName));
     } finally {
-      launch("https://play.google.com/store/apps/details?id=" + packageName);
+      launchUrl(Uri.parse(
+          "https://play.google.com/store/apps/details?id=" + packageName));
     }
   }
 }

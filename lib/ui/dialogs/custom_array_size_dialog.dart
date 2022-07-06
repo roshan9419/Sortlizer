@@ -9,7 +9,8 @@ class CustomArraySizeDialog extends StatefulWidget {
   final DialogRequest dialogRequest;
   final Function(DialogResponse) onDialogTap;
 
-  const CustomArraySizeDialog({Key key, this.dialogRequest, this.onDialogTap})
+  const CustomArraySizeDialog(
+      {Key? key, required this.dialogRequest, required this.onDialogTap})
       : super(key: key);
 
   @override
@@ -22,15 +23,24 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
   bool isDisabled = true;
   int maxArraySize = 1000;
 
-  List<String> sizeList = ["Choose", "50", "100", "200", "300", "400", "500", "1000"];
-  String _selectedSize;
+  List<String> sizeList = [
+    "Choose",
+    "50",
+    "100",
+    "200",
+    "300",
+    "400",
+    "500",
+    "1000"
+  ];
+  late String _selectedSize;
   String errorMessage = "Invalid Size";
 
   onSubmit() {
     if (isDisabled) return;
     widget.onDialogTap(DialogResponse(
         confirmed: true,
-        responseData: _selectedSize != sizeList[0]
+        data: _selectedSize != sizeList[0]
             ? _selectedSize
             : _controller.text.toString()));
   }
@@ -79,7 +89,7 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
     var theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-          gradient: darkGradient,
+        gradient: darkGradient,
       ),
       padding: EdgeInsets.all(15),
       child: Column(
@@ -87,14 +97,14 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            widget.dialogRequest.title,
-            style: theme.textTheme.subtitle2.copyWith(color: lightGrayColor),
+            widget.dialogRequest.title!,
+            style: theme.textTheme.subtitle2?.copyWith(color: lightGrayColor),
           ),
           SizedBox(height: 10),
           Text(
-            widget.dialogRequest.description,
+            widget.dialogRequest.description!,
             style: theme.textTheme.caption
-                .copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
+                ?.copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
           ),
           SizedBox(height: 20),
           Row(
@@ -112,11 +122,11 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       controller: _controller,
                       style: theme.textTheme.subtitle2
-                          .copyWith(color: lightGrayColor),
+                          ?.copyWith(color: lightGrayColor),
                       decoration: InputDecoration(
                           hintText: 'Ex: 100',
                           hintStyle: theme.textTheme.caption
-                              .copyWith(color: Color(0xff9B9B9B)),
+                              ?.copyWith(color: Color(0xff9B9B9B)),
                           focusedBorder: InputBorder.none,
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none),
@@ -129,7 +139,7 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
               Text(
                 "or",
                 style: theme.textTheme.caption
-                    .copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
+                    ?.copyWith(color: mediumGrayColor, fontFamily: 'Arial'),
               ),
               SizedBox(width: 10),
               Expanded(
@@ -153,14 +163,14 @@ class _CustomArraySizeDialogState extends State<CustomArraySizeDialog> {
             children: [
               Expanded(
                 child: CustomRectButton(
-                  labelText: widget.dialogRequest.secondaryButtonTitle,
+                  labelText: widget.dialogRequest.secondaryButtonTitle!,
                   onTap: dismissDialog,
                 ),
               ),
               SizedBox(width: 10),
               Expanded(
                 child: CustomRectButton(
-                  labelText: widget.dialogRequest.mainButtonTitle,
+                  labelText: widget.dialogRequest.mainButtonTitle!,
                   btnColor: isDisabled
                       ? theme.primaryColor.withOpacity(0.5)
                       : theme.primaryColor,

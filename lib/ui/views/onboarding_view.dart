@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:sorting_visualization/app/locator.dart';
-import 'package:sorting_visualization/app/router.gr.dart';
+import 'package:sorting_visualization/app/router.router.dart';
 import 'package:sorting_visualization/services/shared_preference_service.dart';
 
 import '../ui_theme.dart';
@@ -25,8 +24,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Container(
-      decoration: BoxDecoration(
-          gradient: darkGradient),
+      decoration: BoxDecoration(gradient: darkGradient),
       child: Column(
         children: [
           Padding(
@@ -38,7 +36,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 GestureDetector(
                   onTap: onBtnTap,
                   child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: _pageIndex != 4
@@ -50,10 +49,13 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                         children: [
                           Text(
                             _pageIndex != 4 ? 'Skip' : 'Start',
-                            style: Theme.of(context).textTheme.subtitle2.copyWith(
-                                color: _pageIndex != 4
-                                    ? Colors.white38
-                                    : Colors.white),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle2
+                                ?.copyWith(
+                                    color: _pageIndex != 4
+                                        ? Colors.white38
+                                        : Colors.white),
                           ),
                           if (_pageIndex == 4) SizedBox(width: 5),
                           if (_pageIndex == 4)
@@ -83,7 +85,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     )),
                 PageViewModel(
                     title: 'Custom Input Array',
-                    body: 'Visualize your custom input array of any size with any algorithm',
+                    body:
+                        'Visualize your custom input array of any size with any algorithm',
                     decoration: _pageDecoration(context),
                     image: buildImage(
                       'assets/images/onboard/onboard_custom.png',
@@ -106,7 +109,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     )),
                 PageViewModel(
                     title: 'Sorting Steps',
-                    body: 'Visualize how the sorted array is formed on every sorting step',
+                    body:
+                        'Visualize how the sorted array is formed on every sorting step',
                     decoration: _pageDecoration(context, imagePadding: 25),
                     image: buildImage(
                       'assets/images/onboard/onboard_stepbystep.png',
@@ -133,19 +137,21 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return Center(child: Image.asset(path));
   }
 
-  PageDecoration _pageDecoration(BuildContext context, {double imagePadding = 60}) => PageDecoration(
+  PageDecoration _pageDecoration(BuildContext context,
+          {double imagePadding = 60}) =>
+      PageDecoration(
         titleTextStyle: Theme.of(context)
             .textTheme
-            .headline5
+            .headline5!
             .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-        bodyTextStyle: Theme.of(context).textTheme.subtitle2.copyWith(
+        bodyTextStyle: Theme.of(context).textTheme.subtitle2!.copyWith(
             color: Colors.white70,
             letterSpacing: 0.5,
             fontFamily: 'Arial',
             fontSize: 14.0),
         imagePadding: EdgeInsets.all(imagePadding),
         titlePadding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-        descriptionPadding: EdgeInsets.only(left: 40, right: 40),
+        bodyPadding: EdgeInsets.only(left: 40, right: 40),
       );
 
   DotsDecorator _dotsDecorator() => DotsDecorator(

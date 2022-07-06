@@ -19,7 +19,7 @@ class DataContent {
   };
 
   String getAlgorithmTitle(AlgorithmType type) {
-    return algorithmsMap[type];
+    return algorithmsMap[type]!;
   }
 
   AlgorithmType getAlgorithmType(String algo) {
@@ -66,7 +66,7 @@ class DataContent {
           "Gnome Sort is a sorting algorithm that is similar to Insertion sort in that it works with one item at a time but gets the item to the proper place by a series of swaps, similar to a Bubble sort."
     };
 
-    return algoDesc.containsKey(type) ? algoDesc[type] : "N.A";
+    return algoDesc.containsKey(type) ? algoDesc[type]! : "N.A";
   }
 
   List<String> getTimeComplexities(AlgorithmType type) {
@@ -88,7 +88,7 @@ class DataContent {
       AlgorithmType.GNOME_SORT: ["O(n²)", "O(n²)", "O(n)"],
     };
     return complexities.containsKey(type)
-        ? complexities[type]
+        ? complexities[type]!
         : ["N.A.", "N.A.", "N.A."];
   }
 
@@ -110,7 +110,7 @@ class DataContent {
       AlgorithmType.BEAD_SORT: "O(n²)",
       AlgorithmType.GNOME_SORT: "O(1)",
     };
-    return complexities.containsKey(type) ? complexities[type] : "N.A";
+    return complexities.containsKey(type) ? complexities[type]! : "N.A";
   }
 
   String algoExtraInfo(AlgorithmType type) {

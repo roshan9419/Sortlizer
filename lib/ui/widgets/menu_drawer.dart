@@ -11,13 +11,13 @@ class MenuDrawer extends StatelessWidget {
   final bool flagMode;
 
   const MenuDrawer(
-      {Key key,
-      @required this.menuItemsList,
-      this.selectedValue,
-      this.onTap,
-      this.onSwitchAction,
-      this.onShowFlagSwitchAction,
-      this.isSwitchEnable,
+      {Key? key,
+      required this.menuItemsList,
+      required this.selectedValue,
+      required this.onTap,
+      required this.onSwitchAction,
+      required this.onShowFlagSwitchAction,
+      required this.isSwitchEnable,
       this.flagMode = false})
       : super(key: key);
 
@@ -54,7 +54,7 @@ class MenuDrawer extends StatelessWidget {
                       selectedTileColor: Theme.of(context).primaryColor,
                       title: Text(
                         value,
-                        style: Theme.of(context).textTheme.subtitle2.copyWith(
+                        style: Theme.of(context).textTheme.subtitle2?.copyWith(
                             color: selectedValue == value
                                 ? Colors.white
                                 : lightGrayColor,
@@ -73,7 +73,7 @@ class MenuDrawer extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .caption
-                        .copyWith(color: Colors.white),
+                        ?.copyWith(color: Colors.white),
                   ),
                 ),
                 Switch(
@@ -93,7 +93,7 @@ class MenuDrawer extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .caption
-                        .copyWith(color: Colors.white),
+                        ?.copyWith(color: Colors.white),
                   ),
                 ),
                 Switch(

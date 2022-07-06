@@ -1,17 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sorting_visualization/ui/ui_theme.dart';
 import 'package:sorting_visualization/utils/app_info.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../ui_theme.dart';
-import '../../utils/app_info.dart';
 
 class AboutAppDialog extends StatelessWidget {
   final DialogRequest dialogRequest;
   final Function(DialogResponse) onDialogTap;
 
-  const AboutAppDialog({Key key, this.dialogRequest, this.onDialogTap})
+  const AboutAppDialog(
+      {Key? key, required this.dialogRequest, required this.onDialogTap})
       : super(key: key);
 
   @override
@@ -31,9 +30,9 @@ class AboutAppDialog extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(dialogRequest.title,
+                Text(dialogRequest.title!,
                     style: theme.textTheme.subtitle1
-                        .copyWith(color: Colors.white)),
+                        ?.copyWith(color: Colors.white)),
                 Spacer(),
                 Container(
                   width: 25,
@@ -56,27 +55,28 @@ class AboutAppDialog extends StatelessWidget {
                 text: TextSpan(
                     text: "Hi, I'm ",
                     style: theme.textTheme.subtitle2
-                        .copyWith(color: Colors.white70),
+                        ?.copyWith(color: Colors.white70),
                     children: [
                   TextSpan(
                     text: "$developerName 👋",
                     style: theme.textTheme.subtitle2
-                        .copyWith(color: theme.primaryColor),
+                        ?.copyWith(color: theme.primaryColor),
                   )
                 ])),
             SizedBox(height: 20),
-            Text(dialogRequest.description,
+            Text(dialogRequest.description!,
                 style:
-                    theme.textTheme.subtitle2.copyWith(color: Colors.white70)),
+                    theme.textTheme.subtitle2?.copyWith(color: Colors.white70)),
             SizedBox(height: 0),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   onPressed: () async {
-                    await canLaunch(readMeLink)
-                        ? await launch(readMeLink)
-                        : SnackbarService().showSnackbar(message: "Could not load Url");
+                    await canLaunchUrl(Uri.parse(readMeLink))
+                        ? await launchUrl(Uri.parse(readMeLink))
+                        : SnackbarService()
+                            .showSnackbar(message: "Could not load Url");
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,9 +84,12 @@ class AboutAppDialog extends StatelessWidget {
                       Text(
                         'Read More',
                         style: theme.textTheme.subtitle2
-                            .copyWith(color: theme.primaryColor),
+                            ?.copyWith(color: theme.primaryColor),
                       ),
-                      Icon(Icons.double_arrow_sharp, size: 20,)
+                      Icon(
+                        Icons.double_arrow_sharp,
+                        size: 20,
+                      )
                     ],
                   ),
                 ),
@@ -95,7 +98,7 @@ class AboutAppDialog extends StatelessWidget {
             SizedBox(height: 10),
             Text("Connect with me:",
                 style:
-                    theme.textTheme.subtitle2.copyWith(color: Colors.white70)),
+                    theme.textTheme.subtitle2?.copyWith(color: Colors.white70)),
             SizedBox(height: 10),
             Wrap(
               spacing: 10,
@@ -109,7 +112,7 @@ class AboutAppDialog extends StatelessWidget {
                     child: Center(
                         child: Text('in',
                             style: theme.textTheme.subtitle2
-                                .copyWith(color: Colors.white))),
+                                ?.copyWith(color: Colors.white))),
                     decoration: BoxDecoration(
                         color: Color(0xff0A66C2),
                         borderRadius: BorderRadius.all(Radius.circular(2))),
@@ -157,15 +160,19 @@ class SocialHandleWidget extends StatelessWidget {
   final String handleName;
   final String handleUrl;
 
-  SocialHandleWidget({Key key, this.widget, this.handleName, this.handleUrl})
+  SocialHandleWidget(
+      {Key? key,
+      required this.widget,
+      required this.handleName,
+      required this.handleUrl})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await canLaunch(handleUrl)
-            ? await launch(handleUrl)
+        await canLaunchUrl(Uri.parse(handleUrl))
+            ? await launchUrl(Uri.parse(handleUrl))
             : SnackbarService().showSnackbar(message: "Could not load Url");
       },
       child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -175,7 +182,7 @@ class SocialHandleWidget extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .caption
-                .copyWith(color: Colors.white70, letterSpacing: 0.5))
+                ?.copyWith(color: Colors.white70, letterSpacing: 0.5))
       ]),
     );
   }

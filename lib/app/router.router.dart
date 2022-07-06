@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// AutoRouteGenerator
+// StackedRouterGenerator
 // **************************************************************************
 
 // ignore_for_file: public_member_api_docs
 
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+import 'package:stacked/stacked_annotations.dart';
 
 import '../datamodels/algo_history_track.dart';
 import '../datamodels/algorithmType.dart';
@@ -18,7 +18,7 @@ import '../ui/views/sorting_detailed_view.dart';
 import '../ui/views/visualizer_view.dart';
 
 class Routes {
-  static const String onBoardingView = '/on-boarding-view';
+  static const String onBoardingView = '/';
   static const String homeView = '/home-view';
   static const String visualizerView = '/visualizer-view';
   static const String sortingDetailedView = '/sorting-detailed-view';
@@ -30,7 +30,7 @@ class Routes {
   };
 }
 
-class Router extends RouterBase {
+class StackedRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
@@ -40,8 +40,8 @@ class Router extends RouterBase {
     RouteDef(Routes.sortingDetailedView, page: SortingDetailedView),
   ];
   @override
-  Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
-  final _pagesMap = <Type, AutoRouteFactory>{
+  Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
+  final _pagesMap = <Type, StackedRouteFactory>{
     OnBoardingView: (data) {
       return MaterialPageRoute<dynamic>(
         builder: (context) => OnBoardingView(),
@@ -55,9 +55,7 @@ class Router extends RouterBase {
       );
     },
     VisualizerView: (data) {
-      final args = data.getArgs<VisualizerViewArguments>(
-        orElse: () => VisualizerViewArguments(),
-      );
+      var args = data.getArgs<VisualizerViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
         builder: (context) => VisualizerView(
           algorithmType: args.algorithmType,
@@ -67,9 +65,7 @@ class Router extends RouterBase {
       );
     },
     SortingDetailedView: (data) {
-      final args = data.getArgs<SortingDetailedViewArguments>(
-        orElse: () => SortingDetailedViewArguments(),
-      );
+      var args = data.getArgs<SortingDetailedViewArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
         builder: (context) => SortingDetailedView(
           key: args.key,
@@ -88,13 +84,13 @@ class Router extends RouterBase {
 /// VisualizerView arguments holder class
 class VisualizerViewArguments {
   final AlgorithmType algorithmType;
-  final Key key;
-  VisualizerViewArguments({this.algorithmType, this.key});
+  final Key? key;
+  VisualizerViewArguments({required this.algorithmType, this.key});
 }
 
 /// SortingDetailedView arguments holder class
 class SortingDetailedViewArguments {
-  final Key key;
+  final Key? key;
   final List<AlgoHistoryTrack> algoTracks;
-  SortingDetailedViewArguments({this.key, this.algoTracks});
+  SortingDetailedViewArguments({this.key, required this.algoTracks});
 }
