@@ -834,8 +834,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
     if (dialogResponse != null &&
         dialogResponse.confirmed &&
-        dialogResponse.responseData != null) {
-      List<int> responseArray = dialogResponse.responseData.toList();
+        dialogResponse.data != null) {
+      List<int> responseArray = dialogResponse.data.toList();
 
       if (responseArray.isNotEmpty) {
         _sampleSize = responseArray.length;
@@ -884,8 +884,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
     if (dialogResponse != null &&
         dialogResponse.confirmed &&
-        dialogResponse.responseData.toString().isNotEmpty) {
-      _sampleSize = int.parse(dialogResponse.responseData.toString());
+        dialogResponse.data.toString().isNotEmpty) {
+      _sampleSize = int.parse(dialogResponse.data.toString());
       _sharedPrefService.sortingArraySize = _sampleSize;
       reset();
     }

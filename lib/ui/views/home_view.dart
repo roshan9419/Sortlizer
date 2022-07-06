@@ -143,7 +143,6 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
     with SingleTickerProviderStateMixin {
   bool isOpened = false;
   late AnimationController _animationController;
-  late Animation<Color?> _btnColor;
   late Animation<double> _animationIcon;
   late Animation<double> _translateBtn;
   double _fabHeight = 55.0;
@@ -157,10 +156,6 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
           });
     _animationIcon =
         Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
-    _btnColor = ColorTween(begin: Colors.blue, end: Colors.deepOrange).animate(
-        CurvedAnimation(
-            parent: _animationController,
-            curve: Interval(0.0, 1.0, curve: Curves.linear)));
     _translateBtn = Tween<double>(begin: 0, end: _fabHeight).animate(
         CurvedAnimation(
             parent: _animationController,

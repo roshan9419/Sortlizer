@@ -4,10 +4,10 @@ import 'package:sorting_visualization/services/shared_preference_service.dart';
 import 'package:sorting_visualization/setup_bottom_sheet.dart';
 import 'package:sorting_visualization/setup_dialogs.dart';
 import 'package:sorting_visualization/setup_snackbar_ui.dart';
+import 'package:sorting_visualization/ui/theme_setup.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
-import 'package:sorting_visualization/ui/views/home_view.dart';
-import 'package:sorting_visualization/ui/views/onboarding_view.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
 import 'app/locator.dart';
 import 'app/router.router.dart';
@@ -18,7 +18,7 @@ Future main() async {
   setupDialogUi();
   setupBottomSheetUI();
   setupSnackBarUi();
-
+  await ThemeManager.initialise();
   final SharedPreferenceService _sharedPrefService =
       locator<SharedPreferenceService>();
   await _sharedPrefService.initialise();
@@ -35,30 +35,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Sortlizer',
-      theme: ThemeData(
-          primaryColor: blueThemeColor,
-          snackBarTheme: SnackBarThemeData(
-              backgroundColor: blueThemeColor,
-              contentTextStyle: TextStyle(color: Colors.white)),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          fontFamily: 'Montserrat',
-          canvasColor: darkBackgroundFinish,
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-              .copyWith(secondary: Color(0xffB3B3B3))),
-      onGenerateRoute: StackedRouter().onGenerateRoute,
-      navigatorKey: StackedService.navigatorKey,
-      home: _getStartupScreen(),
-      debugShowCheckedModeBanner: false,
-    );
+    return ThemeBuilder(
+        themes: getThemes(),
+        builder: (context, regularTheme, darkTheme, themeMode) => MaterialApp(
+              theme: regularTheme,
+              debugShowCheckedModeBanner: false,
+              darkTheme: darkTheme,
+              themeMode: themeMode,
+              title: 'Sortlizer',
+              initialRoute: _getStartupRoute(),
+              onGenerateRoute: StackedRouter().onGenerateRoute,
+              navigatorKey: StackedService.navigatorKey,
+            ));
   }
 
-  Widget _getStartupScreen() {
+  String _getStartupRoute() {
     if (!_sharedPrefService.homeVisible) {
-      return OnBoardingView();
+      return Routes.onBoardingView;
     } else {
-      return HomeView();
+      return Routes.homeView;
     }
   }
 }

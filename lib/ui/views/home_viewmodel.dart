@@ -55,7 +55,7 @@ class HomeViewModel extends BaseViewModel {
       // launch("market://details?id=" + packageName);
       launchUrl(Uri.parse(
           "https://play.google.com/store/apps/details?id=" + packageName));
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       launchUrl(Uri.parse(
           "https://play.google.com/store/apps/details?id=" + packageName));
     } finally {

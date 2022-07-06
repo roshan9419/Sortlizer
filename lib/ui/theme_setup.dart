@@ -5,13 +5,16 @@ List<ThemeData> getThemes() {
   return [
     ThemeData(
         primaryColor: blueThemeColor,
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.white),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+            .copyWith(secondary: Color(0xffB3B3B3)),
         //colorScheme.secondary
         disabledColor: Color(0x4D5E5C5C),
         fontFamily: 'Montserrat',
         textTheme: TextTheme(
           overline: TextStyle(fontFamily: 'Montserrat', letterSpacing: 0),
         ),
+        canvasColor: darkBackgroundFinish,
         appBarTheme: AppBarTheme(backgroundColor: blueThemeColor),
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
@@ -49,6 +52,7 @@ List<ThemeData> getThemes() {
           labelColor: const Color(0xffec3a45),
           unselectedLabelColor: const Color(0x403e3e3e),
         ),
+        listTileTheme: ListTileThemeData(selectedTileColor: blueThemeColor),
         progressIndicatorTheme: ProgressIndicatorThemeData(
           color: Colors.white,
         )),

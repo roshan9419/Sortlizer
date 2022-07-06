@@ -31,7 +31,6 @@ class _BodyView extends ViewModelWidget<SortingDetailedViewModel> {
   _BodyView({Key? key}) : super(key: key, reactive: true);
 
   Widget _getItemInfo(String title, int value, BuildContext context) {
-    var theme = Theme.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(title,
           style: Theme.of(context).textTheme.caption?.copyWith(

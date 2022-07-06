@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:sorting_visualization/ui/ui_theme.dart';
 
