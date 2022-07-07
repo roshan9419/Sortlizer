@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/app/router.router.dart';
 import 'package:sorting_visualization/datamodels/algo_history_track.dart';
@@ -77,9 +78,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
   late StreamController<List<int>> _streamController;
 
-  // Soundpool _soundpool;
-  // int _soundId;
-
   @override
   Future<StreamController<List<int>>> futureToRun() async {
     isLoading = true;
@@ -101,12 +99,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     reset();
     isLoading = false;
     notifyListeners();
-    /*_soundpool = Soundpool(streamType: StreamType.notification);
-    _soundId = await rootBundle
-        .load("assets/audios/sort_sound.mp3")
-        .then((ByteData soundData) {
-      return _soundpool.load(soundData);
-    });*/
   }
 
   @override
@@ -212,7 +204,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       _stopWatch.stop();
       isSorting = false;
-      hideChakra = !isArraySorted();
+      bool isSorted = isArraySorted();
+      hideChakra = !isSorted;
       _sortDuration = _stopWatch.elapsed.inMilliseconds;
       _chkValueIdx = -1;
 
@@ -224,6 +217,8 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           _currentAlgoSortRecords));
 
       notifyListeners();
+
+      if (isSorted) goThroughAll();
       /*_globalDrawerKey.currentState.showSnackBar(
         SnackBar(
           content: Text("Completed"),
@@ -233,10 +228,21 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
+  goThroughAll() async {
+    for (int i=0; i <=_numbers.length; i++) {
+      _chkValueIdx = i;
+      FlutterBeep.beep();
+      await Future.delayed(Duration(milliseconds: 10), () {});
+      _streamController.add(_numbers);
+    }
+    _chkValueIdx = -1;
+  }
+
   // callable from inside function
   onSortInBTCall({bool tCTU = true, int chkIdx = 0}) async {
     if (tCTU) {
       _totalComparisons++;
+      FlutterBeep.beep();
     }
     _chkValueIdx = chkIdx;
     await Future.delayed(_getDuration(), () {});
@@ -892,7 +898,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   onShowHistorySwitchAction(bool value) {
-    // this.isSoundEnable = value;
     this.isShowHistoryEnable = value;
     _sharedPrefService.showSortingHistory = value;
     notifyListeners();

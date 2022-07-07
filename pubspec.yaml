@@ -47,6 +47,7 @@ dependencies:
   url_launcher: ^6.1.2
   share: ^2.0.4
   introduction_screen: ^3.0.2
+  flutter_beep: ^1.0.0
 
 dev_dependencies:
   flutter_test:
