@@ -5,10 +5,8 @@ List<ThemeData> getThemes() {
   return [
     ThemeData(
         primaryColor: blueThemeColor,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
-            .copyWith(secondary: Color(0xffB3B3B3)),
-        //colorScheme.secondary
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(primary: blueThemeColor, secondary: Color(0xffB3B3B3)),
         disabledColor: Color(0x4D5E5C5C),
         fontFamily: 'Montserrat',
         textTheme: TextTheme(
@@ -49,15 +47,15 @@ List<ThemeData> getThemes() {
         tabBarTheme: TabBarTheme(
           indicator: UnderlineTabIndicator(
               borderSide: const BorderSide(width: 2.0, color: blueThemeColor)),
-          labelColor: const Color(0xffec3a45),
+          labelColor: blueThemeColor,
           unselectedLabelColor: const Color(0x403e3e3e),
         ),
-        listTileTheme: ListTileThemeData(selectedTileColor: blueThemeColor),
         progressIndicatorTheme: ProgressIndicatorThemeData(
           color: Colors.white,
         )),
     ThemeData(
         backgroundColor: Colors.white,
-        colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.green))
+        colorScheme: ColorScheme.fromSwatch()
+            .copyWith(primary: orangeThemeColor, secondary: Colors.green))
   ];
 }

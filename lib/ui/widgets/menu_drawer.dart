@@ -30,7 +30,7 @@ class MenuDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     // WidgetsBinding.instance.addPostFrameCallback(
     //     (_) => _animateToIndex(menuItemsList.indexOf(selectedValue)));
-
+    var theme = Theme.of(context);
     return SafeArea(
       child: Container(
         width: 250,
@@ -44,21 +44,24 @@ class MenuDrawer extends StatelessWidget {
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     String value = menuItemsList[index];
-                    return ListTile(
+                    return InkWell(
                       onTap: () async {
                         onTap(value);
                         await Future.delayed(Duration(milliseconds: 50), () {});
                         Navigator.pop(context);
                       },
-                      selected: selectedValue == value,
-                      selectedTileColor: Theme.of(context).primaryColor,
-                      title: Text(
-                        value,
-                        style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                            color: selectedValue == value
-                                ? Colors.white
-                                : lightGrayColor,
-                            fontFamily: 'Arial'),
+                      child: Container(
+                        child: Text(value,
+                            style: theme.textTheme.subtitle2?.copyWith(
+                                color: selectedValue == value
+                                    ? Colors.white
+                                    : lightGrayColor,
+                                fontFamily: 'Arial')),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                        color: selectedValue == value
+                            ? theme.primaryColor
+                            : Colors.transparent,
                       ),
                     );
                   }),

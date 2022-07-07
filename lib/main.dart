@@ -19,15 +19,16 @@ Future main() async {
   setupBottomSheetUI();
   setupSnackBarUi();
   await ThemeManager.initialise();
+
   final SharedPreferenceService _sharedPrefService =
       locator<SharedPreferenceService>();
   await _sharedPrefService.initialise();
 
-  runApp(MyApp());
   var style =
       SystemUiOverlayStyle(systemNavigationBarColor: darkBackgroundFinish);
   SystemChrome.setSystemUIOverlayStyle(style);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
