@@ -14,6 +14,7 @@ import '../datamodels/algo_history_track.dart';
 import '../datamodels/algorithmType.dart';
 import '../ui/views/home_view.dart';
 import '../ui/views/onboarding_view.dart';
+import '../ui/views/settings_view.dart';
 import '../ui/views/sorting_detailed_view.dart';
 import '../ui/views/visualizer_view.dart';
 
@@ -22,11 +23,13 @@ class Routes {
   static const String homeView = '/home-view';
   static const String visualizerView = '/visualizer-view';
   static const String sortingDetailedView = '/sorting-detailed-view';
+  static const String settingsView = '/settings-view';
   static const all = <String>{
     onBoardingView,
     homeView,
     visualizerView,
     sortingDetailedView,
+    settingsView,
   };
 }
 
@@ -38,6 +41,7 @@ class StackedRouter extends RouterBase {
     RouteDef(Routes.homeView, page: HomeView),
     RouteDef(Routes.visualizerView, page: VisualizerView),
     RouteDef(Routes.sortingDetailedView, page: SortingDetailedView),
+    RouteDef(Routes.settingsView, page: SettingsView),
   ];
   @override
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
@@ -71,6 +75,12 @@ class StackedRouter extends RouterBase {
           key: args.key,
           algoTracks: args.algoTracks,
         ),
+        settings: data,
+      );
+    },
+    SettingsView: (data) {
+      return MaterialPageRoute<dynamic>(
+        builder: (context) => const SettingsView(),
         settings: data,
       );
     },

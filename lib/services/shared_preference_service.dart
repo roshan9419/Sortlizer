@@ -16,6 +16,7 @@ class SharedPreferenceService {
   static const String SORTING_SLIDER_VALUE = "sortingSliderValue";
   static const String SORTING_ARRAY_SIZE = "sortingArraySize";
   static const String HOME_VISIBLE = "homeVisible";
+  static const String SORTING_SOUND_ENABLED = "sortingSoundEnabled";
 
   // handles all types of values
   void _saveToDisk<T>(String key, T content) {
@@ -40,6 +41,10 @@ class SharedPreferenceService {
     return _preferences.get(key);
   }
 
+  clearData() async {
+    await _preferences.clear();
+  }
+
   bool get homeVisible => _getFromDisk(HOME_VISIBLE) ?? false;
 
   set homeVisible(bool value) => _saveToDisk(HOME_VISIBLE, value);
@@ -62,4 +67,9 @@ class SharedPreferenceService {
 
   set algorithmSelected(String? value) =>
       _saveToDisk(ALGORITHM_SELECTED, value);
+
+  bool get sortingSoundEnabled => _getFromDisk(SORTING_SOUND_ENABLED) ?? true;
+
+  set sortingSoundEnabled(bool value) =>
+      _saveToDisk(SORTING_SOUND_ENABLED, value);
 }

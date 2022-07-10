@@ -5,8 +5,8 @@ class MenuDrawer extends StatelessWidget {
   final List<String> menuItemsList;
   final String selectedValue;
   final Function(String) onTap;
-  final Function(bool) onSwitchAction;
   final Function(bool) onShowFlagSwitchAction;
+  final Function() onSettingsTap;
   final bool isSwitchEnable;
   final bool flagMode;
 
@@ -15,9 +15,9 @@ class MenuDrawer extends StatelessWidget {
       required this.menuItemsList,
       required this.selectedValue,
       required this.onTap,
-      required this.onSwitchAction,
       required this.onShowFlagSwitchAction,
       required this.isSwitchEnable,
+        required this.onSettingsTap,
       this.flagMode = false})
       : super(key: key);
 
@@ -86,25 +86,16 @@ class MenuDrawer extends StatelessWidget {
                     inactiveTrackColor: Colors.grey[800]),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 10),
-                  child: Text(
-                    'Show Sorting History',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        ?.copyWith(color: Colors.white),
-                  ),
-                ),
-                Switch(
-                    value: this.isSwitchEnable,
-                    onChanged: (val) => this.onSwitchAction(val),
-                    activeColor: Theme.of(context).primaryColor,
-                    inactiveTrackColor: Colors.grey[800]),
-              ],
+            TextButton.icon(
+              icon: Icon(Icons.settings),
+              onPressed: this.onSettingsTap,
+              label: Text(
+                'Settings',
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    ?.copyWith(color: Colors.white),
+              ),
             )
           ],
         ),

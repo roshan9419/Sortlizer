@@ -31,8 +31,8 @@ class VisualizerView extends StatelessWidget {
               onTap: model.onMenuItemClick,
               isSwitchEnable: model.isShowHistoryEnable,
               flagMode: model.flagMode,
-              onSwitchAction: model.onShowHistorySwitchAction,
-              onShowFlagSwitchAction: model.onShowFlagSwitchAction),
+              onShowFlagSwitchAction: model.onShowFlagSwitchAction,
+              onSettingsTap: model.moveToSettings),
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [
@@ -185,7 +185,7 @@ class BuildBottomDraggableSheet extends ViewModelWidget<VisualizerViewModel> {
                   height: 30,
                   child: Slider(
                       value: model.sliderValue,
-                      divisions: 10,
+                      divisions: 20,
                       activeColor: Theme.of(context).primaryColor,
                       onChanged: (val) {
                         model.updateSpeed(val);

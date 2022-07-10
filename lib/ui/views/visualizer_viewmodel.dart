@@ -71,7 +71,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isSorting = false;
   bool isContentExpanded = false;
   bool isFirstTime = true;
-  bool isSoundEnable = false;
+  bool isSoundEnable = true;
   bool isShowHistoryEnable = true;
   bool flagMode = false;
   bool hideChakra = true;
@@ -94,6 +94,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _sampleSize = _sharedPrefService.sortingArraySize;
     _sliderValue = _sharedPrefService.sortingSliderValue;
     isShowHistoryEnable = _sharedPrefService.showSortingHistory;
+    isSoundEnable = _sharedPrefService.sortingSoundEnabled;
     updateSpeed(_sliderValue);
 
     reset();
@@ -231,7 +232,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   goThroughAll() async {
     for (int i=0; i <=_numbers.length; i++) {
       _chkValueIdx = i;
-      FlutterBeep.beep();
+      _playSound();
       await Future.delayed(Duration(milliseconds: 10), () {});
       _streamController.add(_numbers);
     }
@@ -241,12 +242,21 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   // callable from inside function
   onSortInBTCall({bool tCTU = true, int chkIdx = 0}) async {
     if (tCTU) {
-      _totalComparisons++;
-      FlutterBeep.beep();
+      _incrementTotalComparisons();
     }
     _chkValueIdx = chkIdx;
     await Future.delayed(_getDuration(), () {});
     _streamController.add(_numbers);
+  }
+
+  // increment totalComparisons
+  _incrementTotalComparisons() {
+    _totalComparisons++;
+    _playSound();
+  }
+
+  _playSound() {
+    if (isSoundEnable) FlutterBeep.beep();
   }
 
   // Saving sortingStep
@@ -387,7 +397,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
 
       int cursor = left;
       for (int i = left; i < right; i++) {
-        _totalComparisons++;
+        _incrementTotalComparisons();
         if (compare(_numbers[i], _numbers[right]) <= 0) {
           var temp = _numbers[i];
           _numbers[i] = _numbers[cursor];
@@ -412,7 +422,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
 
     if (leftIndex < rightIndex) {
-      _totalComparisons++;
+      _incrementTotalComparisons();
       if (!isSorting) return;
       int p = await _partition(leftIndex, rightIndex);
       if (p == -1) return;
@@ -491,18 +501,18 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         if (_numbers[i] < item) pos++;
 
         if (!isSorting) break mainFlow;
-        _totalComparisons++;
+        _incrementTotalComparisons();
       }
 
       if (pos == cs) continue;
 
       while (item == _numbers[pos]) {
-        _totalComparisons++;
+        _incrementTotalComparisons();
         pos += 1;
       }
 
       if (pos != cs) {
-        _totalComparisons++;
+        _incrementTotalComparisons();
         int temp = item;
         item = _numbers[pos];
         _numbers[pos] = temp;
@@ -516,16 +526,16 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           if (_numbers[i] < item) pos++;
 
           if (!isSorting) break mainFlow;
-          _totalComparisons++;
+          _incrementTotalComparisons();
         }
 
         while (item == _numbers[pos]) {
-          _totalComparisons++;
+          _incrementTotalComparisons();
           pos++;
         }
 
         if (item != _numbers[pos]) {
-          _totalComparisons++;
+          _incrementTotalComparisons();
           int temp = item;
           item = _numbers[pos];
           _numbers[pos] = temp;
@@ -691,9 +701,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     int r = 2 * i + 2;
 
     if (l < n && arr[l] > arr[largest]) largest = l;
-    _totalComparisons++;
+    _incrementTotalComparisons();
     if (r < n && arr[r] > arr[largest]) largest = r;
-    _totalComparisons++;
+    _incrementTotalComparisons();
 
     if (largest != i) {
       int temp = _numbers[i];
@@ -715,7 +725,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         int j;
         for (j = i; j >= gap && _numbers[j - gap] > temp; j -= gap) {
           _numbers[j] = _numbers[j - gap];
-          _totalComparisons++;
+          _incrementTotalComparisons();
           saveCurrentSortingStep();
         }
 
@@ -760,7 +770,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
           j < _max && grid[_numbers.length - 1 - i][j] == BeadStatus.MARKED;
           j++) {
         putt++;
-        _totalComparisons++;
+        _incrementTotalComparisons();
       }
       _numbers[i] = putt;
       saveCurrentSortingStep();
@@ -897,12 +907,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
-  onShowHistorySwitchAction(bool value) {
-    this.isShowHistoryEnable = value;
-    _sharedPrefService.showSortingHistory = value;
-    notifyListeners();
-  }
-
   onShowFlagSwitchAction(bool value) {
     if (!isSorting) {
       this.flagMode = value;
@@ -915,6 +919,14 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _navigationService.navigateTo(Routes.sortingDetailedView,
         arguments:
             SortingDetailedViewArguments(algoTracks: _algoHistoryTrackList));
+  }
+
+  moveToSettings() async {
+    await _navigationService.navigateTo(Routes.settingsView);
+    // update the settings
+    this.isShowHistoryEnable = _sharedPrefService.showSortingHistory;
+    this.isSoundEnable = _sharedPrefService.sortingSoundEnabled;
+    notifyListeners();
   }
 }
 
