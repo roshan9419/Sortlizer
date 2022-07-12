@@ -5,7 +5,6 @@ class MenuDrawer extends StatelessWidget {
   final List<String> menuItemsList;
   final String selectedValue;
   final Function(String) onTap;
-  final Function(bool) onShowFlagSwitchAction;
   final Function() onSettingsTap;
   final bool isSwitchEnable;
   final bool flagMode;
@@ -15,7 +14,6 @@ class MenuDrawer extends StatelessWidget {
       required this.menuItemsList,
       required this.selectedValue,
       required this.onTap,
-      required this.onShowFlagSwitchAction,
       required this.isSwitchEnable,
         required this.onSettingsTap,
       this.flagMode = false})
@@ -66,35 +64,25 @@ class MenuDrawer extends StatelessWidget {
                     );
                   }),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 10),
-                  child: Text(
-                    'View Indian Flag',
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        ?.copyWith(color: Colors.white),
-                  ),
+            Divider(height: 1, color: theme.colorScheme.secondary.withOpacity(0.4)),
+            Container(
+              width: double.infinity,
+              child: TextButton(
+                onPressed: this.onSettingsTap,
+                child: Row(
+                  children: [
+                    Spacer(),
+                    Text(
+                      'Settings',
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          ?.copyWith(color: Colors.white),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.settings)
+                  ],
                 ),
-                Switch(
-                    value: this.flagMode,
-                    onChanged: (val) => this.onShowFlagSwitchAction(val),
-                    activeColor: Theme.of(context).primaryColor,
-                    inactiveTrackColor: Colors.grey[800]),
-              ],
-            ),
-            TextButton.icon(
-              icon: Icon(Icons.settings),
-              onPressed: this.onSettingsTap,
-              label: Text(
-                'Settings',
-                style: Theme.of(context)
-                    .textTheme
-                    .caption
-                    ?.copyWith(color: Colors.white),
               ),
             )
           ],

@@ -14,6 +14,7 @@ class SettingsViewModel extends BaseViewModel implements Initialisable {
   final _navigationService = locator<NavigationService>();
   final _sharedPrefService = locator<SharedPreferenceService>();
   final _dialogService = locator<DialogService>();
+  final _snackBarService = locator<SnackbarService>();
 
   late PackageInfo packageInfo;
 
@@ -23,8 +24,9 @@ class SettingsViewModel extends BaseViewModel implements Initialisable {
 
   BarType get selectedBarType => _sharedPrefService.barType;
 
-  String get appVersion => packageInfo.version;
+  bool get flagMode => _sharedPrefService.flagMode;
 
+  String get appVersion => packageInfo.version;
 
   void initialise() {
     setBusy(true);
@@ -86,9 +88,18 @@ class SettingsViewModel extends BaseViewModel implements Initialisable {
         barrierDismissible: true);
 
     if (response != null && response.data != null) {
+      if (flagMode) {
+        _snackBarService.showSnackbar(message: "No effect will happen when flag mode is enabled");
+        return;
+      }
       _sharedPrefService.barType = getBarTypeFromString((response.data as String).replaceAll(" ", "_").toUpperCase());
       notifyListeners();
     }
+  }
+
+  updateFlagMode(bool value) {
+    _sharedPrefService.flagMode = value;
+    notifyListeners();
   }
 
   resetApp() async {

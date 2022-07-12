@@ -98,6 +98,38 @@ class SettingsView extends StatelessWidget {
                             padding:
                             const EdgeInsets.only(left: 15.0),
                             child: Text(
+                              "Others",
+                              style: theme.textTheme.caption?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.primaryColor),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 15.0, right: 10, top: 5, bottom: 5),
+                                child: Text(
+                                  'View Indian Flag',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      ?.copyWith(color: Colors.white),
+                                ),
+                              ),
+                              Switch(
+                                  value: model.flagMode,
+                                  onChanged: model.updateFlagMode,
+                                  activeColor: Theme.of(context).primaryColor,
+                                  inactiveTrackColor: Colors.grey[800]),
+                            ],
+                          ),
+                          SizedBox(height: 30),
+                          Padding(
+                            padding:
+                            const EdgeInsets.only(left: 15.0),
+                            child: Text(
                               "App",
                               style: theme.textTheme.caption?.copyWith(
                                   fontWeight: FontWeight.bold,

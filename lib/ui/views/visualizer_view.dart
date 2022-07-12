@@ -31,7 +31,6 @@ class VisualizerView extends StatelessWidget {
               onTap: model.onMenuItemClick,
               isSwitchEnable: model.isShowHistoryEnable,
               flagMode: model.flagMode,
-              onShowFlagSwitchAction: model.onShowFlagSwitchAction,
               onSettingsTap: model.moveToSettings),
           backgroundColor: Colors.transparent,
           body: Stack(

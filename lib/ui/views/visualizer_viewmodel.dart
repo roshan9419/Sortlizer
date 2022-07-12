@@ -97,6 +97,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     isShowHistoryEnable = _sharedPrefService.showSortingHistory;
     isSoundEnable = _sharedPrefService.sortingSoundEnabled;
     barType = _sharedPrefService.barType;
+    flagMode = _sharedPrefService.flagMode;
     updateSpeed(_sliderValue);
 
     reset();
@@ -919,14 +920,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     }
   }
 
-  onShowFlagSwitchAction(bool value) {
-    if (!isSorting) {
-      this.flagMode = value;
-    }
-    reset();
-    notifyListeners();
-  }
-
   moveToDetailedSortHistory() {
     _navigationService.navigateTo(Routes.sortingDetailedView,
         arguments:
@@ -939,6 +932,11 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     this.isShowHistoryEnable = _sharedPrefService.showSortingHistory;
     this.isSoundEnable = _sharedPrefService.sortingSoundEnabled;
     this.barType = _sharedPrefService.barType;
+
+    if (this.flagMode != _sharedPrefService.flagMode) {
+      this.flagMode = _sharedPrefService.flagMode;
+      reset();
+    }
     notifyListeners();
   }
 }

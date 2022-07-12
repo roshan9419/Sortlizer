@@ -19,6 +19,7 @@ class SharedPreferenceService {
   static const String HOME_VISIBLE = "homeVisible";
   static const String SORTING_SOUND_ENABLED = "sortingSoundEnabled";
   static const String BAR_TYPE = "barType";
+  static const String FLAG_MODE = "flagMode";
 
   // handles all types of values
   void _saveToDisk<T>(String key, T content) {
@@ -79,4 +80,8 @@ class SharedPreferenceService {
       _getFromDisk(BAR_TYPE) ?? getBarTypeName(BarType.DEFAULT_BAR));
 
   set barType(BarType value) => _saveToDisk(BAR_TYPE, getBarTypeName(value));
+
+  bool get flagMode => _getFromDisk(FLAG_MODE) ?? false;
+
+  set flagMode(bool value) => _saveToDisk(FLAG_MODE, value);
 }
