@@ -88,6 +88,11 @@ class SettingsView extends StatelessWidget {
                             model.sortingSoundsEnabled ? "Enabled" : "Disabled",
                             onTap: model.updateSortingSounds,
                           ),
+                          ActionItem(
+                            "Bars Type",
+                            model.convertBarTypeToString(model.selectedBarType),
+                            onTap: model.updateBarType,
+                          ),
                           SizedBox(height: 30),
                           Padding(
                             padding:

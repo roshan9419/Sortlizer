@@ -7,6 +7,7 @@ import 'package:sorting_visualization/ui/dialogs/custom_input_dialog.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import 'datamodels/dialogType.dart';
+import 'ui/dialogs/options_dialog.dart';
 
 void setupDialogUi() {
   var dialogService = locator<DialogService>();
@@ -31,6 +32,12 @@ void setupDialogUi() {
     ),
     DialogType.CONFIRMATION: (context, dialogRequest, completer) => Dialog(
       child: ConfirmationDialog(
+        dialogRequest: dialogRequest,
+        onDialogTap: completer,
+      ),
+    ),
+    DialogType.OPTIONS: (context, dialogRequest, completer) => Dialog(
+      child: OptionsDialog(
         dialogRequest: dialogRequest,
         onDialogTap: completer,
       ),

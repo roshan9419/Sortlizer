@@ -2,6 +2,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/app/router.router.dart';
+import 'package:sorting_visualization/datamodels/barType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
 import 'package:sorting_visualization/services/shared_preference_service.dart';
 import 'package:sorting_visualization/utils/app_info.dart';
@@ -20,7 +21,10 @@ class SettingsViewModel extends BaseViewModel implements Initialisable {
 
   bool get sortingSoundsEnabled => _sharedPrefService.sortingSoundEnabled;
 
+  BarType get selectedBarType => _sharedPrefService.barType;
+
   String get appVersion => packageInfo.version;
+
 
   void initialise() {
     setBusy(true);
@@ -50,6 +54,39 @@ class SettingsViewModel extends BaseViewModel implements Initialisable {
 
     if (response != null) {
       _sharedPrefService.sortingSoundEnabled = response.confirmed;
+      notifyListeners();
+    }
+  }
+
+  String convertBarTypeToString(BarType type) {
+    List<String> parts = getBarTypeName(type).toLowerCase().split("_");
+    for (int i = 0; i < parts.length; i++) {
+      parts[i] = parts[i].substring(0, 1).toUpperCase() + parts[i].substring(1);
+    }
+    return parts.join(" ");
+  }
+
+  updateBarType() async {
+
+    List<String> options = [];
+    BarType.values.forEach((type) {
+      options.add(convertBarTypeToString(type));
+    });
+
+    DialogResponse? response = await _dialogService.showCustomDialog(
+        variant: DialogType.OPTIONS,
+        title: "Bars Type",
+        description: "Select the type of bar",
+        mainButtonTitle: "Submit",
+        secondaryButtonTitle: "Cancel",
+        data: {
+          "options": options,
+          "selected": convertBarTypeToString(_sharedPrefService.barType)
+        },
+        barrierDismissible: true);
+
+    if (response != null && response.data != null) {
+      _sharedPrefService.barType = getBarTypeFromString((response.data as String).replaceAll(" ", "_").toUpperCase());
       notifyListeners();
     }
   }

@@ -420,6 +420,7 @@ class _VisualizerContainerWidget extends ViewModelWidget<VisualizerViewModel> {
                             checkingValueIdx: model.checkingValueIdx,
                             width: division * 0.5,
                             barColor: Theme.of(context).primaryColor,
+                            barType: model.barType,
                             arraySize: model.sampleSize,
                             flagMode: model.flagMode)),
                   ),

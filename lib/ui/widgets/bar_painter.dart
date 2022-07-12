@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sorting_visualization/datamodels/barType.dart';
 
 class BarPainter extends CustomPainter {
   final double width;
@@ -9,16 +10,17 @@ class BarPainter extends CustomPainter {
   final Color barColor;
   final bool flagMode;
   final int arraySize;
+  final BarType barType;
 
-  BarPainter(
-      {required this.width,
-      required this.value,
-      required this.checkingValueIdx,
-      required this.maxValue,
-      required this.index,
-      required this.barColor,
-      this.arraySize = 100,
-      this.flagMode = false});
+  BarPainter({required this.width,
+    required this.value,
+    required this.checkingValueIdx,
+    required this.maxValue,
+    required this.index,
+    required this.barColor,
+    this.arraySize = 100,
+    this.flagMode = false,
+    this.barType = BarType.DEFAULT_BAR});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -52,13 +54,19 @@ class BarPainter extends CustomPainter {
 
     if (flagMode)
       canvas.drawLine(pt1, pt4, paint); //FLAG
-    else
-      canvas.drawLine(pt1, pt2, paint); //NEED
+    else {
+      if (barType == BarType.REVERSE_BAR)
+        canvas.drawLine(pt1, pt3, paint);
+      else if (barType == BarType.HALF_HALF)
+        canvas.drawLine(pt2, pt3, paint);
+      else if (barType == BarType.DOTS)
+        canvas.drawLine(pt2, pt2, paint);
+      else
+        canvas.drawLine(pt1, pt2, paint);
+    }
+    // canvas.drawLine(pt1, pt2, paint); //NEED
     // canvas.drawLine(pt1, pt1, paint); //NO
-    // canvas.drawLine(pt1, pt3, paint); //REVERSE
     // canvas.drawLine(pt2, pt1, paint); //SAME AS NEED
-    // canvas.drawLine(pt2, pt2, paint); //DOT SORT
-    // canvas.drawLine(pt2, pt3, paint); //HALF-HALF SORT
     // canvas.drawLine(pt3, pt1, paint); //REVERSE
     // canvas.drawLine(pt3, pt2, paint); //HALF-HALF SORT
     // canvas.drawLine(pt3, pt3, paint); //REVERSE DOT SORT

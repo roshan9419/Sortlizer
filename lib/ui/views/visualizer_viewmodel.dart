@@ -7,6 +7,7 @@ import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/app/router.router.dart';
 import 'package:sorting_visualization/datamodels/algo_history_track.dart';
 import 'package:sorting_visualization/datamodels/algorithmType.dart';
+import 'package:sorting_visualization/datamodels/barType.dart';
 import 'package:sorting_visualization/datamodels/dialogType.dart';
 import 'package:sorting_visualization/services/shared_preference_service.dart';
 import 'package:sorting_visualization/utils/contents.dart';
@@ -29,7 +30,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     if (_maxNumber > 500) {
       _maxNumber = 500;
     }
-    print(_maxNumber);
   }
 
   List<int> _numbers = [];
@@ -75,6 +75,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   bool isShowHistoryEnable = true;
   bool flagMode = false;
   bool hideChakra = true;
+  BarType barType = BarType.DEFAULT_BAR;
 
   late StreamController<List<int>> _streamController;
 
@@ -95,6 +96,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     _sliderValue = _sharedPrefService.sortingSliderValue;
     isShowHistoryEnable = _sharedPrefService.showSortingHistory;
     isSoundEnable = _sharedPrefService.sortingSoundEnabled;
+    barType = _sharedPrefService.barType;
     updateSpeed(_sliderValue);
 
     reset();
@@ -127,12 +129,22 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
         _numbers.add(num);
       });
     } else {
+      int incrementer = 50;
       for (int i = 0; i < _sampleSize; ++i) {
         int rndNum = Random().nextInt(_maxNumber.toInt());
         if (rndNum < 10) rndNum += 50; // Just for UI Purpose
-        _numbers.add(flagMode ? i : rndNum);
+        if (_sampleSize <= 50)
+          incrementer += 5;
+        else if (_sampleSize <= 100)
+          incrementer += 2;
+        else if (_sampleSize <= 200) incrementer++;
+        _numbers.add(flagMode
+            ? i
+            : barType == BarType.SEQUENCE_BAR
+                ? (i + incrementer)
+                : rndNum);
       }
-      if (flagMode) _numbers.shuffle();
+      if (flagMode || barType == BarType.SEQUENCE_BAR) _numbers.shuffle();
     }
 
     _streamController.add(_numbers);
@@ -230,7 +242,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   goThroughAll() async {
-    for (int i=0; i <=_numbers.length; i++) {
+    for (int i = 0; i <= _numbers.length; i++) {
       _chkValueIdx = i;
       _playSound();
       await Future.delayed(Duration(milliseconds: 10), () {});
@@ -926,6 +938,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     // update the settings
     this.isShowHistoryEnable = _sharedPrefService.showSortingHistory;
     this.isSoundEnable = _sharedPrefService.sortingSoundEnabled;
+    this.barType = _sharedPrefService.barType;
     notifyListeners();
   }
 }

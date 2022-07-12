@@ -20,6 +20,5 @@ String getAlgoTypeName(AlgorithmType type) {
 }
 
 AlgorithmType getAlgoTypeFromString(String strType) {
-  print(strType);
   return AlgorithmType.values.firstWhere((e) => e.toString() == strType);
 }

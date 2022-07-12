@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sorting_visualization/datamodels/barType.dart';
 
 @lazySingleton
 class SharedPreferenceService {
@@ -17,6 +18,7 @@ class SharedPreferenceService {
   static const String SORTING_ARRAY_SIZE = "sortingArraySize";
   static const String HOME_VISIBLE = "homeVisible";
   static const String SORTING_SOUND_ENABLED = "sortingSoundEnabled";
+  static const String BAR_TYPE = "barType";
 
   // handles all types of values
   void _saveToDisk<T>(String key, T content) {
@@ -72,4 +74,9 @@ class SharedPreferenceService {
 
   set sortingSoundEnabled(bool value) =>
       _saveToDisk(SORTING_SOUND_ENABLED, value);
+
+  BarType get barType => getBarTypeFromString(
+      _getFromDisk(BAR_TYPE) ?? getBarTypeName(BarType.DEFAULT_BAR));
+
+  set barType(BarType value) => _saveToDisk(BAR_TYPE, getBarTypeName(value));
 }
