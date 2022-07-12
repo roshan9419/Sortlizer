@@ -162,7 +162,6 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
       return;
     }
     if (isSorting) {
-      print('FORCED STOP');
       isSorting = false;
       hideChakra = true;
       notifyListeners();
@@ -285,8 +284,9 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
     // 200ms, 180ms, 160ms, 140ms, 120ms, 100ms, 80ms, 60ms, 40ms, 20ms, 0ms
     _sliderValue = value;
     _sharedPrefService.sortingSliderValue = _sliderValue;
-    _sortingSpeed = 150 - _sliderValue * 149;
-    print('VAL => $value | Speed => $sortingSpeed');
+    _sortingSpeed = 500 - _sliderValue * 500;
+    if (_sortingSpeed == 0) _sortingSpeed = 1;
+    // print('VAL => $value | Speed => $sortingSpeed');
     notifyListeners();
   }
 
