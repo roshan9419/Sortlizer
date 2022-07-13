@@ -71,15 +71,15 @@ class MenuDrawer extends StatelessWidget {
                 onPressed: this.onSettingsTap,
                 child: Row(
                   children: [
-                    Spacer(),
+                    SizedBox(width: 10),
                     Text(
                       'Settings',
                       style: Theme.of(context)
                           .textTheme
-                          .caption
+                          .subtitle2
                           ?.copyWith(color: Colors.white),
                     ),
-                    SizedBox(width: 10),
+                    Spacer(),
                     Icon(Icons.settings)
                   ],
                 ),

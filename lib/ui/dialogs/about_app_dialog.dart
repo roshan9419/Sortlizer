@@ -74,7 +74,7 @@ class AboutAppDialog extends StatelessWidget {
                 TextButton(
                   onPressed: () async {
                     await canLaunchUrl(Uri.parse(readMeLink))
-                        ? await launchUrl(Uri.parse(readMeLink))
+                        ? await launchUrl(Uri.parse(readMeLink), mode: LaunchMode.externalApplication)
                         : SnackbarService()
                             .showSnackbar(message: "Could not load Url");
                   },
@@ -172,7 +172,7 @@ class SocialHandleWidget extends StatelessWidget {
     return InkWell(
       onTap: () async {
         await canLaunchUrl(Uri.parse(handleUrl))
-            ? await launchUrl(Uri.parse(handleUrl))
+            ? await launchUrl(Uri.parse(handleUrl), mode: LaunchMode.externalApplication)
             : SnackbarService().showSnackbar(message: "Could not load Url");
       },
       child: Row(mainAxisSize: MainAxisSize.min, children: [

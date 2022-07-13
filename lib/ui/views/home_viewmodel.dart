@@ -54,13 +54,13 @@ class HomeViewModel extends BaseViewModel {
     try {
       // launch("market://details?id=" + packageName);
       launchUrl(Uri.parse(
-          "https://play.google.com/store/apps/details?id=" + packageName));
+          "https://play.google.com/store/apps/details?id=" + packageName), mode: LaunchMode.externalApplication);
     } on PlatformException catch (_) {
       launchUrl(Uri.parse(
-          "https://play.google.com/store/apps/details?id=" + packageName));
+          "https://play.google.com/store/apps/details?id=" + packageName), mode: LaunchMode.externalApplication);
     } finally {
       launchUrl(Uri.parse(
-          "https://play.google.com/store/apps/details?id=" + packageName));
+          "https://play.google.com/store/apps/details?id=" + packageName), mode: LaunchMode.externalApplication);
     }
   }
 }

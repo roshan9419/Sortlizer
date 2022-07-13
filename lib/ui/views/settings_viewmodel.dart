@@ -109,7 +109,7 @@ class SettingsViewModel extends BaseViewModel implements Initialisable {
 
   showSourceCode() async {
     await canLaunchUrl(Uri.parse(readMeLink))
-        ? await launchUrl(Uri.parse(readMeLink))
+        ? await launchUrl(Uri.parse(readMeLink), mode: LaunchMode.externalApplication)
         : SnackbarService().showSnackbar(message: "Could not load Url");
   }
 
