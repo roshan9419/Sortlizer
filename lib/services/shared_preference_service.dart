@@ -71,7 +71,7 @@ class SharedPreferenceService {
   set algorithmSelected(String? value) =>
       _saveToDisk(ALGORITHM_SELECTED, value);
 
-  bool get sortingSoundEnabled => _getFromDisk(SORTING_SOUND_ENABLED) ?? true;
+  bool get sortingSoundEnabled => _getFromDisk(SORTING_SOUND_ENABLED) ?? false;
 
   set sortingSoundEnabled(bool value) =>
       _saveToDisk(SORTING_SOUND_ENABLED, value);

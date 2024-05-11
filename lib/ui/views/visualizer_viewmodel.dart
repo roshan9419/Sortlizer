@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_beep/flutter_beep.dart';
+// import 'package:flutter_beep/flutter_beep.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/app/router.router.dart';
 import 'package:sorting_visualization/datamodels/algo_history_track.dart';
@@ -268,7 +268,7 @@ class VisualizerViewModel extends FutureViewModel<StreamController<List<int>>> {
   }
 
   _playSound() {
-    if (isSoundEnable) FlutterBeep.beep();
+    // if (isSoundEnable) FlutterBeep.beep();
   }
 
   // Saving sortingStep

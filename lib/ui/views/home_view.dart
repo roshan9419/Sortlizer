@@ -241,6 +241,9 @@ class _ExpandableButtonsState extends State<ExpandableButtons>
                   progress: _animationIcon,
                   color: Colors.white,
                 ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
                 tooltip: 'Menu',
               ),
             ),
@@ -278,7 +281,6 @@ class ActionButton extends StatelessWidget {
       child: FittedBox(
         child: FloatingActionButton(
           onPressed: () {
-            print('Clicked');
             if (onTap != null) onTap!();
           },
           heroTag: toolTipText,
@@ -288,6 +290,9 @@ class ActionButton extends StatelessWidget {
             iconData,
             size: 25,
             color: Colors.white,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50.0),
           ),
           tooltip: toolTipText,
         ),

@@ -62,32 +62,32 @@ class SettingsView extends StatelessWidget {
                                   color: theme.primaryColor),
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 15.0, right: 10, top: 5, bottom: 5),
-                                child: Text(
-                                  'Show Sorting History',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle2
-                                      ?.copyWith(color: Colors.white),
-                                ),
-                              ),
-                              Switch(
-                                  value: model.showSortingHistory,
-                                  onChanged: model.updateShowSortingHistory,
-                                  activeColor: Theme.of(context).primaryColor,
-                                  inactiveTrackColor: Colors.grey[800]),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15.0, right: 15.0, top: 5, bottom: 5),
+                            child:  Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    'Show Sorting History',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        ?.copyWith(color: Colors.white),
+                                  ),
+                                 Switch(
+                                        value: model.showSortingHistory,
+                                        onChanged: model.updateShowSortingHistory,
+                                        activeColor: Theme.of(context).primaryColor,
+                                        inactiveTrackColor: Colors.grey[800])
+                              ],
+                            ),
                           ),
-                          ActionItem(
-                            "Sorting Sound",
-                            model.sortingSoundsEnabled ? "Enabled" : "Disabled",
-                            onTap: model.updateSortingSounds,
-                          ),
+                          // ActionItem(
+                          //   "Sorting Sound",
+                          //   model.sortingSoundsEnabled ? "Enabled" : "Disabled",
+                          //   onTap: model.updateSortingSounds,
+                          // ),
                           ActionItem(
                             "Bars Type",
                             model.convertBarTypeToString(model.selectedBarType),
@@ -104,26 +104,26 @@ class SettingsView extends StatelessWidget {
                                   color: theme.primaryColor),
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 15.0, right: 10, top: 5, bottom: 5),
-                                child: Text(
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15.0, right: 15.0, top: 5, bottom: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
                                   'View Indian Flag',
                                   style: Theme.of(context)
                                       .textTheme
                                       .subtitle2
                                       ?.copyWith(color: Colors.white),
                                 ),
-                              ),
-                              Switch(
-                                  value: model.flagMode,
-                                  onChanged: model.updateFlagMode,
-                                  activeColor: Theme.of(context).primaryColor,
-                                  inactiveTrackColor: Colors.grey[800]),
-                            ],
+                                Switch(
+                                    value: model.flagMode,
+                                    onChanged: model.updateFlagMode,
+                                    activeColor: Theme.of(context).primaryColor,
+                                    inactiveTrackColor: Colors.grey[800]),
+                              ],
+                            ),
                           ),
                           SizedBox(height: 30),
                           Padding(

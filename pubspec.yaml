@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.18+2
+version: 1.0.19+4
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -29,12 +29,12 @@ dependencies:
   cupertino_icons: ^1.0.0
 
   # state management
-  stacked: ^2.3.6
-  stacked_hooks: ^0.2.1
+  stacked: ^3.4.2
+  stacked_hooks: ^0.2.4
 
   # navigation
-  stacked_services: ^0.8.24
-  stacked_themes: ^0.3.8+1
+  stacked_services: ^1.5.0
+  stacked_themes: ^0.3.12
   shared_preferences: ^2.0.6
 
   # inversion of control
@@ -43,23 +43,22 @@ dependencies:
 
   animated_text_kit: ^4.2.2
   flutter_highlight: ^0.7.0
-  flutter_svg: ^0.23.0
+  flutter_svg: ^2.0.10+1
   url_launcher: ^6.1.2
   share: ^2.0.4
   introduction_screen: ^3.0.2
-  flutter_beep: ^1.0.0
-  package_info_plus: ^1.4.2
+#  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   build_runner: ^2.1.5
-  stacked_generator: ^0.5.6
+  stacked_generator: ^1.6.0
   injectable_generator:
 
-  flutter_launcher_icons: ^0.9.3
-  flutter_native_splash: ^2.2.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.0
 
 flutter_icons:
   android: true
@@ -67,14 +66,12 @@ flutter_icons:
   image_path: "assets/images/app_logo.png"
 
 flutter_native_splash:
-  image: assets/images/logo_with_name.png
   color: "#1C1E20"
+  image: assets/images/logo_with_name.png
   android: true
-  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
 

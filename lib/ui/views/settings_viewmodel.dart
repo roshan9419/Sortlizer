@@ -1,5 +1,5 @@
 import 'package:flutter/scheduler.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+// import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sorting_visualization/app/locator.dart';
 import 'package:sorting_visualization/app/router.router.dart';
 import 'package:sorting_visualization/datamodels/barType.dart';
@@ -16,7 +16,7 @@ class SettingsViewModel extends BaseViewModel implements Initialisable {
   final _dialogService = locator<DialogService>();
   final _snackBarService = locator<SnackbarService>();
 
-  late PackageInfo packageInfo;
+  // late PackageInfo packageInfo;
 
   bool get showSortingHistory => _sharedPrefService.showSortingHistory;
 
@@ -26,7 +26,7 @@ class SettingsViewModel extends BaseViewModel implements Initialisable {
 
   bool get flagMode => _sharedPrefService.flagMode;
 
-  String get appVersion => packageInfo.version;
+  String get appVersion => "1.0.19";// packageInfo.version;
 
   void initialise() {
     setBusy(true);
@@ -35,7 +35,7 @@ class SettingsViewModel extends BaseViewModel implements Initialisable {
 
   void getInitialized() async {
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      packageInfo = await PackageInfo.fromPlatform();
+      // packageInfo = await PackageInfo.fromPlatform();
       setBusy(false);
     });
   }

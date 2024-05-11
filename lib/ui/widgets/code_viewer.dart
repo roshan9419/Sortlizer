@@ -114,7 +114,10 @@ class _CodeViewerState extends State<CodeViewer> {
                             : Icons.nightlight_round,
                         color: isDark ? Colors.black87 : Colors.white,
                         size: 20,
-                      ))),
+                      ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ))),
               widget.showCopyBtn
                   ? Positioned(
                       top: 50,
@@ -135,7 +138,10 @@ class _CodeViewerState extends State<CodeViewer> {
                             Icons.copy,
                             color: Colors.white,
                             size: 20,
-                          )))
+                          ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50.0),
+                        )))
                   : SizedBox.shrink()
             ],
           ),

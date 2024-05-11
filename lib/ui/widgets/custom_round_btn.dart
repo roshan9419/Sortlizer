@@ -59,6 +59,9 @@ class _CustomRoundButtonState extends State<CustomRoundButton> {
                     child: (widget.assetImagePath != null)
                         ? Image.asset(widget.assetImagePath!)
                         : widget.icon,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                    ),
                     backgroundColor: widget.btnColor ?? darkBtnColor1,
                   ),
                 )

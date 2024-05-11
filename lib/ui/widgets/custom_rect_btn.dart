@@ -47,7 +47,7 @@ class CustomRectButton extends StatelessWidget {
             : child,
         style: ElevatedButton.styleFrom(
             elevation: 10,
-            primary: btnColor ?? darkBtnColor2,
+            backgroundColor: btnColor ?? darkBtnColor2,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5))),
             // onPrimary: Theme.of(context).primaryColor,
